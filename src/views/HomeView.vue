@@ -7,7 +7,7 @@
             <br>
             <button @click="showText2">Click me</button>
             <p v-if="textVisible2">{{ text2 }}</p>
-            <p>dddddddd</p>
+            <p>ddddddddsssssssss</p>
         </div>
     </div>
 </template>
