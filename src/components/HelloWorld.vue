@@ -3,6 +3,7 @@
       <div>
           <button @click="showText">Click me</button>
           <p v-if="textVisible">{{ text }}</p>
+          {{/*ssssssssssssssss testgit*/}}
       </div>
   </div>
 </template>
