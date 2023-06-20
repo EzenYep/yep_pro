@@ -48,5 +48,10 @@
     margin-top: 3%; /* 구분 기호의 좌우 여백 설정 */
     border: 1px solid #000000; /* 외곽선 추가 */
     padding: 5px; /* 내부 여백 설정 */
+    /* 장난을 실시한다 **/
+    /* dkdkdkdkdkdkdkdkdk **/
+    /* dkdkdkdkdkdkdkdkdk **/
+    /* dkdkdkdkdkdkdkdkdk **/
+    /* dkdkdkdkdkdkdkdkdk **/
 }
 </style>
