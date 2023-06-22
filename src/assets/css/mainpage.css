@@ -1,0 +1,134 @@
+.container {
+    /*width: 70%;
+    height: 100%;*/
+    overflow: hidden;
+    position: relative;
+}
+
+.container > img {
+    width: 70%;
+    /* height: 100%; */
+}
+
+.img-group {
+    text-align: center;
+}
+
+.searchTerm {
+    width: 30%;
+}
+
+.search {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 50px;
+    /* left: 66.5%;  /* 야매로 왼쪽기준으로 만듬 */
+    text-align: right;
+}
+
+/* 여기서부터 무비차트*/
+.movie-chart {
+    width: 100%;
+    overflow: hidden;
+}
+
+.slider-container {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    overflow: hidden;
+}
+
+.slide {
+    flex: 0 0 calc(100% / 4);
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.slide img {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+}
+
+.movie-info {
+    margin-top: 5px;
+    text-align: center;
+}
+
+.controls {
+    margin-top: 10px;
+}
+
+.previous-button,
+.next-button {
+    flex-shrink: 0;
+    margin: 0 10px; /* 좌우 여백 추가 */
+}
+
+.previous-button {
+    margin-right: auto; /* 이전 버튼을 왼쪽으로 정렬 */
+}
+
+.next-button {
+    margin-left: auto; /* 다음 버튼을 오른쪽으로 정렬 */
+}
+
+
+.horizontal-layout {
+    display: flex;
+    align-items: center;
+    margin-top: 10%;
+    margin-bottom: 30%;
+}
+
+/* 밑에 광고 이미지 양옆으로 붙여야함*/
+.image,
+.buttons {
+    margin: 0 10px;
+}
+
+.image img {
+    width: 200px;
+    height: 200px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.button {
+    display: block;
+    border-radius: 50%;
+    width: 10rem;
+    height: 10rem;
+    background-color: #ccc;
+    border: none;
+    cursor: pointer;
+}
+
+.last {
+    display: flex;
+    align-items: center;
+}
+
+.teamname {
+    margin-right: auto;
+}
+
+.topbutton {
+    width: 5rem;
+    height: 5rem;
+    margin-left: auto;
+}
