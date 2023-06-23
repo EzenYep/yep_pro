@@ -5,6 +5,12 @@ import MovieInfoView from "@/views/MovieInfoView.vue";
 import LoginView from "@/views/LoginView.vue";
 import ComplaintView from "@/views/ComplaintView.vue";
 import MovieView from "@/views/MovieVIew.vue"
+import MyPageView from "@/views/MyPageView.vue";
+import ManagerUserView from "@/views/ManagerUserView.vue";
+import ManagerReportView from "@/views/ManagerReportView.vue"
+import MyPageCrystalView from "@/views/MyPageCrystalView.vue"
+import PaymentView from "@/views/PaymentView.vue";
+import EventView from "@/views/EventView.vue";
 const routes = [
     {
         path: '/',
@@ -30,7 +36,32 @@ const routes = [
         path: "/movie_view",
         name: 'movieView',
         component: MovieView
+    },{
+        path: "/mypage_view",
+        name: 'mypage',
+        component: MyPageView
+    },{
+        path: "/my_page_crystal",
+        name: 'my_page_crystal',
+        component: MyPageCrystalView
+    },{
+        path: "/manager_user",
+        name: 'manager_user',
+        component: ManagerUserView
+    },{
+        path: "/manager_report",
+        name: 'manager_report',
+        component: ManagerReportView
+    },{
+        path:  "/payment",
+        name: "payment",
+        component: PaymentView
+    },{
+        path:  "/event",
+        name: "event",
+        component: EventView
     }
+
 
 ]
 
