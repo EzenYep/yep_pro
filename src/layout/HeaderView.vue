@@ -34,7 +34,7 @@
                 <span class="divider">이벤트</span>
             </div>
             <div class="d-flex justify-content-end" id="userControls" style="position: absolute; right: 16%;">
-                <button @click="goLoginPage">마이</button>
+                <button @click="goMyPage">마이</button>
                 <button @click="goLoginPage">로그인</button>
             </div>
         </div>
@@ -56,7 +56,11 @@ const goLoginPage = () => {
         name: 'login',
     });
 };
-
+const goMyPage = () => {
+    router.push({
+        name: 'mypage',
+    });
+};
 const goComplainPage = () => {
     router.push({
         name: 'complain',
@@ -96,10 +100,16 @@ const goMovie=()=>{
 </script>
 
 <style scoped>
-.line {
+/*.line {
+    color: #000000; !* 검정색 *!
+    margin-top: 3%; !* 구분 기호의 좌우 여백 설정 *!
+    border: 1px solid #000000; !* 외곽선 추가 *!
+    padding: 5px; !* 내부 여백 설정 *!
+}*/
+#navbar{
     color: #000000; /* 검정색 */
     margin-top: 3%; /* 구분 기호의 좌우 여백 설정 */
     border: 1px solid #000000; /* 외곽선 추가 */
-    padding: 5px; /* 내부 여백 설정 */
+    padding: 1%; /* 내부 여백 설정 */
 }
 </style>
