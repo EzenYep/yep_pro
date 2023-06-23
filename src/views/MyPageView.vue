@@ -4,9 +4,11 @@
         <div class="row" style = "background-color :gray">
             <div class="col1" align="right">
                 <br>
-                <button style="width:120px; height:50px; border:1px; background-color:rgba(0,0,0,0); font-size: 1.3em; font-weight: bold">예매관리</button>
-                <a class=v-line></a>
-                <button style="width:120px; height:50px; border:1px; background-color:rgba(0,0,0,0); font-size: 1.3em; font-weight: normal">회원관리</button>
+                <button style="width:120px; height:50px; border:1px; background-color:rgba(0,0,0,0);
+      font-size: 1.3em; font-weight: bold">예매관리</button>
+                <div class="vr"></div>
+                <button style="width:120px; height:50px; border:1px; background-color:rgba(0,0,0,0);
+      font-size: 1.3em; font-weight: normal">회원관리</button>
             </div>
 
             <div class="col2" align="left" >
@@ -230,11 +232,7 @@ function adjustSliderContainerWidth() {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.v-line {
-    border: 1px solid=rgb(00,00,00);
-    width: 1px;
-    height: 50px;
-}
+
 /* 여기서부터 무비차트*/
 .movie-chart {
     width: 100%;
