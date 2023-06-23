@@ -11,6 +11,7 @@ import ManagerReportView from "@/views/ManagerReportView.vue"
 import MyPageCrystalView from "@/views/MyPageCrystalView.vue"
 import PaymentView from "@/views/PaymentView.vue";
 import EventView from "@/views/EventView.vue";
+import ReservationView from "@/views/ReservationView.vue";
 const routes = [
     {
         path: '/',
@@ -60,6 +61,10 @@ const routes = [
         path:  "/event",
         name: "event",
         component: EventView
+    },{
+        path: "reservation", //예매
+        name: "reservation",
+        component: ReservationView
     }
 
 
