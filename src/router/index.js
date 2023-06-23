@@ -95,7 +95,8 @@ const routes = [
         component: EventView
     },{
         path: "/reservation", //예매
-        name: "reservation",
+        name: "reservatio" +
+            "n",
         component: ReservationView
     },{
 
