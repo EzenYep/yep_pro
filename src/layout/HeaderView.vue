@@ -1,0 +1,115 @@
+<template>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <nav class="navbar navbar-expand-lg">
+                    <a class="navbar-brand" @click="goHome">Navbar</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" @click="goLoginPage" style="font-size: 0.5rem;">로그인</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page"  @click="goLoginPage" style="font-size: 0.5rem;">회원가입</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page"  @click="goComplainPage" style="font-size: 0.5rem;">고객센터</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="d-flex justify-content-center" id="navbar">
+            <div id="navItems">
+                <span class="divider" @click="goMovie">영화</span>
+                <span class="divider">ㅣ</span>
+                <span class="divider">예매</span>
+                <span class="divider">ㅣ</span>
+                <span class="divider">이벤트</span>
+            </div>
+            <div class="d-flex justify-content-end" id="userControls" style="position: absolute; right: 16%;">
+                <button @click="goMyPage">마이</button>
+                <button @click="goLoginPage">로그인</button>
+            </div>
+        </div>
+    </div>
+
+</template>
+
+<script setup>
+import router from "@/router";
+
+const goHome=()=>{
+    router.push({
+        name: 'home',
+    });
+}
+
+const goLoginPage = () => {
+    router.push({
+        name: 'login',
+    });
+};
+const goMyPage = () => {
+    router.push({
+        name: 'mypage',
+    });
+};
+const goComplainPage = () => {
+    router.push({
+        name: 'complain',
+    });
+};
+const goMovie=()=>{
+    router.push(({
+        name:'movieView'
+    }))
+}
+
+/*
+* <script>안에 넣을려면 아롷개 쓰시면 됩니다.
+    methods: {
+        goHome() {
+            this.$router.push({
+                name: 'home',
+            });
+        },
+        goLoginPage() {
+            this.$router.push({
+                name: 'login',
+            });
+        },
+        goComplainPage() {
+            this.$router.push({
+                name: 'complain',
+            });
+        },
+        goMovie() {
+            this.$router.push({
+                name: 'movieView',
+            });
+        },
+    },
+* */
+</script>
+
+<style scoped>
+/*.line {
+    color: #000000; !* 검정색 *!
+    margin-top: 3%; !* 구분 기호의 좌우 여백 설정 *!
+    border: 1px solid #000000; !* 외곽선 추가 *!
+    padding: 5px; !* 내부 여백 설정 *!
+}*/
+#navbar{
+    color: #000000; /* 검정색 */
+    margin-top: 3%; /* 구분 기호의 좌우 여백 설정 */
+    border: 1px solid #000000; /* 외곽선 추가 */
+    padding: 1%; /* 내부 여백 설정 */
+}
+</style>
