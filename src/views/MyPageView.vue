@@ -8,7 +8,7 @@
       font-size: 1.3em; font-weight: bold">예매관리</button>
                 <div class="vr"></div>
                 <button style="width:120px; height:50px; border:1px; background-color:rgba(0,0,0,0);
-      font-size: 1.3em; font-weight: normal">회원관리</button>
+      font-size: 1.3em; font-weight: normal" @click="goMypageCrystal">회원관리</button>
             </div>
 
             <div class="col2" align="left" >
@@ -166,6 +166,13 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import router from '@/router';
+
+const goMypageCrystal = () => {
+    router.push({
+        name: 'my_page_crystal',
+    });
+};
 
 const movies = [
     {

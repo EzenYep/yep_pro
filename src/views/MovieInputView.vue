@@ -60,7 +60,7 @@
                 </div>
                 <div class="buttons">
                     <div>
-                        <button class="endButton">닫기</button>
+                        <button class="endButton" @click="goBack">닫기</button>
                         <button class="submitButton">등록</button>
                     </div>
 
@@ -71,12 +71,18 @@
 </template>
 
 <script setup>
+import router from '@/router';
 // Your script setup code goes here
 import { ref } from 'vue';
 
 const genres = ['Action', 'Drama', 'Comedy'];  // 장르 리스트
 const selectedGenre = ref(genres[0]);  // 선택된 장르
 
+const goBack= () => {
+    router.push({
+        name:'manager_main'
+    })
+}
 
 </script>
 

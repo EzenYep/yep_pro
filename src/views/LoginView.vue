@@ -60,19 +60,19 @@ html {
   background: linear-gradient(#141e30, #243b55);
 } */
 
-.login-box {
-    position: absolute;
+.login-box {    
+    position: relative;
     top: 50%;
-    left: 50%;
+    left: 30%;
     width: 500px;
     height: 50%;
     padding: 40px;
-    transform: translate(-50%, -50%);
     background: rgba(255, 255, 255, 0.5);
     box-sizing: border-box;
     /* box-shadow: 0 5px 5px rgba(0,0,0,.6); */
     border-radius: 10px;
 }
+
 
 .login-box h2 {
     margin: 0 0 30px;
