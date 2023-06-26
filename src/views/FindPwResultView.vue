@@ -21,13 +21,15 @@
       </div>
   
       <div class="d-flex justify-content-center">
-        <button id="next" type="button"><label>변경</label></button>
+        <button id="next" type="button" @click="login"><label>변경</label></button>
       </div>
     </div>
   </template>
   
   <script setup>
   import { ref, watch } from 'vue';
+  import router from "@/router";
+
   
   const password1 = ref('');
   const password2 = ref('');
@@ -41,14 +43,21 @@
       passwordCheckErrorMessage.value = '';
     }
   });
+
+
+const login=() => {
+    router.push({
+        name: 'login'
+    });
+  }
   </script>
   
   <style scoped>
   .findUser-box {
     position: relative;
     margin: auto;
-    width: 700px;
-    height: 60%;
+    width: 600px;
+    height: 600px;
     padding: 100px;
     margin-top: 50px;
     background: rgba(233, 202, 202, 0.402);

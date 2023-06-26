@@ -24,10 +24,10 @@
                 <span></span>
                 로그인
             </a>
-            <a href="#" class="findid">아이디찾기</a>&nbsp;|
-            <a href="#" class="findpw">비밀번호찾기</a>
+            <a @click="findid" class="findid" >아이디찾기</a>&nbsp;|
+            <a @click="findpw" class="findpw">비밀번호찾기</a>
 
-            <a href="#" class="createid">회원가입</a>
+            <a @click="signup" class="createid">회원가입</a>
 
 
             <a href="#2" class="kakaologin">
@@ -48,6 +48,27 @@
     </div>
 </template>
 
+<script setup>
+import router from "@/router";
+
+const findid=() => {
+    router.push({
+        name: 'find_id'
+    });    
+}
+
+const findpw=() => {
+    router.push({
+        name: 'find_pw'
+    });
+}
+
+const signup=() => {
+    router.push({
+        name: 'sign_up'
+    });
+}
+</script>
 
 <style scoped>
 

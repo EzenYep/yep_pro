@@ -14,13 +14,21 @@
         </div>
 
       <div class="d-flex justify-content-center" >
-      <button id="next" type="button"><label>로그인 창으로</label></button>
+      <button id="next" type="button" @click="login"><label>로그인 창으로</label></button>
     </div>
     </div>
   
 </template>
 
+<script setup>
+import router from "@/router";
 
+const login=() => {
+    router.push({
+        name: 'login'
+    });
+  }
+</script>
 
 <style scoped>
 

@@ -3,7 +3,7 @@
       <h2>비밀번호 찾기</h2>
       <hr class="center-hr" />
       <div class="findbtn">
-        <button class="findIDPW" type="button">아이디찾기</button>
+        <button class="findIDPW" type="button" @click="findid">아이디찾기</button>
         <div class="IdPwline"></div>
         <button class="findIDPW" type="button">비밀번호찾기</button>
       </div>
@@ -25,13 +25,31 @@
           <button id="sendMessage">인증</button>
         </div>
         <div class="d-flex justify-content-end">
-          <button id="next" type="button"><label>다음</label></button>
+          <button id="next" type="button" @click="findpwresult"><label>다음</label></button>
         </div>
       </div>
     </div>
   </template>
   
-  <style scoped>
+
+<script setup>
+import router from "@/router";
+
+const findid=() => {
+    router.push({
+        name: 'find_id'
+    });
+  }
+
+  const findpwresult=() => {
+    router.push({
+      name: 'find_pw_result'
+    });
+  }
+</script>
+ 
+ 
+ <style scoped>
   .findUser-box {
     position: relative;
     margin: auto;

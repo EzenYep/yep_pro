@@ -123,9 +123,9 @@
             <div class="checkerror">{{ passwordCheckErrorMessage }}</div>
 
             <div class="phone">
-                <input id="phone1" type="text" size="1" maxlength="3" placeholder="***"> -
-                <input id="phone2" type="text" size="3" maxlength="4" placeholder="****"> -
-                <input id="phone3" type="text" size="3" maxlength="4" placeholder="****">
+                <input id="phone1" type="text" size="1" maxlength="3" placeholder="***" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"> -    <!-- 숫자만 입력하는 텍스트-->
+                <input id="phone2" type="text" size="3" maxlength="4" placeholder="****" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"> -
+                <input id="phone3" type="text" size="3" maxlength="4" placeholder="****" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                 <label>*전화번호를 입력해 주세요.</label>
             </div>
 
@@ -136,7 +136,7 @@
                 <hr>
             </div>
             <div class="d-flex justify-content-center" id="signupBtnWrapper">
-                <button id="signUpButton" >가입하기</button>
+                <button id="signUpButton" @click="login">가입하기</button>
             </div>
         </div>
     </div>
@@ -145,6 +145,15 @@
 </template>
 
 <script setup>
+import router from "@/router";
+import { ref, watch } from 'vue';
+
+
+const login=() => {
+    router.push({
+        name: 'login'
+    });    
+}
 
 const selectAll = (e) => {      //모두 동의 체크박스
     const agree_all = e.target;
@@ -155,7 +164,6 @@ const selectAll = (e) => {      //모두 동의 체크박스
     });
 };
 
-import { ref, watch } from 'vue';
 
 const password1 = ref('');
 const password2 = ref('');
@@ -169,6 +177,7 @@ watch([password1, password2], () => {
         passwordCheckErrorMessage.value = '';
     }
 });
+
 
 
 </script>

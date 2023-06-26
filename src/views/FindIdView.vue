@@ -6,7 +6,7 @@
         <div class="findbtn">
             <button class="findIDPW" type="button" >아이디찾기</button>
                 <div class="IdPwline"></div>
-            <button class="findIDPW" type="button">비밀번호찾기</button>
+            <button class="findIDPW" type="button" @click="findpw">비밀번호찾기</button>
 
         </div>
         <div class="a">
@@ -15,16 +15,31 @@
         <label>이름</label>
       </div>
       <div class="user-box">
-        <input type="text" name="" required="">
+        <input type="text" name="" required="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
         <label>휴대폰 번호</label>
       </div>
       </div>
       <div class="d-flex justify-content-end" >
-      <button id="next" type="button"><label>다음</label></button>
+      <button id="next" type="button" @click="findidresult"><label>다음</label></button>
     </div>
     </div>
 </template>
+<script setup>
+import router from "@/router";
 
+const findidresult=() => {
+    router.push({
+        name: 'find_id_result'
+    });    
+}
+
+const findpw=() => {
+    router.push({
+        name: 'find_pw'
+    });    
+}
+
+</script>
 
 
 <style scoped>
@@ -33,7 +48,7 @@
     margin: auto;
     /* top: 50%;
     left: 50%; */
-    width: 700px;
+    width: 600px;
     height: 600px;
     padding: 100px;
     /* margin-top: 50px; */
