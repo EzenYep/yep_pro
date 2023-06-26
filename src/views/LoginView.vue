@@ -50,33 +50,22 @@
 
 
 <style scoped>
-html {
-    height: 100%;
-}
-/* body {
-  margin:0;
-  padding:0;
-  font-family: sans-serif;
-  background: linear-gradient(#141e30, #243b55);
-} */
 
-.login-box {    
+
+
+.login-box {
     position: relative;
-    top: 50%;
-    left: 30%;
+    margin: auto;
     width: 500px;
-    height: 50%;
     padding: 40px;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(95, 53, 53, 0.5);
     box-sizing: border-box;
-    /* box-shadow: 0 5px 5px rgba(0,0,0,.6); */
     border-radius: 10px;
 }
 
-
 .login-box h2 {
     margin: 0 0 30px;
-    padding: 0;
+    /* padding: 0; */
     color: #000000;
     text-align: center;
     font-style:normal;

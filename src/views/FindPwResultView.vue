@@ -45,14 +45,12 @@
   
   <style scoped>
   .findUser-box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
+    position: relative;
+    margin: auto;
     width: 700px;
     height: 60%;
     padding: 100px;
     margin-top: 50px;
-    transform: translate(-50%, -50%);
     background: rgba(233, 202, 202, 0.402);
     box-sizing: border-box;
     border-radius: 10px;
@@ -69,7 +67,7 @@
   }
   
   #next {
-    position: fixed;
+    position: absolute;
     bottom: 10%;
     left: 50%;
     transform: translateX(-50%);

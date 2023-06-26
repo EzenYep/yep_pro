@@ -26,7 +26,7 @@ sequelize
       console.error(err);
     });
 
-const Member = require("./Member.js")(sequelize, DataTypes);
+const Member = require("./member.js")(sequelize, DataTypes);
 const Category = require("./category.js")(sequelize,DataTypes);
 const File = require("./file.js")(sequelize,DataTypes);
 const Movie = require("./movie")(sequelize,DataTypes);
