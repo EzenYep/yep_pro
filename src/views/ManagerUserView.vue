@@ -3,22 +3,22 @@
     
     
     <div class="user-wrap">
-      <h1>회원조회</h1>
-      <hr>
+      <h3>회원조회</h3>
+      <div class="horizontal-line" ></div>
     </div>
 
 
-    <div class="search-wrap">
-      <div class="search">
-        <input type="text" class="searchTerm" placeholder="검색">
-        <button type="submit" class="searchButton">
-          <i class="fa fa-search"></i>
-        </button>
+    <div>
+      <div class="wrap">
+        <div class="search">
+          <input type="text" class="searchTerm" placeholder="검색어를 입력하세요.">
+          <button type="submit" class="searchButton">O</button>
+        </div>
       </div>
     </div>
 
-
-    <div class="user-list">
+    <div class="container-list">
+      <div class="user-list">
       <table>
         <thead>
           <tr>
@@ -101,39 +101,46 @@
       </table>
     </div>
 
-    <div class="button-group">
+    <div class="twobtn">
+      <div class="button-group">
         <table>
             <tr>
-                <button type="button" class="btn btn-outline-secondary">닫기</button>
+                <button type="button" class="btn btn-outline-secondary" @click="goBack">닫기</button>
                 <button type="button" class="btn btn-outline-secondary">삭제</button>
             </tr>
         </table>
+      </div>
     </div>
 
-    <div class="row">
-		<div class="col-sm-12 text-xs-center">
-			<nav class="navigation pagination" role="navigation">
-				<div class="nav-links">
-					<a class="prev page-numbers" href="#"><i class="ion-ios-arrow-back"></i></a>
-					<a class='page-numbers' href='#'>1</a>
-                    <a class='page-numbers' href='#'>2</a>
-					<a class='page-numbers' href='#'>3</a>
-					<a class='page-numbers' href='#'>4</a>
-                    <a class='page-numbers' href='#'>5</a>
-					<span class="page-numbers dots">&hellip;</span>
-					<a class='page-numbers' href='#'>8</a>
-					<a class="next page-numbers" href="#"><i class="ion-ios-arrow-forward"></i></a>
-				</div>
-			</nav>
-		</div>
-	</div>
+    <nav aria-label="Page navigation example">
+      <br>
+        <ul class="pagination justify-content-center">
+          <li class="page-item">
+              <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
 
+
+    
 
   </div>
 </template>
 
 
 <script>
+import router from '@/router';
 export default {
   methods: {
     deleteUsers() {
@@ -141,7 +148,12 @@ export default {
       // 선택된 사용자 ID는 this.selectedUsers 배열에 저장되어 있습니다
       // 예시로 console.log로 선택된 사용자 ID를 출력하도록 하였습니다
       console.log("선택된 사용자 ID:", this.selectedUsers);
-    }
+    },
+      goBack(){
+          router.push({
+              name:'manager_main'
+          })
+      },
   },
 
   data() {
@@ -158,41 +170,25 @@ export default {
 /***********회원 조회**********/
 .container{
   position: relative;
-  margin-left: 80px;
-  margin-right: 100px;
+  overflow: hidden;;
 }
 
-h1 {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-hr {
-  height: 3px;
-  background-color: #000000;
-  border: none;
-  margin-bottom: 20px;
+.horizontal-line {
+  height: 1px;
+  background-color: black;
+  margin-bottom: 5%;
 }
 
 /********************* 검색 버튼과 전체 스타일 *******************/
-body{
-  background: #f2f2f2;
-  font-family: 'Open Sans', sans-serif;
-}
-
-.search {
-  width: 100%;
-  position: relative;
-  display: flex;
+.user-wrap {
+  margin-top: 5%;
 }
 
 .searchTerm {
-  width: 100%;
+  width: 30%;
+  height: 2rem;
   border: 3px solid #000000;
   border-right: none;
-  padding: 5px;
-  height: 35px;
   border-radius: 5px 0 0 5px;
   outline: none;
   color: #000000;
@@ -200,6 +196,14 @@ body{
 
 .searchTerm:focus{
   color: #000000;
+}
+
+.search {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 50px;
+    /* left: 66.5%;  /* 야매로 왼쪽기준으로 만듬 */
+    text-align: right;
 }
 
 .searchButton {
@@ -211,12 +215,6 @@ body{
   border-radius: 0 5px 5px 0;
   cursor: pointer;
   font-size: 20px;
-}
-
-.search-wrap{
-  width: 250px;
-  position: relative;
-  margin-left: 1050px;
 }
 
 /************* 회원조회 칼럼 *************/
@@ -305,18 +303,16 @@ a {
 
 .row{
   position: relative;
-  margin-left: 500px;
+  margin-left: 38%;
 }
 
+.twobtn {
+  display: flex;
+  align-items: center; 
+}
 .button-group {
-  position: relative;
-  align-items: center;
-  margin-left: 1100px;
-  margin-top: 10px;
-}
-
-.button-group button {
-  margin-right: 10px;
+  margin-left: auto;
+  margin-top: 3%  ;
 }
 
 </style>

@@ -96,7 +96,7 @@
   <br><br><br><br>
   <div class="row6" align="center">
     <br>
-  <button type="button" class="btn btn-outline-primary" style="font-size:40px; width: 200px; height:150px;">결제선택</button>
+  <button type="button" class="btn btn-outline-primary" style="font-size:40px; width: 200px; height:150px;" @click="goPaymentPage">결제선택</button>
   <br><br><br>
   </div>
 
@@ -106,6 +106,13 @@
 </template>
 
 <script setup>
+import router from '@/router';
+
+const goPaymentPage = () => {
+  router.push({
+    name: 'payment',
+  });
+};
 
 </script>
 

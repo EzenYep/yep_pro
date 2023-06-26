@@ -18,6 +18,7 @@ import FindIdResultView from "@/views/FindIdResultView.vue";
 import FindIdView from "@/views/FindIdView.vue";
 import FindPwResultView from "@/views/FindPwResultView.vue";
 import FindPwView from "@/views/FindPwView.vue";
+import testView from "@/components/TestView.vue";
 const routes = [
     {
         path: '/',
@@ -99,7 +100,9 @@ const routes = [
             "n",
         component: ReservationView
     },{
-
+        path:  "/testSignup", //db연결 테스트 부분입니다.
+        name: "eventTest",
+        component: testView
     }
 
 

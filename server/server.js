@@ -10,8 +10,8 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 
-
-
+const userRouter = require("./routers/UserRouter.js");
+app.use("/api", userRouter);
 app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 대기 중");
 });

@@ -12,7 +12,7 @@
             <img class="event-img-detail" src="../assets/test.jpg">
         </div>
         <div class="back-btn">
-            <button class="back-btn-detail">뒤로 가기</button>
+            <button class="back-btn-detail" @click="goBack">뒤로 가기</button>
         </div>
         <div class="last">  
             <h6 class="teamname">Yep | 이용약관 | 개인정보처리방침 | 이현진 | 김영강 | 윤종혁 | 문정혜 | 방우리 | 황 건</h6>
@@ -22,11 +22,17 @@
 </template>
 
 <script setup>
-    const scrollToTop = () => {
-    window.scrollTo({
-    top: 0,
-    behavior: 'smooth' // 부드러운 스크롤을 위해 behavior를 "smooth"로 설정
-  });
+import router from '@/router';
+
+const goBack = () => {
+    router.go(-1);
+}
+
+const scrollToTop = () => {
+   window.scrollTo({
+   top: 0,
+   behavior: 'smooth' // 부드러운 스크롤을 위해 behavior를 "smooth"로 설정
+ });
 };
 </script>
 

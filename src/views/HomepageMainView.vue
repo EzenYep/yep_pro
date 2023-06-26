@@ -61,9 +61,9 @@
         <div style="width:35rem;height:35rem;background-color: aqua;"></div>
       </div>
       <div class="buttons">
-        <button class="button">빠른 예매</button>
-        <button class="button">예매 내역</button>
-        <button class="button">할인 안내</button>
+        <button class="button" @click="goReservationPage">빠른 예매</button>
+        <button class="button" @click="goMyPage">예매 내역</button>
+        <button class="button" @click="goEventPage">할인 안내</button>
       </div>
       <div class="image">
         <!--<img src="../assets/photo1.jpg" alt="Photo 1">-->
@@ -79,6 +79,23 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import router from '@/router';
+
+const goReservationPage = () => {
+  router.push({
+    name: 'reservation',
+  });
+};
+const goMyPage = () => {
+  router.push({
+    name: 'mypage',
+  });
+};
+const goEventPage = () => {
+  router.push({
+    name: 'event',
+  });
+};
 
 const movies = [
   {
@@ -148,6 +165,10 @@ const scrollToTop = () => {
     behavior: 'smooth' // 부드러운 스크롤을 위해 behavior를 "smooth"로 설정
   });
 };
+
+router.afterEach(() => {
+  window.scrollTo(0, 150);
+});
 </script>
 
 <style scoped src="../assets/css/mainpage.css"></style>

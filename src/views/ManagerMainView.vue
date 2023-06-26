@@ -4,16 +4,16 @@
         <div class="container-left">
         <h4>영화 관리</h4>
       <div class="horizontal-line" ></div>
-      <h5 style="margin-left:1rem;">&gt; 영화 등록</h5>
+      <h5 style="margin-left:1rem;" @click="movie_input">&gt; 영화 등록</h5>
       <h4 style="margin-top:70%;">커뮤니티 관리</h4>
       <div class="horizontal-line"></div>
-      <h5 style="margin-left:1rem;">&gt; 신고 관리</h5>
+      <h5 style="margin-left:1rem;" @click="gomanager_report">&gt; 신고 관리</h5>
     </div>
     <div class="container-center"></div>
     <div class="container-right">
         <h4>회원 관리</h4>
       <div class="horizontal-line"></div>
-      <h5 style="margin-left:1rem;">&gt; 회원 조회</h5>
+      <h5 style="margin-left:1rem;" @click="gomanager_user">&gt; 회원 조회</h5>
     </div>
     </div>
     <div class="last">  
@@ -22,7 +22,26 @@
   </div>
     
 </template>
+<script setup>
+import router from "@/router";
 
+const gomanager_report =()=>{
+    router.push({
+        name: 'manager_report',
+    });
+}
+const gomanager_user =()=>{
+    router.push({
+        name: 'manager_user',
+    });
+}
+const movie_input =()=>{
+    router.push({
+        name: 'movie_input',
+    });
+}
+
+</script>
 <style scoped>
 .container {
     overflow: hidden;
