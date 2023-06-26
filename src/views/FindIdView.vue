@@ -29,14 +29,14 @@
 
 <style scoped>
 .findUser-box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
+    position: relative;
+    margin: auto;
+    /* top: 50%;
+    left: 50%; */
     width: 700px;
     height: 600px;
     padding: 100px;
-    margin-top: 50px;
-    transform: translate(-50%, -50%);
+    /* margin-top: 50px; */
     background: rgba(233, 202, 202, 0.402);
     box-sizing: border-box;
     border-radius: 10px;

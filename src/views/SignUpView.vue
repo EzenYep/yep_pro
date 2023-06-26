@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </div>
-
+<!-- sasdsdsdsa -->
             <label for="agree">
                 <input type="checkbox" name="agree" value="2"> 개인정보수집 및 이용<strong>(필수)</strong></label>
 
@@ -183,11 +183,10 @@ watch([password1, password2], () => {
 
 .signup-box {
     position: relative;
-    top: 70%;
+    margin: auto;
     width: 700px;
     height: 190%;
     padding: 100px;
-    margin-top: 5%;
     background: rgba(227, 187, 187, 0.402);
     box-sizing: border-box;
     /* box-shadow: 0 5px 5px rgba(0,0,0,.6); */
