@@ -34,7 +34,7 @@
                 <span class="divider">ㅣ</span>
                 <span class="divider" @click="goReservation">예매</span>
                 <span class="divider">ㅣ</span>
-                <span class="divider" @click="goMovie">이벤트</span>
+                <span class="divider" @click="goEvent">이벤트</span>
             </div>
             <div  id="btns">
                 <button @click="goMyPage">마이</button>
