@@ -96,8 +96,7 @@ const routes = [
         component: EventView
     },{
         path: "/reservation", //예매
-        name: "reservatio" +
-            "n",
+        name: "reservation",
         component: ReservationView
     },{
         path:  "/testSignup", //db연결 테스트 부분입니다.
