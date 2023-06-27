@@ -3,12 +3,7 @@ const Member = db.members;
 const axios = require('axios');
 const Category = db.categorys;
 const searchMovies = async (req, res) => {
-<<<<<<< leehyn
-
-=======
     const movieNm = req.query.movieNm;
-    // aaaaaaasadasd
->>>>>>> master
     try {
         const response = await axios.get('http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json', {
             params: {
