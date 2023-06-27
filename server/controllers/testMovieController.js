@@ -4,7 +4,7 @@ const axios = require('axios');
 
 const searchMovies = async (req, res) => {
     const movieNm = req.query.movieNm;
-
+    // aaaaaaasadasd
     try {
         const response = await axios.get('http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json', {
             params: {
