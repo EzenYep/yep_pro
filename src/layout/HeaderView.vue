@@ -32,9 +32,9 @@
             <div id="navItems">
                 <span class="divider" @click="goMovie">영화</span>
                 <span class="divider">ㅣ</span>
-                <span class="divider">예매</span>
+                <span class="divider" @click="goReservation">예매</span>
                 <span class="divider">ㅣ</span>
-                <span class="divider">이벤트</span>
+                <span class="divider" @click="goMovie">이벤트</span>
             </div>
             <div  id="btns">
                 <button @click="goMyPage">마이</button>
@@ -89,7 +89,16 @@ const goMovie=()=>{
         name:'movieView'
     }))
 }
-
+const goReservation=()=>{
+    router.push(({
+        name : "reservation"
+    }))
+}
+const goEvent=()=>{
+    router.push(({
+        name : "event"
+    }))
+}
 /*
 * <script>안에 넣을려면 아롷개 쓰시면 됩니다.
     methods: {
