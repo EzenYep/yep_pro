@@ -24,10 +24,6 @@
                     <input type="text" id="title"  v-model="searchQuery"/><br>
                     <button @click="searchMovies">검색</button>
                 </div>
-                <div v-for="movie in movies" :key="movie.movieCd">
-                    <h3>{{ movie.movieNm }}</h3>
-                    <p>{{ movie.director }}</p>
-                </div>
                 <div class="input-group">
                 <label for="category" style="margin-left: 35px">장르</label><span>:</span><br>
                 <select id="category" v-model="selectedGenre">
@@ -76,39 +72,31 @@
 
 <script setup>
 import router from '@/router';
-// Your script setup code goes here
-import { ref } from 'vue';
-import axios from 'axios'
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
-const genres = ['Action', 'Drama', 'Comedy'];  // 장르 리스트
-const searchQuery = ref('')
-const movies = ref(null)
+// Initialize genres as a reactive reference to an empty array
+const genres = ref([]);
 
-const searchMovies = async () => {
-    try {
-        const response = await axios.get('http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json', {
-            params: {
-                key: 'c7b8e13ad2c21601d786901a6dd853a1', // 여기에 실제 API 키를 입력하세요.
-                movieNm: searchQuery.value
-                //영화 진흥원 API
-/*                MovieKey
-
-                c7b8e13ad2c21601d786901a6dd853a1*/
-            }
-        })
-        console.log(response)
-        movies.value = response.data.movieListResult.movieList
-
-    } catch (error) {
-        console.error('Failed to fetch movies:', error)
+// Define a function to fetch genres
+const fetchGenres = async () => {
+    const response = await axios.get('http://localhost:9212/api/movie/category');
+    if (response && response.data) {
+        // Assign the fetched categories to genres
+        genres.value = response.data;
     }
 }
-const goBack= () => {
-    router.push({
-        name:'manager_main'
-    })
-}
 
+// Call the function when the component is mounted
+onMounted(fetchGenres);
+
+const searchQuery = ref('');
+
+const goBack = () => {
+    router.push({
+        name: 'manager_main'
+    });
+}
 </script>
 
 <style scoped>

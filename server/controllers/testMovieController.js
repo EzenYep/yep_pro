@@ -1,9 +1,8 @@
 const db = require("../models");
 const Member = db.members;
 const axios = require('axios');
-
+const Category = db.categorys;
 const searchMovies = async (req, res) => {
-    const movieNm = req.query.movieNm;
 
     try {
         const response = await axios.get('http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json', {
@@ -19,6 +18,20 @@ const searchMovies = async (req, res) => {
     }
 };
 
+const category = async (req, res) => {
+    const categories = await Category.findAll({raw: true})
+
+    if (categories) {
+        const categoryNames = categories.map(category => category.category_name);
+        console.log(categoryNames)
+        res.send(categoryNames);
+    } else {
+        res.status(404).send({message: 'No categories found.'});
+    }
+}
+
+
 module.exports={
-    searchMovies
+    searchMovies,
+    category
 }

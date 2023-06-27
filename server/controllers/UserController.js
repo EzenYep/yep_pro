@@ -11,6 +11,7 @@ const addUser = async (req, res) => {
         tel: req.body.tel,
         birthday: req.body.birthday
     };
+    let tel = req.body.tel;
     console.log(req.body)
     await Member.create(info).then(res.send({code: 200})).catch((err) => {
         res.send({code: 401})
@@ -39,11 +40,12 @@ const oneUser = async (req, res) => {
             {expiresIn: '1d'}
         )
         if(member){
+            const email = member.member_email;
             res.send({
                 code: 200,
                 accessToken: accessToken,
                 refresh_token: refreshToken,
-                member: member.member_id,// 'user' 객체 사용
+                email: email,
                 state: member.state
             })
         }else {
