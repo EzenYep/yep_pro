@@ -68,7 +68,11 @@ const LogInEvent = async () => {
     console.log(res)
     const code = res.data.code;
     if(code === 200){
-        store.commit('SET_TOKEN', res.data.accessToken);
+        const accessToken =  res.data.accessToken;
+        const email = res.data.member;
+        const userInfo = {accessToken,email}
+
+        store.commit('SET_TOKEN', userInfo);
         if(res.data.state === 0){
             await router.push({
                 name: "home"
