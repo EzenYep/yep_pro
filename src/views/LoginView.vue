@@ -7,17 +7,17 @@
 
         <form>
             <div class="user-box">
-                <input type="text" name="" required="">
+                <input type="text" name="" required="" v-model="body.email">
                 <label>아이디</label>
             </div>
             <div class="user-box">
-                <input type="password" name="" required="">
+                <input type="password" name="" required="" v-model="body.password">
                 <label>비밀번호</label>
             </div>
             <label class="checkbox"> <!--아이디 저장 기능은 보류-->
                 <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> 아이디 저장
             </label>
-            <a href="#1" class="login">
+            <a @click="LogInEvent" class="login">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -48,6 +48,42 @@
     </div>
 </template>
 
+<script setup>
+import {reactive} from "vue";
+import axios from "axios";
+import {useStore} from 'vuex'
+import router from "@/router";
+
+
+const store = useStore();
+let body = reactive({});
+const LogInEvent = async () => {
+    body ={
+        email: body.email,
+        password: body.password,
+    };
+
+    const res =  await axios.post("http://localhost:9212/api/user/signInUser", body)
+
+    console.log(res)
+    const code = res.data.code;
+    if(code === 200){
+        store.commit('SET_TOKEN', res.data.accessToken);
+        if(res.data.state === 0){
+            await router.push({
+                name: "home"
+            })
+        }else if(res.data.state===1) {
+            await router.push({
+                name: "manager_main"
+            })
+        }
+    } else {
+        alert("로그인에 실패하셨습니다.")
+        location.reload();
+    }
+}
+</script>
 
 <style scoped>
 

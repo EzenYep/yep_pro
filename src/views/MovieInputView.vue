@@ -20,10 +20,14 @@
             </div>
             <form>
                 <div class="input-group"><!-- div안에 태그들을 일렬로 정렬하기 위해 input그룹 태그 생성후 style로 묶어줌-->
-                    <label for="title">영화 이름</label><span>:</span><br>
-                    <input type="text" id="title" v-model="title"><br>
+                    <label for="title" >영화 이름</label><span>:</span><br>
+                    <input type="text" id="title"  v-model="searchQuery"/><br>
+                    <button @click="searchMovies">검색</button>
                 </div>
-
+                <div v-for="movie in movies" :key="movie.movieCd">
+                    <h3>{{ movie.movieNm }}</h3>
+                    <p>{{ movie.director }}</p>
+                </div>
                 <div class="input-group">
                 <label for="category" style="margin-left: 35px">장르</label><span>:</span><br>
                 <select id="category" v-model="selectedGenre">
@@ -38,7 +42,7 @@
                 </div>
                 <div class="input-group">
                 <label for="directer"  style="margin-left: 35px">감독</label><span>:</span><br>
-                <input type="text" id="directer" v-model="directer"><br>
+                <input type="text" id="directer" ><br>
                 </div>
                 <div class="input-group">
                 <label for="movie_description">영화 줄거리:</label>
@@ -74,10 +78,31 @@
 import router from '@/router';
 // Your script setup code goes here
 import { ref } from 'vue';
+import axios from 'axios'
 
 const genres = ['Action', 'Drama', 'Comedy'];  // 장르 리스트
-const selectedGenre = ref(genres[0]);  // 선택된 장르
+const searchQuery = ref('')
+const movies = ref(null)
 
+const searchMovies = async () => {
+    try {
+        const response = await axios.get('http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json', {
+            params: {
+                key: 'c7b8e13ad2c21601d786901a6dd853a1', // 여기에 실제 API 키를 입력하세요.
+                movieNm: searchQuery.value
+                //영화 진흥원 API
+/*                MovieKey
+
+                c7b8e13ad2c21601d786901a6dd853a1*/
+            }
+        })
+        console.log(response)
+        movies.value = response.data.movieListResult.movieList
+
+    } catch (error) {
+        console.error('Failed to fetch movies:', error)
+    }
+}
 const goBack= () => {
     router.push({
         name:'manager_main'

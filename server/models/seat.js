@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     const Seat = sequelize.define('Seat', {
         seat_id: {
             type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey: true,
             allowNull: false,
         },

@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     const Screening = sequelize.define('Screening', {
         screening_id: {
             type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey: true,
             allowNull: false,
         },

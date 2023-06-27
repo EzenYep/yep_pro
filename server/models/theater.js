@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     const Theater = sequelize.define('Theater', {
         theater_id: {
             type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey: true,
             allowNull: false,
         },
