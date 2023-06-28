@@ -11,7 +11,6 @@ export default createStore({
       state.token = userInfo.accessToken;
       VueCookie.set('token', state.token, 1);// cookie에 토큰을 저장합니다. 1일 동안 유지됩니다.
       state.email = userInfo.email;
-
     },
     CLEAR_TOKEN(state) {
       state.token = '';
