@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-// sssss
+
 import router from '@/router';
 
 const goBack = () => {

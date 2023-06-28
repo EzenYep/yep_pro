@@ -90,7 +90,7 @@
   </div>
   <div class="row6" align="center">
     <br>
-  <div class="con7"  style="width:85%; height:800px; border:1px; float:center; background-color:#11DEFB">
+  <div class="con7"  style="width:85%; height:800px; border:1px; float:center; background-color:White">
   </div>
 
   <br><br><br><br>

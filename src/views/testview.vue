@@ -14,6 +14,7 @@ const LogInEvent = async () => {
         tel: body.tel,
         birthday: body.birthday
     }
+    console.log(body)
     await axios.post("http://localhost:8081/api/user/addUser", body).then(
         (res) => {
             const code = res.data.code;
