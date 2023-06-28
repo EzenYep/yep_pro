@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
         member_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
+            autoIncrement: true, // 올바른 옵션
             allowNull: false,
         },
         member_name: {

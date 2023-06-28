@@ -10,7 +10,9 @@
                     <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" @click="goLoginPage" style="font-size: 0.5rem;">로그인</a>
+
+                                <a class="nav-link active"  v-if="isUserLoggedIn" @click="logout"  aria-current="page" style="font-size: 0.5rem;">로그아웃</a>
+                                <a class="nav-link active" v-else aria-current="page" @click="goLoginPage" style="font-size: 0.5rem;">로그인</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page"  @click="goLoginPage" style="font-size: 0.5rem;">회원가입</a>
@@ -30,13 +32,14 @@
             <div id="navItems">
                 <span class="divider" @click="goMovie">영화</span>
                 <span class="divider">ㅣ</span>
-                <span class="divider">예매</span>
+                <span class="divider" @click="goReservation">예매</span>
                 <span class="divider">ㅣ</span>
-                <span class="divider">이벤트</span>
+                <span class="divider" @click="goEvent">이벤트</span>
             </div>
             <div  id="btns">
                 <button @click="goMyPage">마이</button>
-                <button @click="goLoginPage">로그인</button>
+                <button v-if="isUserLoggedIn" @click="logout">로그아웃</button>
+                <button v-else @click="goLoginPage">로그인</button>
             </div>
         </div>
     </div>
@@ -45,7 +48,21 @@
 
 <script setup>
 import router from "@/router";
+import store from "@/store/store";
+import { computed } from 'vue';
 
+// computed property를 정의합니다.
+const isUserLoggedIn = computed(() => store.state.token !== '');
+
+// logout 함수를 정의합니다.
+const logout = () => {
+    store.commit('CLEAR_TOKEN');
+    router.push({ name: 'home' });
+};
+const tokencheck = ()=>{
+    console.log(store.state.token)
+}
+tokencheck();
 const goHome=()=>{
     router.push({
         name: 'home',
@@ -72,7 +89,16 @@ const goMovie=()=>{
         name:'movieView'
     }))
 }
-
+const goReservation=()=>{
+    router.push(({
+        name : "reservation"
+    }))
+}
+const goEvent=()=>{
+    router.push(({
+        name : "event"
+    }))
+}
 /*
 * <script>안에 넣을려면 아롷개 쓰시면 됩니다.
     methods: {

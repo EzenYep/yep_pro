@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     const ReportComment = sequelize.define('ReportComment', {
         report_id: {
             type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey: true,
             allowNull: false,
         },

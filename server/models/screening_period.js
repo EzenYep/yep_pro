@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     const ScreeningPeriod = sequelize.define('ScreeningPeriod', {
         period_id: {
             type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey: true,
             allowNull: false,
         },

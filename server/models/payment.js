@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     const Payment = sequelize.define('Payment', {
         payment_id: {
             type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey: true,
             allowNull: false,
         },

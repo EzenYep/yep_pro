@@ -12,11 +12,12 @@ app.use(express.urlencoded({ extended: false }));
 
 const userRouter = require("./routers/UserRouter.js");
 app.use("/api", userRouter);
-
 const duiRouter = require("./routers/DUIRouter.js").default;
 app.use("/api", duiRouter);
 
-app.use("/api", );
+const movieRouter = require("./routers/testMovieRouter")
+app.use("/api",movieRouter)
+
 app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 대기 중");
 });
