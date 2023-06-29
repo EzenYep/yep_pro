@@ -60,7 +60,8 @@ const logout = () => {
     router.push({ name: 'home' });
 };
 const tokencheck = ()=>{
-    console.log(store.state.token)
+    console.log(store.state.token + "   dd     "+store.state.email)
+
 }
 tokencheck();
 const goHome=()=>{

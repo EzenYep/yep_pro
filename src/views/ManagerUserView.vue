@@ -30,13 +30,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="adminUser in userList" :key="adminUser.id">
-            <td>{{ adminUser.member_name }}</td>
-            <td>{{ adminUser.member_email }}</td>
-            <td>{{ adminUser.tel }}</td>
-            <td>{{ adminUser.birthday }}</td>
+          <tr v-for="user in userList" :key="user.id">
+            <td>{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.phone }}</td>
+            <td>{{ user.birthdate }}</td>
           </tr>
-        </tbody>
+        </tbody>   
             <tr>
                 <td colspan="5">
                     <input class="form-check-input me-1" type="checkbox" value="" id="checkbox1">
@@ -154,28 +155,14 @@ export default {
           })
       },
   },
+
+  data() {
+    return {
+      userList: [], // 여기에 사용자 데이터를 추가하세요
+      selectedUsers: [], // 선택된 사용자 ID를 저장할 배열
+    };
+  },
 };
-
-import axios from "axios";
-import { ref, onMounted } from "vue";
-
-const userList = ref([]);
-
-const MangerUser = async () => {
-  try {
-    const response = await axios.get("http://localhost:9212/api/user/adminUser");
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-};
-
-onMounted(async () => {
-  userList.value = await MangerUser();
-});
-
-
 </script>
 
 
@@ -264,54 +251,54 @@ th.column-large {
 
 /*********** 페이지 표시하는 번호 탭 *************/
 a {
-   -webkit-transition: all 0.3s ease;
-   transition: all 0.3s ease;
+	-webkit-transition: all 0.3s ease;
+	transition: all 0.3s ease;
 }
 
 .nav-links a {
-   margin: 1rem .6rem;
+	margin: 1rem .6rem;
 }
 .nav-links a.page-numbers {
-   color: #000000;
+	color: #000000;
 }
 .nav-links a.page-numbers:hover {
-   color: #000000;
+	color: #000000;
 }
 .nav-links .page-numbers.current,
 .nav-links .page-numbers.dots {
-   color: #000000;
+	color: #000000;
 }
 .nav-links a.next,
 .nav-links a.prev {
-   display: inline-block;
-   padding: .2rem .8rem;
-   background-color: #000000;
-   color: #fff;
-   border-radius: 2px;
+	display: inline-block;
+	padding: .2rem .8rem;
+	background-color: #000000;
+	color: #fff;
+	border-radius: 2px;
 }
 .nav-links a.next:hover,
 .nav-links a.prev:hover {
-   color: #fff;
+	color: #fff;
 }
 
 .nav-links a.prev::before,
 .nav-links a.next::after {
-   content: "";
-   position: relative;
-   display: inline-block;
-   width: 10px;
-   height: 10px;
-   border-left: 2px solid #ffffff;
-   border-bottom: 2px solid #ffffff;
-   margin-right: 5px;
+	content: "";
+	position: relative;
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	border-left: 2px solid #ffffff;
+	border-bottom: 2px solid #ffffff;
+	margin-right: 5px;
 }
 
 .nav-links a.prev::before {
-   transform: rotate(45deg);
+	transform: rotate(45deg);
 }
 
 .nav-links a.next::after {
-   transform: rotate(-135deg);
+	transform: rotate(-135deg);
 }
 
 .row{

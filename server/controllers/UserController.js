@@ -1,7 +1,6 @@
 const db = require("../models");
 const Member = db.members;
 const jwt = require("jsonwebtoken")
-
 //create
 const addUser = async (req, res) => {
     let info = {
@@ -39,16 +38,16 @@ const oneUser = async (req, res) => {
             `${process.env.JWT_KEY}`, // 백틱 사용
             {expiresIn: '1d'}
         )
-        if(member){
-            const email = member.member_email;
+        console.log(member.member_email)
+        if (member) {
             res.send({
                 code: 200,
                 accessToken: accessToken,
                 refresh_token: refreshToken,
-                email: email,
+                email: member.member_email,
                 state: member.state
             })
-        }else {
+        } else {
             res.send({
                 code: 400
             })
@@ -60,10 +59,80 @@ const oneUser = async (req, res) => {
     }
 };
 
+const crystarspwsok = async (req, res) => {
+    console.log(req.body);
 
+    const {password, confirmPasswordok} = req.body; // 새로 입력한 비밀번호와 확인용 비밀번호 입력
+
+    let matched = false; // 일치 여부 저장 변수
+
+    if (password === confirmPasswordok) {
+        matched = true; // 비밀번호 일치
+    }
+
+    if (matched) {
+        // 비밀번호 업데이트
+        const member = await Member.findOne({where: {password}}); // 비밀번호와 일치하는 회원 찾기
+
+        if (member) {
+            member.password = password; // 새로운 비밀번호로 업데이트
+            await member.save(); // 회원 정보 저장
+        }
+    }
+
+    return res.send({matched});
+};
+
+// 비밀번호 변경
+const crystarspws = async (req, res) => {
+    console.log(req.body);
+
+    const {password} = req.body; // 비밀번호 입력
+
+    const member = await Member.findOne({where: {password}}); // 비밀번호와 일치하는 회원 찾기
+
+    let matched = false; // 일치 여부 저장 변수
+
+    if (member) {
+        matched = true; // 비밀번호 일치
+    }
+
+    return res.send({matched});
+};
+
+const crystars = async (req, res) => {
+    const email = req.body.email
+    console.log(email)
+    const crystar = await Member.findOne({
+        where:{member_email:email},
+        attributes: ['member_name', 'birthday', 'tel', 'member_email'],
+    });
+
+    if(crystar){
+        res.send({
+            code:200,
+            member_name: crystar.member_name,
+            member_birthday: crystar.birthday,
+            member_tel : crystar.tel,
+        })
+    }else {
+        res.send({code:400})
+    }
+};
+
+const CrystalEvent = async () => {
+    // ...
+    await crystars(); // crystars 함수 호출
+    // ...
+};
 
 
 module.exports = {
     addUser,
-    oneUser
+    oneUser,
+    crystarspwsok,
+    crystarspws,
+    crystars,
+    CrystalEvent
 };
+

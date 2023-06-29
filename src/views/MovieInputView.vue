@@ -21,7 +21,7 @@
             <form>
                 <div class="input-group"><!-- div안에 태그들을 일렬로 정렬하기 위해 input그룹 태그 생성후 style로 묶어줌-->
                     <label for="title" >영화 이름</label><span>:</span><br>
-                    <input type="text" id="title"  v-model="searchQuery"/><br>
+                    <input type="text" id="title"  v-model="searchMovie"/><br>
                     <button @click="searchMovies">검색</button>
                 </div>
                 <div class="input-group">
@@ -71,33 +71,46 @@
 </template>
 
 <script setup>
-import router from '@/router';
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
+    import router from '@/router';
+    import { ref, onMounted, reactive } from 'vue';
+    import axios from 'axios';
 
-// Initialize genres as a reactive reference to an empty array
-const genres = ref([]);
+    // Initialize genres as a reactive reference to an empty array
+    const genres = ref([]);
+    const movieDetails = reactive({ directorNm: '', opendt: ''});
 
-// Define a function to fetch genres
-const fetchGenres = async () => {
+    // Define a function to fetch genres
+    const fetchGenres = async () => {
     const response = await axios.get('http://localhost:9212/api/movie/category');
     if (response && response.data) {
-        // Assign the fetched categories to genres
-        genres.value = response.data;
-    }
+    // Assign the fetched categories to genres
+    genres.value = response.data;
+}
 }
 
-// Call the function when the component is mounted
-onMounted(fetchGenres);
+    // Call the function when the component is mounted
+    onMounted(fetchGenres);
 
-const searchQuery = ref('');
+    const searchMovie = ref('');
 
-const goBack = () => {
+    const searchMovies = async ()=>{
+    const body = {movieNm: searchMovie.value};
+    const response = await axios.post("http://localhost:9212/api/search-movies-api",body)
+
+    // if the response is successful, populate the movieDetails reactive object
+    if (response && response.data) {
+    movieDetails.directorNm = response.data.directorNm;
+    movieDetails.opendt = response.data.opendt;
+}
+}
+
+    const goBack = () => {
     router.push({
         name: 'manager_main'
     });
 }
 </script>
+
 
 <style scoped>
 .container {
