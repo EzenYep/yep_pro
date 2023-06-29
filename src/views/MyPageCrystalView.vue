@@ -5,7 +5,7 @@
             <div class="col1" align="right">
                 <br>
                 <button style="width:120px; height:50px; border:1px; background-color:rgba(0,0,0,0);
-      font-size: 1.3em; font-weight: nomal" @click="goMypageView">예매관리</button>
+      font-size: 1.3em; font-weight: nomal;" @click="goMypageView">예매관리</button>
                 <div class="vr"></div>
                 <button style="width:120px; height:50px; border:1px; background-color:rgba(0,0,0,0);
       font-size: 1.3em; font-weight: bold">회원관리</button>
