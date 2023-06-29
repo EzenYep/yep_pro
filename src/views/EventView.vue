@@ -19,11 +19,9 @@
             <button class="topbutton" @click="scrollToTop">TOP</button>
         </div>
     </div>
-    
 </template>
 
 <script setup>
-
 import router from '@/router';
 
 const goBack = () => {
