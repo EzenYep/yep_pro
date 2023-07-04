@@ -1,6 +1,7 @@
 const db = require("../models");
 const Member = db.members;
 const jwt = require("jsonwebtoken")
+const nodemailer = require('nodemailer');
 //create
 const addUser = async (req, res) => {
     let info = {
@@ -127,12 +128,66 @@ const CrystalEvent = async () => {
 };
 
 
+//회원가입
+const searchUser = async (req, res) => {
+    let info = {
+        member_name: req.body.member_name,
+        tel: req.body.tel,
+    };
+    console.log(info)
+    try {
+        const member = await Member.findOne({
+            attributes: ["member_email"],
+            where: {
+                member_name: req.body.member_name,
+                tel: req.body.tel,
+            },
+        });
+
+        if (member) {
+            res.status(200).send({ memberEmail: member.member_email });
+        } else {
+            res.status(401)
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ code: 500, message: "Internal Server Error" });
+    }
+};
+// ------------------------------------------------------------------------------------
+
+const sendEmail = async (req,res) => {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: { user: 'yepproject9212@gmail.com', pass: 'gmmndxidvegxphtf' },
+    });
+    console.log(req.body.email)
+    const mailOptions = {
+        from: 'YEP',
+        to:  req.body.email,
+        subject: '가입 인증 메일',
+        html: `
+      가입확인 버튼를 누르시면 가입 인증이 완료됩니다.<br/>
+    `,
+    };
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log('이메일이 성공적으로 전송되었습니다.', info.messageId);
+    } catch (error) {
+        console.error('이메일 전송 중 오류가 발생했습니다:', error);
+    }
+};
+
+
+
 module.exports = {
     addUser,
     oneUser,
     crystarspwsok,
     crystarspws,
     crystars,
-    CrystalEvent
+    CrystalEvent,
+    searchUser,
+    sendEmail,
 };
 

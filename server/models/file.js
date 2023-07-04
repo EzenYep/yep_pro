@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     const File = sequelize.define('File', {
         file_id: {
             type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey: true,
             allowNull: false,
         },

@@ -1,3 +1,4 @@
+<!-- 체크 박스 작업 + 노드 이메일러 작업 -->
 <template>
     <div class="signup-box container-lg" >
         <h3>회원가입</h3>
@@ -6,8 +7,8 @@
         <hr class="center-hr" style="font-weight: 900;"/>
 
 
-        <label for="agree">
-            <input type="checkbox" name="agree" value="1"> 이용약관 동의<strong>(필수)</strong></label>
+
+        <input type="checkbox" name="agree" value="1" id="mustchk" @click="checkAgreeAll()" v-model="mustchk"> 이용약관 동의<strong>(필수)</strong>
 
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
@@ -25,9 +26,9 @@
                     </div>
                 </div>
             </div>
-<!-- sasdsdsdsa -->
-            <label for="agree">
-                <input type="checkbox" name="agree" value="2"> 개인정보수집 및 이용<strong>(필수)</strong></label>
+
+
+            <input type="checkbox" name="agree" value="2" id="mustchk" @click="checkAgreeAll()" v-model="mustchk2"> 개인정보수집 및 이용<strong>(필수)</strong>
 
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingTwo">
@@ -42,8 +43,8 @@
                 </div>
             </div>
 
-            <label for="agree">
-                <input type="checkbox" name="agree" value="3"> 이벤트 수신동의<strong>(선택)</strong></label>
+
+            <input type="checkbox" name="agree" value="3" @click="checkAgreeAll()"> 이벤트 수신동의<strong>(선택)</strong>
 
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingThree">
@@ -57,8 +58,9 @@
                     </div>
                 </div>
             </div>
+
             <label for="agree_all" class="agree_all">
-                <input type="checkbox" name="agree_all" id="agree_all" @click="selectAll($event)">
+                <input type="checkbox" name="agreeAll" id="agreeAll" @click="agreeAll(this)">
                 <span>모두 동의합니다</span>
             </label>
         </div>
@@ -91,30 +93,24 @@
 
 
         <div class="wrapper">
-            <div class="email">
-                <input id="email" type="text" placeholder="이메일을 입력해 주세요.">
-                <div id="emailError" class="error"></div>
-                <div class="auth">
 
-                    <button id="sendMessage">인증번호 전송</button>
-                </div>
-            </div>
 
-            <div class="email">
-                <input id="text" type="text" placeholder="인증번호를 입력해 주세요.">
-                <div id="emailError" class="error"></div>
-                <div class="auth">
-
-                    <button id="sendMessage">인증</button>
-                </div>
-            </div>
 
             <div class="as">
-                <input id="name"  type="text" placeholder="이름을 입력해 주세요.">
+                <input id="name"  type="text" placeholder="이름을 입력해 주세요." v-model="body.name">
                 <div id="nameError" class="error"></div>
             </div>
+
+            <div class="bday">
+                <label>생년월일</label>
+                <div>
+                    <input type="date" id="yr"  v-model="body.birthday">
+
+                </div>
+            </div>
+
             <div class="as">
-                <input id="password" type="password" placeholder="비밀번호를 입력해 주세요." v-model="password1">
+                <input id="password" type="password" placeholder="비밀번호를 입력해 주세요." v-model="password1" >
                 <div id="passwordError" class="error">{{ passwordErrorMessage }}</div>
             </div>
             <div class="as">
@@ -123,20 +119,35 @@
             <div class="checkerror">{{ passwordCheckErrorMessage }}</div>
 
             <div class="phone">
-                <input id="phone1" type="text" size="1" maxlength="3" placeholder="***"> -
-                <input id="phone2" type="text" size="3" maxlength="4" placeholder="****"> -
-                <input id="phone3" type="text" size="3" maxlength="4" placeholder="****">
+                <input id="phone1" type="text" size="1" maxlength="3" placeholder="***" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" v-model="tel1"> -    <!-- 숫자만 입력하는 텍스트-->
+                <input id="phone2" type="text" size="3" maxlength="4" placeholder="****" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" v-model="tel2"> -
+                <input id="phone3" type="text" size="3" maxlength="4" placeholder="****" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" v-model="tel3">
                 <label>*전화번호를 입력해 주세요.</label>
             </div>
 
+            <div class="email">
+                <input id="email" type="email" placeholder="이메일을 입력해 주세요." v-model="body.email" @blur="validEmail">
+                <div id="emailError" class="error">{{  result }}</div>
+                <div class="auth">
 
+                    <button id="sendMessage" @click="sendEmail">인증번호 받기</button>
+                </div>
+            </div>
+            <div class="email">
+                <input id="text" type="text" placeholder="인증번호를 입력해 주세요." maxlength="6">
+                <div id="emailError" class="error"></div>
+                <div class="auth">
+
+                    <button id="sendMessage">인증</button>
+                </div>
+            </div>
 
 
             <div class="line" id="line">
                 <hr>
             </div>
             <div class="d-flex justify-content-center" id="signupBtnWrapper">
-                <button id="signUpButton" >가입하기</button>
+                <button id="signUpButton" @click="LogInEvent">가입하기</button>
             </div>
         </div>
     </div>
@@ -145,34 +156,212 @@
 </template>
 
 <script setup>
+import router from "@/router";
+import { ref, watch } from 'vue';
+import axios from "axios";
+import { reactive } from "vue";
+// import nodemailer from 'nodemailer';
+// import dotenv from 'dotenv';
 
-const selectAll = (e) => {      //모두 동의 체크박스
-    const agree_all = e.target;
-    const checkboxes = document.querySelectorAll('input[name="agree"]');
+// const selectAll = (e) => {      // 모두 동의 체크박스
+//   const agree_all = e.target;
+//   const checkboxes = document.querySelectorAll('input[name="agree"]');
+
+//   checkboxes.forEach((checkbox) => {
+//     checkbox.checked = agree_all.checked;
+//   });
+//  };
+let body = reactive({});
+
+
+
+
+function checkAgreeAll()  {
+
+    const checkboxes
+        = document.querySelectorAll('input[name="agree"]');
+
+    const checked
+        = document.querySelectorAll('input[name="agree"]:checked');
+
+    const agreeAll
+        = document.querySelector('input[name="agreeAll"]');
+
+    if(checkboxes.length === checked.length)  {
+        agreeAll.checked = true;
+    }else {
+        agreeAll.checked = false;
+    }
+
+}
+
+function agreeAll(agreeAll)  {
+    const checkboxes
+        = document.getElementsByName('agree');
 
     checkboxes.forEach((checkbox) => {
-        checkbox.checked = agree_all.checked;
-    });
+        checkbox.checked = agreeAll.checked
+    })
+}
+
+// ------------------------------------------------------------------------------------
+
+
+//★노드메일러 확인후 이용★
+
+
+// dotenv.config();
+
+// const { email_service, user, pass } = process.env;
+
+// const transporter = nodemailer.createTransport({
+//   service: email_service,
+//   auth: {
+//     user: user,
+//     pass: pass
+//   }
+// });
+
+// const mailOptions = {
+//   from : user,
+//   to: '@',
+//   subject: 'Nodemailer Test',
+//   text: '노드 패키지 nodemailer를 이용해 보낸 이메일임'
+// };
+
+// transporter.sendMail(mailOptions, (error, info) => {
+//   if (error) {
+//     console.error(error);
+//   } else {
+//     console.log('Email Sent : ', info);
+//   }
+// })
+//  const mailSand = async ({to, subject, text, html}) => {
+//     try {
+//       //메일 클래스 인스턴스 생성
+//       const mail = new Mail();
+
+//       //받는 사람 속성 없으면 에러 발생, 있으면 세팅
+//       if (!to) throw new Error('Need "to" Propertie.');
+//       mail.setTo(to);
+
+//       //제목 있으면 세팅
+//       if (subject) mail.setSubject(subject);
+
+//       /**
+//        * text나 html은 둘 중 하나가 꼭 있어야함
+//        * 둘다 있을 경우 text는 안들어가고 html이 이메일 내용으로 들어가짐
+//        */
+//       if (!text && !html) throw new Error('Need "text" or "html" Propertie.')
+//       if (text) mail.setText(text);
+//       if (html) mail.setHtml(html);
+
+//       //메일 보내기 실행
+//       const result = await mail.sendMail();
+
+//       return result.response;
+//     } catch (err) {
+//       throw new Error(err);
+//     }
+// }
+
+
+const sendEmail = async () => {
+    const data ={};
+    body = {
+        email: body.email,
+    };
+    console.log(body.email)
+    try {
+        await axios.post('http://localhost:9212/api/user/sendEmail', body);
+    } catch (error) {
+        console.error('이메일 전송 중 오류가 발생했습니다:', error);
+        data.result = '이메일 전송 중 오류가 발생했습니다.';
+    }
 };
 
-import { ref, watch } from 'vue';
+// ------------------------------------------------------------------------------------
 
 const password1 = ref('');
 const password2 = ref('');
 const passwordErrorMessage = ref('');
 const passwordCheckErrorMessage = ref('');
+const tel1 = ref('');
+const tel2 = ref('');
+const tel3 = ref('');
+// ------------------------------------------------------------------------------------
 
-watch([password1, password2], () => {
+watch([password1, password2], () => {  // 비밀번호 불일치 문구
     if (password1.value !== password2.value) {
-        passwordCheckErrorMessage.value = "*비밀번호가 일치하지 않습니다.";
+        passwordCheckErrorMessage.value = "* 비밀번호가 일치하지 않습니다.";
     } else {
         passwordCheckErrorMessage.value = '';
     }
 });
+// ------------------------------------------------------------------------------------
 
+
+const LogInEvent = async () => {
+    const tel = tel1.value + tel2.value + tel3.value; // 전화번호 db 합치기
+    console.log(tel);
+    body = {
+        name: body.name,
+        email: body.email,
+        password: password1.value,
+        tel: tel,
+        birthday: body.birthday
+    };
+// ------------------------------------------------------------------------------------
+
+    if (!mustchk.value) {                 //필수 이용약관 체크시 페이지 전환
+        alert('이용약관 동의에 체크하세요.');
+    } else if (!mustchk2.value) {
+        alert('개인정보수집 및 이용에 체크하세요.');
+    } else if (password1.value !== password2.value) {  // 비밀번호 일치 여부 확인
+        alert('비밀번호가 일치하지 않습니다.');
+    } else if (!body.name) {
+        alert('이름을 입력하세요.');
+    } else if (!body.birthday) {
+        alert('생년월일은 입력하세요.');
+    } else if (!tel) {
+        alert('전화번호를 입력하세요.')
+    }
+    else {
+        await axios.post("http://localhost:9212/api/user/addUser", body).then((res) => {
+            const code = res.data.code;
+            if (code === 200) {
+                alert("가입 완료. 로그인 해주세요.");
+                router.push({ name: 'login' });
+            }
+        });
+    }
+};
+
+const mustchk = ref(false);
+const mustchk2 = ref(false);
+// ------------------------------------------------------------------------------------
+
+const email = ref('');
+const emailErrorMessage = ref('');
+
+function isValidEmail(email) {
+    const emailchk = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+    return emailchk.test(email);
+}
+
+function validEmail() {
+    if (email.value === '' || email.value === undefined) return;
+
+    if (!isValidEmail(email.value)) {
+        emailErrorMessage.value = '올바른 이메일 형식으로 입력해주세요.';
+    } else {
+        emailErrorMessage.value = '';
+    }
+}
+
+// ------------------------------------------------------------------------------------
 
 </script>
-
 
 <style scoped>
 .checkerror{
@@ -251,6 +440,7 @@ input[type="checkbox"] {
     display: flex;
     align-items: center;
     justify-content: center;
+
 }
 .email input {
     width: 100%;
@@ -273,6 +463,11 @@ input[type="checkbox"] {
     font-size: 13px;
     margin-left: 5%;
 }
+
+#yr{
+    margin-bottom: 5%;
+    font-size: large;
+}
 .as {
     display: flex;
     align-items: center;
@@ -292,6 +487,7 @@ input[type="checkbox"] {
 }
 
 .phone input {
+    margin-top: -10px;
     width: 70px;
     padding: 10px 0;
     font-size: 16px;
@@ -301,7 +497,6 @@ input[type="checkbox"] {
     border-bottom: 1px solid #000000;           /*유저네임 밑 줄*/
     outline: none;
     background: transparent;
-    margin-left: 0;
 }
 .phone label{
     margin-left: 3%;
