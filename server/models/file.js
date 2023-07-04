@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false,
     });
 
-    File.associate = function(db) {
+    File.associate = function(models) {
         File.belongsTo(models.Movie, {
             foreignKey: 'movie_id',
             onDelete: 'CASCADE',
