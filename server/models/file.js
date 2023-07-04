@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     const File = sequelize.define('File', {
         file_id: {
             type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey: true,
             allowNull: false,
         },
@@ -23,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false,
     });
 
-    File.associate = function(models) {
+    File.associate = function(db) {
         File.belongsTo(models.Movie, {
             foreignKey: 'movie_id',
             onDelete: 'CASCADE',
