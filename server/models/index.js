@@ -38,6 +38,7 @@ const ScreeningPeriod = require("./screening_period")(sequelize,DataTypes);
 const Seat = require("./seat")(sequelize,DataTypes);
 const SeatPayment = require("./seat_payment")(sequelize,DataTypes);
 const Theater = require("./theater")(sequelize,DataTypes);
+const Review = require("./review")(sequelize,DataTypes)
 
 db.members = Member;
 db.categorys = Category;
@@ -51,5 +52,6 @@ db.screening_periods = ScreeningPeriod;
 db.seats = Seat;
 db.seat_payments = SeatPayment;
 db.theaters = Theater;
+db.reviews = Review;
 
 module.exports = db;

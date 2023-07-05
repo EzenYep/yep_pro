@@ -1,8 +1,7 @@
 const db = require("../models");
 const Movie = db.movies;
 const axios = require('axios');
-const {Integer} = require("yarn/lib/cli");
-const {INTEGER} = require("sequelize");
+const {QueryTypes} = require("sequelize");
 const MovieCategory = db.movie_categorus
 const File = db.files;
 const ScreeningPeriod = db.screening_periods;
@@ -18,29 +17,29 @@ const searchMovies = async (req, res) => {
     console.log(`영화 검색: ${movieNm}`);
     try {
         // 먼저, 영화의 이름으로 검색하여 영화 코드를 얻음
-        const searchResponse = await axios.get('https://api.themoviedb.org/3/search/movie', {
+        const searchResponse = await axios.get("https://api.themoviedb.org/3/search/movie", {
             params: {
                 query: movieNm,
-                api_key: tbms,  // TMDB API 키
-            }
+                api_key: tbms, // TMDB API 키
+            },
         });
 
         // 검색 결과가 없으면 오류 반환
         if (searchResponse.data.results.length === 0) {
-            return res.status(404).json({error: '영화를 찾을 수 없음'});
+            return res.status(404).json({ error: "영화를 찾을 수 없음" });
         }
 
         const movieId = searchResponse.data.results[0].id; // 가정: 검색된 첫 번째 영화의 ID를 사용
 
         const detailsResponse = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}`, {
             params: {
-                api_key: tbms,  // TMDB API 키
-                append_to_response: 'credits,videos' // 출연진, 제작진 정보와 동영상 정보를 포함
-            }
+                api_key: tbms, // TMDB API 키
+                append_to_response: "credits,videos", // 출연진, 제작진 정보와 동영상 정보를 포함
+            },
         });
 
-        const releaseDate = detailsResponse.data.release_date;//상영일
-        const directors = detailsResponse.data.credits.crew.filter(member => member.job === 'Director');//감독 이름만 분리
+        const releaseDate = detailsResponse.data.release_date; // 상영일
+        const directors = detailsResponse.data.credits.crew.filter((member) => member.job === "Director"); // 감독 이름만 분리
         const posterPath = detailsResponse.data.poster_path; // 포스터 경로
         const videoPath = detailsResponse.data.videos.results.length > 0 ? detailsResponse.data.videos.results[0].key : null; // 동영상 경로
 
@@ -49,20 +48,19 @@ const searchMovies = async (req, res) => {
         const videoUrl = videoPath ? `https://www.youtube.com/watch?v=${videoPath}` : null; // YouTube 링크
 
         console.log(`Release date: ${releaseDate}`);
-        console.log(`Directors: ${directors.map(director => director.name).join(', ')}`);
+        console.log(`Directors: ${directors.map((director) => director.name).join(", ")}`);
         console.log(`Poster URL: ${posterUrl}`);
         console.log(`Video URL: ${videoUrl}`);
 
         res.send({
             releaseDate: releaseDate,
-            directors: directors.map(director => director.name),
+            directors: directors.map((director) => director.name),
             posterUrl: posterUrl,
-            videoUrl: videoUrl
+            videoUrl: videoUrl,
         });
-
     } catch (error) {
-        console.error('영화 검색 실패:', error);
-        res.status(500).json({error: '영화 검색 실패'});
+        console.error("영화 검색 실패:", error);
+        res.status(500).json({ error: "영화 검색 실패" });
     }
 };
 
@@ -88,7 +86,7 @@ const movie_input = async (req, res) => {
 
         const newMovie = await Movie.create({
             movie_title: info.movie_title,
-            movie_state: 1,
+            movie_state: info.startDate > new Date() ? 1 : 2,
             movie_description: info.movie_description,
             age_rating: info.ageRating,
             director: info.director,
@@ -98,9 +96,6 @@ const movie_input = async (req, res) => {
         const movie_id = newMovie.movie_id;
         console.log("oo   " + movie_id + "dd");
 
-        const seCa1 = await Category.findOne({where: {category_name: info.selecteGenre1}});
-        const seCa2 = await Category.findOne({where: {category_name: info.selecteGenre2}});
-        const seCa3 = await Category.findOne({where: {category_name: info.selecteGenre3}});
 
         // 카테고리를 찾는 함수를 별도로 정의
         const findCategory = async (categoryName) => {
@@ -150,12 +145,76 @@ const movie_input = async (req, res) => {
         res.status(500).send({code: 500, message: error.message});
     }
 };
+const movie_url = async (req, res) => {
+    try {
+        const count = await File.count();
+        const randomIndex = Math.floor(Math.random() * count);
+        const movie_video = await File.findOne({ raw: true, offset: randomIndex });
+        let trailer_url = movie_video.trailer_url;
 
+        // trailer_url이 null인 경우 대체 URL로 설정합니다.
+        if (!trailer_url) {
+            trailer_url = 'https://www.youtube.com/watch?v=MvPaDziB-ac'; // 대체 URL을 여기에 입력합니다.
+        }
 
+        res.send({ trailer_url });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ code: 500, message: error.message });
+    }
+};
+const getScreeningMoviePosters = async (req,res) => {
+    try {
+        const movies = await db.sequelize.query(
+            'SELECT movie.movie_id, movie.movie_title, file.poster_url FROM movie ' +
+            'INNER JOIN file ON movie.movie_id = file.movie_id ' +
+            'WHERE movie.movie_state = 1',
+            {
+                type: QueryTypes.SELECT,
+            }
+        );
 
+        const posters = movies.map((movie) => {
+            return {
+                movie_id: movie.movie_id,
+                movie_title: movie.movie_title,
+                poster_url:  movie.poster_url
+            };
+        });
+        console.log(posters)
+        res.send({posters});
+    } catch (error) {
+        console.error('Error retrieving screening movie posters:', error);
+        throw error;
+    }
+};
+const getNonScreeningMoviePosters = async (req,res) => {
+    try {
+        const non_movies = await db.sequelize.query(
+            'SELECT movie.movie_id, movie.movie_title, file.poster_url FROM movie ' +
+            'INNER JOIN file ON movie.movie_id = file.movie_id ' +
+            'WHERE movie.movie_state = 2',
+            {
+                type: QueryTypes.SELECT,
+            }
+        );
+
+        const non_posters = non_movies.map((movie) => {
+            return {
+                non_movie_id: movie.movie_id,
+                non_movie_title: movie.movie_title,
+                non_poster_url:  movie.poster_url
+            };
+        });
+        console.log(non_posters);
+        res.send({non_posters});
+    } catch (error) {
+        console.error('Error retrieving screening movie posters:', error);
+        throw error;
+    }
+};
 const category = async (req, res) => {
     const categories = await Category.findAll({raw: true})
-
     if (categories) {
         const categoryNames = categories.map(category => category.category_name);
         console.log(categoryNames)
@@ -169,5 +228,8 @@ const category = async (req, res) => {
 module.exports = {
     searchMovies,
     category,
-    movie_input
+    movie_input,
+    movie_url,
+    getScreeningMoviePosters,
+    getNonScreeningMoviePosters
 }

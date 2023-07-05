@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     File.associate = function(models) {
         File.belongsTo(models.Movie, {
             foreignKey: 'movie_id',
+            as: 'movie',
             onDelete: 'CASCADE',
         });
     };

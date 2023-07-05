@@ -1382,6 +1382,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/youtube@^0.0.39":
+  version "0.0.39"
+  resolved "https://registry.npmjs.org/@types/youtube/-/youtube-0.0.39.tgz"
+  integrity sha512-naVjyTZT/CoNwEQW3+mf9E/x6sgB7QIPbRDtVlPUpHlmuQTk+j6gQBy0T5CRkV8oC0GYQjMgfr3VdueTSVLTjw==
+
 "@vue/babel-helper-vue-jsx-merge-props@^1.4.0":
   version "1.4.0"
   resolved "https://registry.npmmirror.com/@vue/babel-helper-vue-jsx-merge-props/-/babel-helper-vue-jsx-merge-props-1.4.0.tgz"
@@ -2630,7 +2635,7 @@ core-js-compat@^3.30.1, core-js-compat@^3.30.2, core-js-compat@^3.8.3:
   dependencies:
     browserslist "^4.21.5"
 
-core-js@^3.8.3:
+core-js@^3.6.5, core-js@^3.8.3:
   version "3.31.0"
   resolved "https://registry.npmmirror.com/core-js/-/core-js-3.31.0.tgz"
   integrity sha512-NIp2TQSGfR6ba5aalZD+ZQ1fSxGhDo/s1w0nx3RYzf2pnJxt7YynxFlFScP6eV7+GZsKO95NSjGxyJsU3DZgeQ==
@@ -3659,6 +3664,11 @@ get-stream@^6.0.0:
   version "6.0.1"
   resolved "https://registry.npmmirror.com/get-stream/-/get-stream-6.0.1.tgz"
   integrity sha512-ts6Wi+2j3jQjqi70w5AlN8DFnkSwC+MqmxEzdEALB2qXZYV3X/b1CTfgPLGJNMeAWxdPfU8FO1ms3NUfaHCPYg==
+
+get-youtube-id@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/get-youtube-id/-/get-youtube-id-1.0.1.tgz"
+  integrity sha512-5yidLzoLXbtw82a/Wb7LrajkGn29BM6JuLWeHyNfzOGp1weGyW4+7eMz6cP23+etqj27VlOFtq8fFFDMLq/FXQ==
 
 glob-parent@^5.1.2, glob-parent@~5.1.2:
   version "5.1.2"
@@ -6551,7 +6561,17 @@ vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.npmmirror.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-vue@^3.2.13:
+vue3-youtube@^0.1.9:
+  version "0.1.9"
+  resolved "https://registry.npmjs.org/vue3-youtube/-/vue3-youtube-0.1.9.tgz"
+  integrity sha512-DhEbLsXDRHF7Cf5eB8vuoAbK+WiFuOHa65vlHU3XE5xky058ZK5/jAtHGr+JGhW0Xy2bSl8Eezz6/cR8GmNzgw==
+  dependencies:
+    "@types/youtube" "^0.0.39"
+    core-js "^3.6.5"
+    get-youtube-id "^1.0.1"
+    vue "^3.0.0"
+
+vue@^3.0.0, vue@^3.2.13:
   version "3.3.4"
   resolved "https://registry.npmmirror.com/vue/-/vue-3.3.4.tgz"
   integrity sha512-VTyEYn3yvIeY1Py0WaYGZsXnz3y5UnGi62GjVEqvEGPl6nxbOrCXbVOTQWBEJUqAyTUk2uJ5JLVnYJ6ZzGbrSw==

@@ -45,6 +45,10 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'payment_id',
             onDelete: 'CASCADE',
         });
+        Payment.hasOne(models.Review, {
+            foreignKey: 'payment_id',
+            onDelete: 'CASCADE',
+        });
     };
 
     return Payment;
