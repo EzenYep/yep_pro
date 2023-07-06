@@ -6,28 +6,43 @@
         <hr class="center-hr"/>
         
         <div class="message">
-            입력 하신 정보의 아이디 입니다.
+            입력 하신 정보의 아이디(이메일) 입니다.
         </div>
 
         <div class="result">
-            <h1>아이디</h1>
+            <h1>{{ $route.query.memberEmail }}</h1>
         </div>
 
       <div class="d-flex justify-content-center" >
-      <button id="next" type="button"><label>로그인 창으로</label></button>
+      <button id="next" type="button" @click="login"><label>로그인 창으로</label></button>
     </div>
     </div>
   
 </template>
 
+<script setup>
+import router from "@/router";
 
+
+
+
+// ------------------------------------------------------------------------------------
+
+
+const login=() => {
+    router.push({
+        name: 'login'
+    });
+  }
+// ------------------------------------------------------------------------------------
+
+</script>
 
 <style scoped>
 
 .findUser-box {
     position: relative;
     margin: auto;
-    /* left: 25%; */
     width: 600px;
     height: 500px;
     padding: 100px;
@@ -49,8 +64,9 @@
   }
   
   #next{
-    margin-top: 40%;
-    top:30%;
+    margin: auto;
+    /* margin-top: 20px; */
+    /* top:30%; */
     background-color:#343495;
     color: #fff;
     border:none; 
