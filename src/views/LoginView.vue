@@ -8,7 +8,7 @@
         <form>
             <div class="user-box">
                 <input type="text" name="" required="" v-model="body.email">
-                <label>아이디</label>
+                <label>이메일</label>
             </div>
             <div class="user-box">
                 <input type="password" name="" required="" v-model="body.password">
@@ -87,7 +87,6 @@ const LogInEvent = async () => {
     }
 }
 </script>
-
 <style scoped>
 
 

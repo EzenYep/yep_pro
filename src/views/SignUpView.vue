@@ -8,7 +8,7 @@
 
 
 
-        <input type="checkbox" name="agree" value="1" id="mustchk" @click="checkAgreeAll()" v-model="mustchk"> 이용약관 동의<strong>(필수)</strong>
+            <input type="checkbox" name="agree" value="1" id="mustchk" @click="checkAgreeAll()" v-model="mustchk"> 이용약관 동의<strong>(필수)</strong>
 
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
@@ -27,8 +27,8 @@
                 </div>
             </div>
 
-
-            <input type="checkbox" name="agree" value="2" id="mustchk" @click="checkAgreeAll()" v-model="mustchk2"> 개인정보수집 및 이용<strong>(필수)</strong>
+            
+                <input type="checkbox" name="agree" value="2" id="mustchk" @click="checkAgreeAll()" v-model="mustchk2"> 개인정보수집 및 이용<strong>(필수)</strong>
 
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingTwo">
@@ -43,8 +43,8 @@
                 </div>
             </div>
 
-
-            <input type="checkbox" name="agree" value="3" @click="checkAgreeAll()"> 이벤트 수신동의<strong>(선택)</strong>
+            
+                <input type="checkbox" name="agree" value="3" @click="checkAgreeAll()"> 이벤트 수신동의<strong>(선택)</strong>
 
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingThree">
@@ -58,9 +58,9 @@
                     </div>
                 </div>
             </div>
-
+            
             <label for="agree_all" class="agree_all">
-                <input type="checkbox" name="agreeAll" id="agreeAll" @click="agreeAll(this)">
+                <input type="checkbox" name="agreeAll" id="agreeAll" @click="agreeAll()">
                 <span>모두 동의합니다</span>
             </label>
         </div>
@@ -93,21 +93,21 @@
 
 
         <div class="wrapper">
-
-
+            
+          
 
             <div class="as">
-                <input id="name"  type="text" placeholder="이름을 입력해 주세요." v-model="body.name">
+                <input id="name"  type="text" placeholder="이름을 입력해 주세요." v-model="body.name" @input="filterKoreanCharacters">
                 <div id="nameError" class="error"></div>
             </div>
 
             <div class="bday">
-                <label>생년월일</label>
-                <div>
-                    <input type="date" id="yr"  v-model="body.birthday">
-
-                </div>
+            <label>생년월일</label>
+            <div>
+                <input type="date" id="yr"  v-model="body.birthday">                
+                
             </div>
+        </div>
 
             <div class="as">
                 <input id="password" type="password" placeholder="비밀번호를 입력해 주세요." v-model="password1" >
@@ -126,19 +126,19 @@
             </div>
 
             <div class="email">
-                <input id="email" type="email" placeholder="이메일을 입력해 주세요." v-model="body.email" @blur="validEmail">
+                <input id="email" type="email" placeholder="이메일을 입력해 주세요." v-model="body.email"  @input="restrictKorean" @blur="validEmail">
                 <div id="emailError" class="error">{{  result }}</div>
-                <div class="auth">
 
-                    <button id="sendMessage" @click="sendEmail">인증번호 받기</button>
+                <div class="auth">
+                    <button id="sendMessage" @click="sendEmail" :disabled="!isValidEmail(body.email)">인증번호 받기</button>
                 </div>
             </div>
             <div class="email">
-                <input id="text" type="text" placeholder="인증번호를 입력해 주세요." maxlength="6">
-                <div id="emailError" class="error"></div>
+                <input id="text" type="text" placeholder="인증번호를 입력해 주세요." maxlength="6" v-model="verificationCodeInput">
+                <div id="emailError" class="error">{{ verificationResult }}</div>
                 <div class="auth">
 
-                    <button id="sendMessage">인증</button>
+                    <button id="verifybtn" @click="verifyCode">인증</button>
                 </div>
             </div>
 
@@ -163,123 +163,111 @@ import { reactive } from "vue";
 // import nodemailer from 'nodemailer';
 // import dotenv from 'dotenv';
 
-// const selectAll = (e) => {      // 모두 동의 체크박스
-//   const agree_all = e.target;
-//   const checkboxes = document.querySelectorAll('input[name="agree"]');
-
-//   checkboxes.forEach((checkbox) => {
-//     checkbox.checked = agree_all.checked;
-//   });
-//  };
 let body = reactive({});
 
-
-
-
-function checkAgreeAll()  {
-
-    const checkboxes
-        = document.querySelectorAll('input[name="agree"]');
-
-    const checked
-        = document.querySelectorAll('input[name="agree"]:checked');
-
-    const agreeAll
-        = document.querySelector('input[name="agreeAll"]');
-
-    if(checkboxes.length === checked.length)  {
-        agreeAll.checked = true;
-    }else {
-        agreeAll.checked = false;
-    }
-
-}
-
-function agreeAll(agreeAll)  {
-    const checkboxes
-        = document.getElementsByName('agree');
-
-    checkboxes.forEach((checkbox) => {
-        checkbox.checked = agreeAll.checked
-    })
+function filterKoreanCharacters(event) {    //이름 입력칸에 한글만 입력 가능
+  const input = event.target.value;
+  const filteredInput = input.replace(/[^가-힣]/g, '');
+  body.name = filteredInput;
 }
 
 // ------------------------------------------------------------------------------------
 
+function checkAgreeAll()  {         //약관이용 체크박스
+  
+  const checkboxes 
+    = document.querySelectorAll('input[name="agree"]');
+ 
+  const checked 
+    = document.querySelectorAll('input[name="agree"]:checked');
+  
+  const agreeAll 
+    = document.querySelector('input[name="agreeAll"]');
+  
+  if(checkboxes.length === checked.length)  {
+    agreeAll.checked = true;
+  }else {
+    agreeAll.checked = false;
+  }
 
-//★노드메일러 확인후 이용★
+}
 
+function agreeAll()  {
+  const checkboxes 
+     = document.getElementsByName('agree');
+     const agreeAll = document.querySelector('input[name="agreeAll"]');
 
-// dotenv.config();
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = agreeAll.checked
+  })
+}
 
-// const { email_service, user, pass } = process.env;
+// ------------------------------------------------------------------------------------
+                                            //이메일 관련
+const verificationResult = ref('');
+const verificationCodeInput = ref('');
+let verificationCode = '';
 
-// const transporter = nodemailer.createTransport({
-//   service: email_service,
-//   auth: {
-//     user: user,
-//     pass: pass
-//   }
-// });
-
-// const mailOptions = {
-//   from : user,
-//   to: '@',
-//   subject: 'Nodemailer Test',
-//   text: '노드 패키지 nodemailer를 이용해 보낸 이메일임'
-// };
-
-// transporter.sendMail(mailOptions, (error, info) => {
-//   if (error) {
-//     console.error(error);
-//   } else {
-//     console.log('Email Sent : ', info);
-//   }
-// })
-//  const mailSand = async ({to, subject, text, html}) => {
-//     try {
-//       //메일 클래스 인스턴스 생성
-//       const mail = new Mail();
-
-//       //받는 사람 속성 없으면 에러 발생, 있으면 세팅
-//       if (!to) throw new Error('Need "to" Propertie.');
-//       mail.setTo(to);
-
-//       //제목 있으면 세팅
-//       if (subject) mail.setSubject(subject);
-
-//       /**
-//        * text나 html은 둘 중 하나가 꼭 있어야함
-//        * 둘다 있을 경우 text는 안들어가고 html이 이메일 내용으로 들어가짐
-//        */
-//       if (!text && !html) throw new Error('Need "text" or "html" Propertie.')
-//       if (text) mail.setText(text);
-//       if (html) mail.setHtml(html);
-
-//       //메일 보내기 실행
-//       const result = await mail.sendMail();
-
-//       return result.response;
-//     } catch (err) {
-//       throw new Error(err);
-//     }
-// }
-
-
-const sendEmail = async () => {
-    const data ={};
-    body = {
+const sendEmail = async () => {             //이메일 인증번호 전송
+      const data = {};
+      body = {
         email: body.email,
-    };
-    console.log(body.email)
-    try {
-        await axios.post('http://localhost:9212/api/user/sendEmail', body);
-    } catch (error) {
+        name: body.name,
+        birthday: body.birthday,
+      };
+      console.log(body.email)
+      try {
+        const response = await axios.post('http://localhost:9212/api/user/sendEmail', body);
+        if (response.status === 200) {
+          alert("전송되었습니다.");
+          verificationCode = response.data.verificationCode; // 받은 verificationCode 저장
+          
+        } else {
+          alert("전송에 실패했습니다.");
+        }
+      } catch (error) {
         console.error('이메일 전송 중 오류가 발생했습니다:', error);
         data.result = '이메일 전송 중 오류가 발생했습니다.';
-    }
-};
+      }
+    };
 
+    function verifyCode() {               //이메일+인증번호 입력칸 인증번호 확인
+    if (verificationCodeInput.value === verificationCode) {
+      verificationResult.value = '인증번호가 일치합니다.';
+    } else {
+      verificationResult.value = '인증번호가 일치하지 않습니다.';
+    }
+  }
+
+  
+
+                                            //이메일 입력 조건
+const email = ref('');
+const emailErrorMessage = ref('');
+
+function isValidEmail(email) {
+  const emailchk = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+  return emailchk.test(email);
+}
+
+function validEmail() {
+  if (email.value === '' || email.value === undefined) return;
+
+  if (!isValidEmail(email.value)) {
+    emailErrorMessage.value = '올바른 이메일 형식으로 입력해주세요.';
+  } else {
+    emailErrorMessage.value = '';
+  }
+}
+
+
+function restrictKorean(event) {          //이메일 입력칸 한글x
+  const input = event.target.value;
+  const regex = /^[^ㄱ-ㅎㅏ-ㅣ가-힣]*$/;
+  if (!regex.test(input)) {
+    event.target.value = input.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+  }
+}
 // ------------------------------------------------------------------------------------
 
 const password1 = ref('');
@@ -292,75 +280,65 @@ const tel3 = ref('');
 // ------------------------------------------------------------------------------------
 
 watch([password1, password2], () => {  // 비밀번호 불일치 문구
-    if (password1.value !== password2.value) {
-        passwordCheckErrorMessage.value = "* 비밀번호가 일치하지 않습니다.";
-    } else {
-        passwordCheckErrorMessage.value = '';
-    }
+  if (password1.value !== password2.value) {
+    passwordCheckErrorMessage.value = "* 비밀번호가 일치하지 않습니다.";
+  } else {
+    passwordCheckErrorMessage.value = '';
+  }
 });
 // ------------------------------------------------------------------------------------
 
 
 const LogInEvent = async () => {
-    const tel = tel1.value + tel2.value + tel3.value; // 전화번호 db 합치기
+  const tel = tel1.value + tel2.value + tel3.value; // 전화번호 db 합치기
     console.log(tel);
-    body = {
-        name: body.name,
-        email: body.email,
-        password: password1.value,
-        tel: tel,
-        birthday: body.birthday
-    };
+  body = {
+    name: body.name,
+    email: body.email,
+    password: password1.value,
+    tel: tel,
+    birthday: body.birthday
+  };
 // ------------------------------------------------------------------------------------
 
-    if (!mustchk.value) {                 //필수 이용약관 체크시 페이지 전환
-        alert('이용약관 동의에 체크하세요.');
-    } else if (!mustchk2.value) {
-        alert('개인정보수집 및 이용에 체크하세요.');
-    } else if (password1.value !== password2.value) {  // 비밀번호 일치 여부 확인
-        alert('비밀번호가 일치하지 않습니다.');
-    } else if (!body.name) {
-        alert('이름을 입력하세요.');
-    } else if (!body.birthday) {
-        alert('생년월일은 입력하세요.');
-    } else if (!tel) {
-        alert('전화번호를 입력하세요.')
-    }
-    else {
-        await axios.post("http://localhost:9212/api/user/addUser", body).then((res) => {
-            const code = res.data.code;
-            if (code === 200) {
-                alert("가입 완료. 로그인 해주세요.");
-                router.push({ name: 'login' });
-            }
-        });
-    }
+  if (!mustchk.value) {                 //필수 이용약관 체크시 페이지 전환
+    alert('이용약관 동의에 체크하세요.');
+  } else if (!mustchk2.value) {
+    alert('개인정보수집 및 이용에 체크하세요.');
+  } else if (password1.value !== password2.value) {  // 비밀번호 일치 여부 확인
+    alert('비밀번호가 일치하지 않습니다.'); 
+  } else if (!body.name) {
+    alert('이름을 입력하세요.');
+  } else if (!body.birthday) {
+    alert('생년월일은 입력하세요.');
+  } else if (!tel) {
+    alert('전화번호를 입력하세요.')
+  }else if (!body.email) {
+    alert('이메일을 입력하세요.')
+   }//else if (!) {
+  //   alert('인증번호를 입력하세요.')
+  // }
+   else {
+    await axios.post("http://localhost:9212/api/user/addUser", body).then((res) => {
+      const code = res.data.code;
+      if (code === 200) {
+        alert("가입 완료. 로그인 해주세요.");
+        router.push({ name: 'login' });
+      } else if (code === 401) {
+        alert('이미 존재하는 이메일입니다.')
+      }
+    });
+  }
 };
-
+  
 const mustchk = ref(false);
 const mustchk2 = ref(false);
 // ------------------------------------------------------------------------------------
 
-const email = ref('');
-const emailErrorMessage = ref('');
 
-function isValidEmail(email) {
-    const emailchk = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-    return emailchk.test(email);
-}
-
-function validEmail() {
-    if (email.value === '' || email.value === undefined) return;
-
-    if (!isValidEmail(email.value)) {
-        emailErrorMessage.value = '올바른 이메일 형식으로 입력해주세요.';
-    } else {
-        emailErrorMessage.value = '';
-    }
-}
 
 // ------------------------------------------------------------------------------------
-
+ 
 </script>
 
 <style scoped>
@@ -440,7 +418,7 @@ input[type="checkbox"] {
     display: flex;
     align-items: center;
     justify-content: center;
-
+    
 }
 .email input {
     width: 100%;
@@ -462,7 +440,7 @@ input[type="checkbox"] {
     height: 30px;
     font-size: 13px;
     margin-left: 5%;
-}
+} 
 
 #yr{
     margin-bottom: 5%;
@@ -487,7 +465,7 @@ input[type="checkbox"] {
 }
 
 .phone input {
-    margin-top: -10px;
+  margin-top: -10px;
     width: 70px;
     padding: 10px 0;
     font-size: 16px;

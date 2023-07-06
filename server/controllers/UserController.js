@@ -4,20 +4,34 @@ const jwt = require("jsonwebtoken")
 const nodemailer = require('nodemailer');
 //create
 const addUser = async (req, res) => {
-    let info = {
-        member_name: req.body.name,
-        password: req.body.password,
-        email: req.body.email,
-        tel: req.body.tel,
-        birthday: req.body.birthday
-    };
-    let tel = req.body.tel;
-    console.log(req.body)
-    await Member.create(info).then(res.send({code: 200})).catch((err) => {
-        res.send({code: 401})
-        console.log(err)
-    });
+ 
+
+  let info = {
+    member_name: req.body.name,
+    password: req.body.password,
+    member_email: req.body.email,
+    tel: req.body.tel,
+    birthday: req.body.birthday
+  };
+  console.log(info);
+  
+  try {
+    const existingMember = await Member.findOne({ where: { member_email: req.body.email } });
+  if (!existingMember) {
+    await Member.create(info);
+    res.send({code:200})
+
+    
+  } else {
+    res.send({ code: 401, message: '이미 존재하는 이메일입니다.' });
+  }
+
+  } catch (error) {
+    console.error('회원 가입 중 오류가 발생했습니다:', error);
+    res.status(500).send({ code: 500, message: '회원 가입 중 오류가 발생했습니다.' });
+  }
 };
+// --------------------------------------------------------------------------------------------------
 //LogIn
 const oneUser = async (req, res) => {
     let email = req.body.email;
@@ -59,7 +73,7 @@ const oneUser = async (req, res) => {
         return console.log(e)
     }
 };
-
+// --------------------------------------------------------------------------------------------------
 const crystarspwsok = async (req, res) => {
     console.log(req.body);
 
@@ -83,8 +97,8 @@ const crystarspwsok = async (req, res) => {
 
     return res.send({matched});
 };
-
-// 비밀번호 변경
+// --------------------------------------------------------------------------------------------------
+// 비밀번호 변경(내정보)
 const crystarspws = async (req, res) => {
     console.log(req.body);
 
@@ -100,7 +114,6 @@ const crystarspws = async (req, res) => {
 
     return res.send({matched});
 };
-
 const crystars = async (req, res) => {
     const email = req.body.email
     console.log(email)
@@ -127,55 +140,118 @@ const CrystalEvent = async () => {
     // ...
 };
 
-
+// --------------------------------------------------------------------------------------------------
 //회원가입
-const searchUser = async (req, res) => {
-    let info = {
+const searchUser = async (req, res) => {                //아이디 찾기
+  let info = {
+              member_name: req.body.member_name,
+              tel: req.body.tel,
+          };
+          console.log(info)
+  try {
+    const member = await Member.findOne({
+      attributes: ["member_email"],
+      where: {
         member_name: req.body.member_name,
         tel: req.body.tel,
-    };
-    console.log(info)
-    try {
-        const member = await Member.findOne({
-            attributes: ["member_email"],
-            where: {
-                member_name: req.body.member_name,
-                tel: req.body.tel,
-            },
-        });
+      },
+    });
 
-        if (member) {
-            res.status(200).send({ memberEmail: member.member_email });
-        } else {
-            res.status(401)
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(500).send({ code: 500, message: "Internal Server Error" });
+    if (member) {
+      res.status(200).send({ memberEmail: member.member_email });
+    } else {
+      res.status(401).send({ code:401, message: '입력하신 정보와 일치하는 이메일이 없습니다.'})
     }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ code: 500, message: "Internal Server Error" });
+  }
 };
 // ------------------------------------------------------------------------------------
 
+const nodemailer = require('nodemailer');         //이메일 인증
+const axios = require('axios');
+
+const generateRandomCode = () => {                //이메일 코드 생성
+  const code = Math.floor(100000 + Math.random() * 900000).toString().substring(0, 6);
+  return code;
+};
+
 const sendEmail = async (req,res) => {
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: { user: 'yepproject9212@gmail.com', pass: 'gmmndxidvegxphtf' },
-    });
-    console.log(req.body.email)
-    const mailOptions = {
-        from: 'YEP',
-        to:  req.body.email,
-        subject: '가입 인증 메일',
-        html: `
-      가입확인 버튼를 누르시면 가입 인증이 완료됩니다.<br/>
+ 
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user: 'yepproject9212@gmail.com', pass: 'gmmndxidvegxphtf' },
+  });
+
+  console.log( req.body.email )
+  const verificationCode = generateRandomCode();
+  console.log(verificationCode);
+
+  const mailOptions = {
+    from: 'YEP',
+    to:  req.body.email,
+    subject: '가입 인증 메일',
+    html: `
+      인증코드: <strong>${verificationCode}</strong><br/>
+      <form action="#" method="POST">
+      </form>  
     `,
-    };
-    try {
-        const info = await transporter.sendMail(mailOptions);
-        console.log('이메일이 성공적으로 전송되었습니다.', info.messageId);
-    } catch (error) {
-        console.error('이메일 전송 중 오류가 발생했습니다:', error);
+  };
+  
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log('이메일이 성공적으로 전송되었습니다.', info.messageId);
+    res.send({ verificationCode }); // verificationCode를 응답으로 보내기
+  } catch (error) {
+    console.error('이메일 전송 중 오류가 발생했습니다:', error);
+  }
+
+
+};
+
+ // ------------------------------------------------------------------------------------
+ const findpwresult = async (req, res) => {                //비번 찾기(로그인창)
+  let info = {
+              member_name: req.body.member_name,
+              member_email: req.body.email,
+            };
+          console.log(info)
+  try {
+    const member = await Member.findOne({
+      // attributes: ["member_email"],
+      where: {
+        member_name: req.body.member_name,
+        member_email: req.body.email,
+      },
+    });
+
+    if (member) {
+      res.status(200).send({ memberEmail: member.member_email });
+    } else {
+      res.status(401).send({ code: 401, message: "일치하는 계정이 없습니다." });
     }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ code: 500, message: "내부 서버 오류" });
+  }
+};
+ // ------------------------------------------------------------------------------------
+                                                    //새로운 비번 변경
+const updatePassword = async (req, res) => {
+  try {
+ 
+    const memberpw = await Member.update({password: req.body.newPassword }, {where:{ member_email: req.body.member_email}})
+
+    // 비밀번호 업데이트가 성공적으로 수행되었다는 응답을 반환합니다.
+    if (memberpw) {
+      res.status(200).send({message: ''});
+      console.log('비밀번호 업데이트 성공');
+    } 
+  } catch (error) {
+    console.error('비밀번호 업데이트 실패:', error);
+    return res.status(500).send({code:500,  message: '비밀번호 업데이트 실패' });
+  }
 };
 
 
@@ -189,5 +265,8 @@ module.exports = {
     CrystalEvent,
     searchUser,
     sendEmail,
+    findpwresult,
+    updatePassword,
+
 };
 

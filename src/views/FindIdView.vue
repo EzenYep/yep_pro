@@ -6,34 +6,90 @@
         <div class="findbtn">
             <button class="findIDPW" type="button" >아이디찾기</button>
                 <div class="IdPwline"></div>
-            <button class="findIDPW" type="button">비밀번호찾기</button>
+            <button class="findIDPW" type="button" @click="findpw">비밀번호찾기</button>
 
         </div>
         <div class="a">
         <div class="user-box">
-        <input type="text" name="" required="">
+        <input type="text" name="" required="" v-model="body.member_name" @input="filterKoreanCharacters">
         <label>이름</label>
       </div>
       <div class="user-box">
-        <input type="text" name="" required="">
+        <input type="text" name="" required="" maxlength="11" v-model="body.tel" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
         <label>휴대폰 번호</label>
       </div>
       </div>
       <div class="d-flex justify-content-end" >
-      <button id="next" type="button"><label>다음</label></button>
+      <button id="next" type="button" @click="Findidresult"><label>다음</label></button>
     </div>
     </div>
 </template>
 
+
+<script setup>
+import router from "@/router";
+import { reactive } from "vue";
+import axios from "axios";
+
+
+const findpw=() => {
+    router.push({
+        name: 'find_pw'
+    });    
+}
+// ------------------------------------------------------------------------------------
+
+let body = reactive({
+  member_name: "",
+  tel: "",
+  memberEmail: "", // 추가: memberEmail 값을 저장할 변수
+});
+const Findidresult = async () => {
+  const requestData = {
+    member_name: body.member_name,
+    tel: body.tel,
+  };
+
+  try {
+    const response = await axios.post(
+      "http://localhost:9212/api/user/searchUser",
+      requestData
+    );
+
+    const { status, data } = response;
+    if (status === 200) {
+      body.memberEmail = data.memberEmail; // 응답에서 memberEmail 값을 가져와 저장
+
+      router.push({
+        name: "find_id_result",
+        query: { memberEmail: body.memberEmail }, // memberEmail 값을 매개변수로 전달
+      });
+    } 
+ 
+  } catch (error) {
+    console.error(error);
+    alert('입력하신 정보와 일치하는 이메일이 없습니다.');
+    // 처리할 에러 상황에 대한 로직 추가
+  }
+};
+// ------------------------------------------------------------------------------------
+
+function filterKoreanCharacters(event) {    //이름 입력칸에 한글만 입력 가능
+  const input = event.target.value;
+  const filteredInput = input.replace(/[^가-힣]/g, '');
+  body.member_name = filteredInput;
+}
+// ------------------------------------------------------------------------------------
+
+
+</script>
 
 
 <style scoped>
 .findUser-box {
     position: relative;
     margin: auto;
-    /* top: 50%;
-    left: 50%; */
-    width: 700px;
+    width: 600px;
     height: 600px;
     padding: 100px;
     /* margin-top: 50px; */
