@@ -58,8 +58,8 @@ const routes = [
         path: "/movie_input",
         name: 'movie_input',
         component: MovieInputView
-    },{
-        path: "/movie_info",
+    },  {
+        path: "/movie/:id",  // 동적 라우트 매개변수 추가
         name: 'movie_info',
         component: MovieInfoView
     },{

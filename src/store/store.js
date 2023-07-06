@@ -13,7 +13,6 @@ export default createStore({
       VueCookie.set('token', state.token, 1);// cookie에 토큰을 저장합니다. 1일 동안 유지됩니다.
       VueCookie.set('email', state.email, 1);
       console.log(userInfo.email)
-
     },
     CLEAR_TOKEN(state) {
       state.token = '';
