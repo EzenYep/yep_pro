@@ -169,7 +169,7 @@ const searchUser = async (req, res) => {                //아이디 찾기
 };
 // ------------------------------------------------------------------------------------
 
-const nodemailer = require('nodemailer');         //이메일 인증
+                                                   //이메일 인증
 const axios = require('axios');
 
 const generateRandomCode = () => {                //이메일 코드 생성
