@@ -36,13 +36,14 @@
                     <div class="slide" v-for="(poster, index) in currentMovies" :key="index">
                         <!-- 이미지 및 영화 정보 표시 -->
                         <div class="movie-info">
-                            <img :src="poster" alt="Movie Poster" class="poster-image">
+                            <img :src="poster" alt="Movie Poster" class="poster-image" @click="goMovieInfos(index)"/>
                             <h4>{{ movies.movieTitles[currentMovieOffset.value + index] }}</h4>
                             <!-- 추가적인 영화 정보 표시 -->
                         </div>
                     </div>
+
                 </div>
-                <button class="next-button" @click="nextMovieSlide" >
+                <button class="next-button" @click="nextMovieSlide">
                     &gt;
                 </button>
             </div>
@@ -170,7 +171,6 @@ const nextNonMovieSlide = () => {
 }
 
 
-
 onMounted(() => {
     adjustSliderContainerWidth();
     startAutoSlide(); // 자동 슬라이드 시작
@@ -229,9 +229,10 @@ movie_url();
 const movies = reactive({
     posters: [],
     movieTitles: [],
+    movieIds: [],
     non_posters: [],
     non_movieTitles: [],
-    selectedPoster:[]
+    selectedPoster: []
 });
 
 const movie_poster_url = async () => {
@@ -245,18 +246,19 @@ const movie_poster_url = async () => {
 
         movies.posters = posters.map((poster) => poster.poster_url);
         movies.movieTitles = posters.map((poster) => poster.movie_title);
-        console.log(movies.posters);
-        console.log(movies.movieTitles);
-
+        movies.movieIds = posters.map((poster) => poster.movie_id);
+        console.log(movies.movieIds)
         const randomIndex = Math.floor(Math.random() * posters.length);
         movies.selectedPoster = movies.posters[randomIndex];
+
+        // movie_poster_url 함수가 실행될 때 영화 ID를 출력하여 확인
+        console.log(movies.movieIds);
 
     } catch (error) {
         console.error("Error retrieving movie posters:", error);
     }
 };
 movie_poster_url();
-
 
 const non_movie_poster_url = async () => {
     try {
@@ -278,6 +280,19 @@ const non_movie_poster_url = async () => {
 
 non_movie_poster_url();
 
+const goMovieInfos = (currentIndex) => {
+    const index = currentMovieOffset.value + currentIndex;
+    console.log(currentMovieOffset.value);
+    console.log(index);
+    const selectedMovieId = movies.movieIds[index];
+    console.log(selectedMovieId);
+    router.push({
+        name: "movie_info",
+        params: {
+            id: selectedMovieId,
+        },
+    });
+};
 </script>
 <style scoped>
 .container {
@@ -348,7 +363,6 @@ non_movie_poster_url();
     margin-top: 5px;
     text-align: center;
 }
-
 
 
 .previous-button,

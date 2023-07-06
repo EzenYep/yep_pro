@@ -1,6 +1,5 @@
 <template>
     <div class="comments-section">
-        <CommentForm></CommentForm>
         <div class="comment">
             <h5>평균 별점:
                 <div class="rating">
@@ -40,7 +39,6 @@
 </template>
 
 <script>
-import CommentForm from "@/components/CommentForm.vue";
 export default {
 
     data() {
@@ -69,9 +67,6 @@ export default {
             return `${starPercentage}%`;
         },
     },
-    components:{
-        CommentForm,
-    }
 };
 </script>
 
