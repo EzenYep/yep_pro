@@ -48,17 +48,21 @@ const addComment = async () => {
         return;
     }else {
         console.log(user)
+        console.log(rating.value)
         const data = {
             user: user,
             id: props.id,
             comment:text.value,
             starkit:rating.value
-
         };
-        console.log("dddddddd")
-        console.log(data)
         const res = await axios.post("http://localhost:9212/api/review/commentCreate",data);
         console.log(res.data)
+        if(res.data.code ===200){
+            await router.push({name: "home"})
+        }else {
+            alert("회원님은 이 영화를 감상하시지 않으셧습니다.")
+            return;
+        }
     }
 };
 const goLogin = ()=>{

@@ -30,7 +30,7 @@
     </div>
 
     <CommentForm  :id="id"> </CommentForm>
-    <ReviewInfoView></ReviewInfoView>
+    <ReviewInfoView :id="id"></ReviewInfoView>
 </template>
 
 <script setup>
@@ -58,7 +58,6 @@ const movie_data = reactive({
 })
 const movie_info_db = async () =>{
     const res = await axios.post("http://localhost:9212/api/movie/movie_info_data",body);
-    console.log(res.data);
     movie_data.movie_title= res.data.movie_title
     movie_data.director= res.data.director
     movie_data.poster = res.data.poster_url
@@ -108,3 +107,5 @@ movie_info_db();
     height: 100%;
 }
 </style>
+
+

@@ -16,6 +16,8 @@ const movieRouter = require("./routers/testMovieRouter")
 app.use("/api",movieRouter)
 const reviewRouter = require("./routers/reviewRouter")
 app.use("/api",reviewRouter)
+const ReservationRouter = require("./routers/ReservationRouter")
+app.use("/api",ReservationRouter)
 app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 대기 중");
 });
