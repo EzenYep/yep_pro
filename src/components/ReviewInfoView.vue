@@ -1,73 +1,99 @@
 <template>
     <div class="comments-section">
         <div class="comment">
-            <h5>평균 별점:
-                <div class="rating">
+            <h5>
+                평균 별점:
+                <div class="starkit">
                     <div class="stars-outer">
                         <div class="stars-empty">
                             ★★★★★
                         </div>
-                        <div class="stars-fill" :style="{width: starPercentage(averageRating)}">
+                        <div class="stars-fill" :style="{ width: starPercentage(averagestarkit) }">
                             ★★★★★
                         </div>
                     </div>
-                    ({{ averageRating }}점)
+                    ({{ averagestarkit }}점)
                 </div>
             </h5>
         </div>
 
         <div class="comment" v-for="(comment, index) in comments" :key="index">
             <div class="comment-header">
-                <h5>{{ comment.author }}
-                    <span class="rating">
-                        <div class="stars-outer">
-                            <div class="stars-empty">
-                                ★★★★★
-                            </div>
-                            <div class="stars-fill" :style="{width: starPercentage(comment.rating)}"><!--여기가 지정된 점수에따라 별에 색이 채워진다.-->
-                                ★★★★★
-                            </div>
-                        </div>
-                        ({{ comment.rating }}점)
-                    </span>
-                </h5>
-                <button class="report-button">신고</button>
+                <h5>
+                    {{ comment.member_name }}
+                    <span class="starkit">
+            <div class="stars-outer">
+              <div class="stars-empty">
+                ★★★★★
+              </div>
+              <div class="stars-fill" :style="{ width: starPercentage(comment.starkit) }">
+                ★★★★★
+              </div>
             </div>
-            <p>{{ comment.text }}</p>
+            ({{ comment.starkit }}점)
+          </span>
+                </h5>
+                <button class="report-button" @click="report_comment(comment.review_id)">신고</button>
+            </div>
+            <p>{{ comment.comment }}</p>
         </div>
     </div>
 </template>
 
-<script>
-export default {
+<script setup>
+import axios from "axios";
+import { computed, defineProps, ref, onMounted, watch } from "vue";
+import store from "@/store/store";
 
-    data() {
-        return {
-            comments: [//더미데이터들 db 연결이 되면 이 부분을 끌어오는 데이터로 수정할거임
-                { author: 'User1', text: 'This is a test comment', rating: 5 },
-                { author: 'User2', text: 'This is another test comment', rating: 3 },
-                { author: 'User3', text: 'This is yet another test comment', rating: 4 },
-                { author: 'User4', text: 'This is still another test comment', rating: 2 },
-                { author: 'User5', text: 'This is definitely another test comment', rating: 1 },
-                { author: 'User6', text: 'This is another test comment', rating: 5 },
-                { author: 'User7', text: 'This is another test comment', rating: 4 },
-                { author: 'User8', text: 'This is another test comment', rating: 5 },
-            ],
+const props = defineProps(["id"]);
+const comments = ref([]);
+let report = ref('')
+const fetchComments = async () => {
+    try {
+        const data = {
+            id: props.id,
         };
-    },
-    computed: {
-        averageRating() {
-            const totalRating = this.comments.reduce((total, comment) => total + comment.rating, 0);
-            return (totalRating / this.comments.length).toFixed(1);
-        },
-    },
-    methods: {
-        starPercentage(rating) {
-            const starPercentage = (rating / 5) * 100;
-            return `${starPercentage}%`;
-        },
-    },
+        const res = await axios.post("http://localhost:9212/api/review/commentInfo", data);
+        comments.value = res.data;
+
+    } catch (error) {
+        console.error(error);
+    }
 };
+
+onMounted(fetchComments);
+
+const report_comment = async (reviewId) => {
+    const data = {
+        email: store.state.email,
+        review_id: reviewId,
+    };
+
+    const res = await axios.post("http://localhost:9212/api/report/report_comment", data);
+    const code = res.data.code;
+
+    if (code === 200) {
+        alert("신고 접수되었습니다.");
+    } else {
+        alert("신고가 처리되지 않았습니다.");
+    }
+};
+
+
+
+const averagestarkit = computed(() => {
+    const totalstarkit = comments.value.reduce((total, comment) => total + comment.starkit, 0);
+    return (totalstarkit / comments.value.length).toFixed(1);
+});
+
+const starPercentage = (starkit) => {
+    const starPercentage = (starkit / 5) * 100;
+    return `${starPercentage}%`;
+};
+
+watch(() => comments.value, (newComments) => {
+    console.log(newComments);
+});
 </script>
 
 <style scoped>
@@ -75,29 +101,35 @@ export default {
     width: 100%;
     margin-top: 5%;
 }
+
 .comment {
     background-color: #f8f9fa;
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 5px;
 }
+
 .comment-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.rating {
-    font-size: 1.3rem;/*별의 크기를 조정함*/
+
+.starkit {
+    font-size: 1.3rem; /*별의 크기를 조정함*/
     color: #777;
 }
+
 .stars-outer {
     position: relative;
     display: inline-block;
     overflow: hidden;
 }
+
 .stars-empty {
     color: #ccc;
 }
+
 .stars-fill {
     position: absolute;
     top: 0;
@@ -106,6 +138,7 @@ export default {
     overflow: hidden;
     color: gold;
 }
+
 .report-button {
     padding: 5px;
     border: none;

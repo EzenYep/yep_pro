@@ -2,12 +2,12 @@
     <div class="container">
         <!-- 이미지 그룹 -->
         <iframe
-                :src="`https://www.youtube.com/embed/${urls.videoUrl}?autoplay=1`"
+                :src="`https://www.youtube-nocookie.com/embed/${urls.videoUrl}?autoplay=1`"
                 title="YouTube video player"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
         ></iframe>
-        <!-- 검색 -->
+         검색
         <div>
             <div class="wrap">
                 <div class="search">
@@ -49,6 +49,8 @@
             </div>
         </div>
         <br>
+
+
         <div>
             <h3>상영예정작</h3>
         </div>
@@ -282,10 +284,7 @@ non_movie_poster_url();
 
 const goMovieInfos = (currentIndex) => {
     const index = currentMovieOffset.value + currentIndex;
-    console.log(currentMovieOffset.value);
-    console.log(index);
     const selectedMovieId = movies.movieIds[index];
-    console.log(selectedMovieId);
     router.push({
         name: "movie_info",
         params: {

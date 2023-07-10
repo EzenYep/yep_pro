@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         member_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
+        },      reporttime: {
+            type: DataTypes.DATE,
+            allowNull: false,
         },
+
     }, {
         tableName: 'reportcomment',
         timestamps: false,

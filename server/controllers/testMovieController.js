@@ -225,8 +225,6 @@ const category = async (req, res) => {
     }
 }
 const movie_info = async (req, res) => {
-    console.log("체크용");
-    console.log(req.body.id);
 
     try {
         const query = `
@@ -244,8 +242,6 @@ const movie_info = async (req, res) => {
             replacements,
             type: sequelize.QueryTypes.SELECT
         });
-
-        console.log(movie_info_data);
 
         // movie_info_data를 원하는 방식으로 처리하거나 응답으로 전송합니다.
 

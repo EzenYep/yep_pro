@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         Seat.hasMany(models.SeatPayment, {
             foreignKey: 'seat_id',
             onDelete: 'CASCADE',
+            sourceKey: 'seat_id', // 추가: SeatPayment 모델의 외래 키로 seat_id를 사용합니다.
         });
     };
 
