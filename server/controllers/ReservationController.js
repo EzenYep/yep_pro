@@ -115,6 +115,7 @@ const ReservedSeat = async (req, res) => {
             WHERE screening.movie_id = :movieId
               AND theater.theater_name = :theaterName
               AND screening.screening_start_time = :screeningTime
+              AND payment.pay_state = 1
         `, {
             replacements: {
                 movieId: movie.movie_id,
