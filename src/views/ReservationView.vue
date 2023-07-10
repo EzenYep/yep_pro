@@ -456,9 +456,6 @@ const makeReservation = async () => {
 
 </script>
 
-
-
-
 <style scoped src="../assets/css/Reservation.css">
 
 </style>
