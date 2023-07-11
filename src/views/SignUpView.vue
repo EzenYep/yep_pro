@@ -8,7 +8,8 @@
 
 
 
-            <input type="checkbox" name="agree" value="1" id="mustchk" @click="checkAgreeAll()" v-model="mustchk"> 이용약관 동의<strong>(필수)</strong>
+    <input type="checkbox" name="agree" v-model="mustchk">
+    <label for="mustchk">이용약관 동의<strong>(필수)</strong></label>
 
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
@@ -28,8 +29,8 @@
             </div>
 
             
-                <input type="checkbox" name="agree" value="2" id="mustchk" @click="checkAgreeAll()" v-model="mustchk2"> 개인정보수집 및 이용<strong>(필수)</strong>
-
+    <input type="checkbox" name="agree" v-model="mustchk2">
+    <label for="mustchk2">개인정보수집 및 이용<strong>(필수)</strong></label>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingTwo">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -44,8 +45,8 @@
             </div>
 
             
-                <input type="checkbox" name="agree" value="3" @click="checkAgreeAll()"> 이벤트 수신동의<strong>(선택)</strong>
-
+    <input type="checkbox" name="agree" v-model="mustchk3" >
+    <label for="mustchk3">이벤트 수신동의<strong>(선택)</strong></label>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingThree">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -59,10 +60,10 @@
                 </div>
             </div>
             
-            <label for="agree_all" class="agree_all">
-                <input type="checkbox" name="agreeAll" id="agreeAll" @click="agreeAll()">
-                <span>모두 동의합니다</span>
-            </label>
+
+    <input type="checkbox" name="agreeAll" v-model="allChecked"  @change="toggleAll">
+    <label for="agreeAll">모두 동의합니다</label>
+
         </div>
 
         <div class="marketing">
@@ -160,49 +161,46 @@ import router from "@/router";
 import { ref, watch } from 'vue';
 import axios from "axios";
 import { reactive } from "vue";
-// import nodemailer from 'nodemailer';
-// import dotenv from 'dotenv';
+
+// 체크박스 선택에 대한 부분
 
 let body = reactive({});
 
-function filterKoreanCharacters(event) {    //이름 입력칸에 한글만 입력 가능
+function filterKoreanCharacters(event) {
   const input = event.target.value;
   const filteredInput = input.replace(/[^가-힣]/g, '');
   body.name = filteredInput;
 }
 
-// ------------------------------------------------------------------------------------
 
-function checkAgreeAll()  {         //약관이용 체크박스
-  
-  const checkboxes 
-    = document.querySelectorAll('input[name="agree"]');
- 
-  const checked 
-    = document.querySelectorAll('input[name="agree"]:checked');
-  
-  const agreeAll 
-    = document.querySelector('input[name="agreeAll"]');
-  
-  if(checkboxes.length === checked.length)  {
-    agreeAll.checked = true;
-  }else {
-    agreeAll.checked = false;
+const mustchk = ref(false);
+const mustchk2 = ref(false);
+const mustchk3 = ref(false);
+const allChecked = ref(false);
+
+watch([mustchk, mustchk2, mustchk3], () => {
+  if (mustchk.value && mustchk2.value && mustchk3.value) {
+    allChecked.value = true;
+  } else {
+    allChecked.value = false;
   }
+});
 
+function toggleAll() {
+  if (allChecked.value) {
+    mustchk.value = true;
+    mustchk2.value = true;
+    mustchk3.value = true;
+  } else {
+    mustchk.value = false;
+    mustchk2.value = false;
+    mustchk3.value = false;
+  }
 }
 
-function agreeAll()  {
-  const checkboxes 
-     = document.getElementsByName('agree');
-     const agreeAll = document.querySelector('input[name="agreeAll"]');
 
-  checkboxes.forEach((checkbox) => {
-    checkbox.checked = agreeAll.checked
-  })
-}
 
-// ------------------------------------------------------------------------------------
+
                                             //이메일 관련
 const verificationResult = ref('');
 const verificationCodeInput = ref('');
@@ -268,7 +266,6 @@ function restrictKorean(event) {          //이메일 입력칸 한글x
     event.target.value = input.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
   }
 }
-// ------------------------------------------------------------------------------------
 
 const password1 = ref('');
 const password2 = ref('');
@@ -277,16 +274,14 @@ const passwordCheckErrorMessage = ref('');
 const tel1 = ref('');
 const tel2 = ref('');
 const tel3 = ref('');
-// ------------------------------------------------------------------------------------
 
-watch([password1, password2], () => {  // 비밀번호 불일치 문구
-  if (password1.value !== password2.value) {
+watch([password1, password2], ([newPassword1, newPassword2]) => {
+  if (newPassword1 !== newPassword2) {
     passwordCheckErrorMessage.value = "* 비밀번호가 일치하지 않습니다.";
   } else {
     passwordCheckErrorMessage.value = '';
   }
 });
-// ------------------------------------------------------------------------------------
 
 
 const LogInEvent = async () => {
@@ -330,15 +325,10 @@ const LogInEvent = async () => {
     });
   }
 };
-  
-const mustchk = ref(false);
-const mustchk2 = ref(false);
-// ------------------------------------------------------------------------------------
 
 
 
-// ------------------------------------------------------------------------------------
- 
+
 </script>
 
 <style scoped>

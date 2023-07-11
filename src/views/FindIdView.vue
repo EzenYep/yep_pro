@@ -51,10 +51,7 @@ const Findidresult = async () => {
   };
 
   try {
-    const response = await axios.post(
-      "http://localhost:9212/api/user/searchUser",
-      requestData
-    );
+    const response = await axios.post("http://localhost:9212/api/user/searchUser",requestData);
 
     const { status, data } = response;
     if (status === 200) {

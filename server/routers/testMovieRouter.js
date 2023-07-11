@@ -8,6 +8,6 @@ movieRouter.get('/movie/category', movieController.category);
 movieRouter.get("/movie/trailer_url",movieController.movie_url);
 movieRouter.get("/movie/screening_poster_url",movieController.getScreeningMoviePosters);
 movieRouter.get("/movie/non_screening_poster_url",movieController.getNonScreeningMoviePosters);
-
+movieRouter.post("/movie/searchmovie",movieController.searchmovie);
 
 module.exports = movieRouter;

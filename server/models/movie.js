@@ -44,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
         });
         Movie.hasOne(models.File, {
             foreignKey: 'movie_id',
+            as: 'file',
             onDelete: 'CASCADE',
         });
         Movie.belongsToMany(models.Category, {
