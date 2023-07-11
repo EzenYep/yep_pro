@@ -9,7 +9,8 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
-
+const CategoryRouter = require("./routers/movieCategoryRouter.js")
+app.use("/api",CategoryRouter)
 const userRouter = require("./routers/UserRouter.js");
 app.use("/api", userRouter);
 const movieRouter = require("./routers/testMovieRouter")
