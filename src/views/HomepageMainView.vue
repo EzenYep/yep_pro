@@ -2,12 +2,12 @@
     <div class="container">
         <!-- 이미지 그룹 -->
         <iframe
-                :src="`https://www.youtube.com/embed/${urls.videoUrl}?autoplay=1`"
+                :src="`https://www.youtube-nocookie.com/embed/${urls.videoUrl}?autoplay=1`"
                 title="YouTube video player"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
         ></iframe>
-        <!-- 검색 -->
+         검색
         <div>
             <div class="wrap">
                 <div class="search">
@@ -37,18 +37,21 @@
                     <div class="slide" v-for="(poster, index) in currentMovies" :key="index">
                         <!-- 이미지 및 영화 정보 표시 -->
                         <div class="movie-info">
-                            <img :src="poster" alt="Movie Poster" class="poster-image">
+                            <img :src="poster" alt="Movie Poster" class="poster-image" @click="goMovieInfos(index)"/>
                             <h4>{{ movies.movieTitles[currentMovieOffset.value + index] }}</h4>
                             <!-- 추가적인 영화 정보 표시 -->
                         </div>
                     </div>
+
                 </div>
-                <button class="next-button" @click="nextMovieSlide" >
+                <button class="next-button" @click="nextMovieSlide">
                     &gt;
                 </button>
             </div>
         </div>
         <br>
+
+
         <div>
             <h3>상영예정작</h3>
         </div>
@@ -171,7 +174,6 @@ const nextNonMovieSlide = () => {
 }
 
 
-
 onMounted(() => {
     adjustSliderContainerWidth();
     startAutoSlide(); // 자동 슬라이드 시작
@@ -230,9 +232,10 @@ movie_url();
 const movies = reactive({
     posters: [],
     movieTitles: [],
+    movieIds: [],
     non_posters: [],
     non_movieTitles: [],
-    selectedPoster:[]
+    selectedPoster: []
 });
 
 const movie_poster_url = async () => {
@@ -246,18 +249,19 @@ const movie_poster_url = async () => {
 
         movies.posters = posters.map((poster) => poster.poster_url);
         movies.movieTitles = posters.map((poster) => poster.movie_title);
-        console.log(movies.posters);
-        console.log(movies.movieTitles);
-
+        movies.movieIds = posters.map((poster) => poster.movie_id);
+        console.log(movies.movieIds)
         const randomIndex = Math.floor(Math.random() * posters.length);
         movies.selectedPoster = movies.posters[randomIndex];
+
+        // movie_poster_url 함수가 실행될 때 영화 ID를 출력하여 확인
+        console.log(movies.movieIds);
 
     } catch (error) {
         console.error("Error retrieving movie posters:", error);
     }
 };
 movie_poster_url();
-
 
 const non_movie_poster_url = async () => {
     try {
@@ -279,7 +283,6 @@ const non_movie_poster_url = async () => {
 
 non_movie_poster_url();
 
-
 const searchQuery = ref('');
 
 const searchmovie = () => { 
@@ -290,6 +293,16 @@ const searchmovie = () => {
 
 
 
+const goMovieInfos = (currentIndex) => {
+    const index = currentMovieOffset.value + currentIndex;
+    const selectedMovieId = movies.movieIds[index];
+    router.push({
+        name: "movie_info",
+        params: {
+            id: selectedMovieId,
+        },
+    });
+};
 </script>
 
 <style scoped>
@@ -361,7 +374,6 @@ const searchmovie = () => {
     margin-top: 5px;
     text-align: center;
 }
-
 
 
 .previous-button,

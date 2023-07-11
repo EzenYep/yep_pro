@@ -2,6 +2,7 @@ const db = require("../models");
 const Movie = db.movies;
 const axios = require('axios');
 const {QueryTypes} = require("sequelize");
+const sequelize = require("sequelize");
 const MovieCategory = db.movie_categorus
 const File = db.files;
 const ScreeningPeriod = db.screening_periods;
@@ -224,6 +225,35 @@ const category = async (req, res) => {
         res.status(404).send({message: 'No categories found.'});
     }
 }
+const movie_info = async (req, res) => {
+
+    try {
+        const query = `
+            SELECT m.*, f.*, c.category_name, sp.start_date
+            FROM movie AS m
+                     INNER JOIN file AS f ON m.movie_id = f.movie_id
+                     INNER JOIN movie_category AS mc ON m.movie_id = mc.movie_id
+                     INNER JOIN category AS c ON mc.category_id = c.category_id
+                     INNER JOIN screening_period AS sp ON m.movie_id = sp.movie_id
+            WHERE m.movie_id = :movieId
+        `;
+        const replacements = { movieId: req.body.id };
+
+        const [movie_info_data, _] = await db.sequelize.query(query, {
+            replacements,
+            type: sequelize.QueryTypes.SELECT
+        });
+
+        // movie_info_data를 원하는 방식으로 처리하거나 응답으로 전송합니다.
+
+        res.status(200).json(movie_info_data);
+    } catch (error) {
+        console.error("영화 정보를 가져오는 중에 오류가 발생했습니다:", error);
+        res.status(500).json({ error: "영화 정보를 가져오는 중에 오류가 발생했습니다." });
+    }
+};
+
+
 
 
 const searchmovie = async (req, res) => {
@@ -280,5 +310,5 @@ module.exports = {
     getScreeningMoviePosters,
     getNonScreeningMoviePosters,
     searchmovie,
-    
+    movie_info
 }
