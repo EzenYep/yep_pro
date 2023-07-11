@@ -28,10 +28,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: true,
         },
-        movie_views: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-        },
         director: {
             type: DataTypes.STRING(255),
             allowNull: true,

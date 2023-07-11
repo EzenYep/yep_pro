@@ -1,3 +1,5 @@
+//LoginView
+
 <template>
 
     <div class="login-box">

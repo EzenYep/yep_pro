@@ -109,7 +109,6 @@ CREATE TABLE `movie` (
   `movie_description` varchar(255) DEFAULT NULL,
   `age_rating` int DEFAULT NULL,
   `price` int DEFAULT NULL,
-  `movie_views` int DEFAULT NULL,
   `director` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`movie_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

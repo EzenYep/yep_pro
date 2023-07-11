@@ -1,0 +1,89 @@
+.container {
+    display: flex;
+    justify-content: center;    
+}
+
+.list {
+    border: 1rem; 
+    display: flex; 
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 10%;
+    text-align:center;
+  }
+
+  .btn {
+    font-size: 1.25rem;
+  }
+
+  .movie-option {
+    width: 100%;
+    margin-top: 3%;
+  }
+
+  .caption-col {
+    width: 25%;
+    vertical-align: top;
+  }
+
+  .caption {
+    text-align:center;
+  }
+
+  .horizontal-line {
+    height: 1px;
+    background-color: black;
+    margin-bottom: 5%;
+  }
+
+  .select-seat {
+    width: 100%;
+    margin-top: 3%;
+  }
+
+  .blank {
+    width: 10%;
+  }
+
+  .info-left{
+    text-align: center;
+    width:35%;
+    border-bottom: 2px solid black;
+  }
+
+  .info-right {
+    text-align: center;
+    border-bottom: 2px solid black;
+    width: 20%;
+  }
+
+  .select-seat-title {
+    font-size: 2rem;
+    text-align: center;
+    border-bottom: 3px solid black;
+  }
+
+  .blank-row {
+    height: 3rem;
+  }
+
+  .info-left-detail {
+    text-align: center;
+    width:35%;
+  }
+
+  .info-right-detail {
+    text-align: center;
+    width: 20%;
+  }
+
+
+  .checkbox-large {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .label-large {
+    font-size: 25px;
+    margin: 10px;
+  }

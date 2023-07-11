@@ -1,7 +1,5 @@
 <template>
   <div class="container">
-    
-    
     <div class="user-wrap">
       <h3>회원조회</h3>
       <div class="horizontal-line" ></div>
@@ -11,8 +9,10 @@
     <div>
       <div class="wrap">
         <div class="search">
-          <input type="text" class="searchTerm" placeholder="검색어를 입력하세요.">
-          <button type="submit" class="searchButton">O</button>
+  <div>
+    <input type="text" class="searchTerm" placeholder="검색어를 입력하세요." v-model="searchInput" />
+    <button type="button" class="searchButton" @click="handleSearch" :disabled="isSearchDisabled">O</button>
+  </div>
         </div>
       </div>
     </div>
@@ -30,140 +30,166 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in userList" :key="user.id">
-            <td>{{ user.id }}</td>
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.phone }}</td>
-            <td>{{ user.birthdate }}</td>
+          <tr v-for="user in paginatedUserList" :key="user.id">
+            <td>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                :value="user.id"
+                v-model="user.selected"
+                @change="selectUser(user)"
+              />
+            </td>
+            <td :style="{ color: 'black' }">{{ user.member_name }}</td>
+            <td :style="{ color: 'black' }">{{ user.member_email }}</td>
+            <td :style="{ color: 'black' }">{{ user.birthday }}</td>
+            <td :style="{ color: 'black' }">{{ user.tel }}</td>
           </tr>
-        </tbody>   
-            <tr>
-                <td colspan="5">
-                    <input class="form-check-input me-1" type="checkbox" value="" id="checkbox1">
-                    <label class="form-check-label" for="checkbox1"></label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5">
-                    <input class="form-check-input me-1" type="checkbox" value="" id="checkbox1">
-                    <label class="form-check-label" for="checkbox1"></label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5">
-                    <input class="form-check-input me-1" type="checkbox" value="" id="checkbox1">
-                    <label class="form-check-label" for="checkbox1"></label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5">
-                    <input class="form-check-input me-1" type="checkbox" value="" id="checkbox1">
-                    <label class="form-check-label" for="checkbox1"></label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5">
-                    <input class="form-check-input me-1" type="checkbox" value="" id="checkbox1">
-                    <label class="form-check-label" for="checkbox1"></label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5">
-                    <input class="form-check-input me-1" type="checkbox" value="" id="checkbox1">
-                    <label class="form-check-label" for="checkbox1"></label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5">
-                    <input class="form-check-input me-1" type="checkbox" value="" id="checkbox1">
-                    <label class="form-check-label" for="checkbox1"></label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5">
-                    <input class="form-check-input me-1" type="checkbox" value="" id="checkbox1">
-                    <label class="form-check-label" for="checkbox1"></label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="5">
-                    <input class="form-check-input me-1" type="checkbox" value="" id="checkbox1">
-                    <label class="form-check-label" for="checkbox1"></label>
-                </td>
-            </tr> 
-            <tr>
-                <td colspan="5">
-                    <input class="form-check-input me-1" type="checkbox" value="" id="checkbox1">
-                    <label class="form-check-label" for="checkbox1"></label>
-                </td>
-            </tr>               
+        </tbody>               
       </table>
     </div>
 
     <div class="twobtn">
       <div class="button-group">
         <table>
-            <tr>
-                <button type="button" class="btn btn-outline-secondary" @click="goBack">닫기</button>
-                <button type="button" class="btn btn-outline-secondary">삭제</button>
-            </tr>
+          <tr>
+            <button type="button" class="btn btn-outline-secondary" @click="goBack">닫기</button>
+            <button type="button" class="btn btn-outline-secondary" @click="deleteUsers">삭제</button>
+          </tr>
         </table>
       </div>
     </div>
 
     <nav aria-label="Page navigation example">
-      <br>
         <ul class="pagination justify-content-center">
-          <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
+          <li class="page-item" :class="{ disabled: currentPage === 1 }" >
+            <a class="page-link" href="#" aria-label="Previous" @click="changePage(currentPage - 1)">
                 <span aria-hidden="true">&laquo;</span>
               </a>
+            </li>
+          <li class="page-item" v-for="pageNumber in totalPages" :key="pageNumber" :class="{ active: currentPage === pageNumber }">
+            <a class="page-link" href="#" @click="changePage(pageNumber)">{{ pageNumber }}</a>
           </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
+          <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+            <a class="page-link" href="#" aria-label="Next" @click="changePage(currentPage + 1)">
               <span aria-hidden="true">&raquo;</span>
             </a>
           </li>
         </ul>
       </nav>
     </div>
-
-
-    
-
   </div>
 </template>
 
 
-<script>
+<script setup>
+import { ref, computed, onMounted, watchEffect } from 'vue';
 import router from '@/router';
-export default {
-  methods: {
-    deleteUsers() {
-      // 선택된 사용자 ID를 삭제하는 로직을 추가하세요
-      // 선택된 사용자 ID는 this.selectedUsers 배열에 저장되어 있습니다
-      // 예시로 console.log로 선택된 사용자 ID를 출력하도록 하였습니다
-      console.log("선택된 사용자 ID:", this.selectedUsers);
-    },
-      goBack(){
-          router.push({
-              name:'manager_main'
-          })
-      },
-  },
+import axios from 'axios';
 
-  data() {
-    return {
-      userList: [], // 여기에 사용자 데이터를 추가하세요
-      selectedUsers: [], // 선택된 사용자 ID를 저장할 배열
-    };
-  },
-};
+const userList = ref([]);
+const selectedUsers = ref([]);
+const currentPage = ref(1);
+const pageSize = ref(10);
+const searchKeyword = ref('');
+
+const filteredUserList = computed(() => {
+  return userList.value.filter(user => user.state !== 1 && user.member_name.includes(searchKeyword.value));
+});
+
+const paginatedUserList = computed(() => {
+  const startIndex = (currentPage.value - 1) * pageSize.value;
+  const endIndex = startIndex + pageSize.value;
+  return filteredUserList.value.slice(startIndex, endIndex);
+});
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredUserList.value.length / pageSize.value);
+});
+
+onMounted(getUserList);
+
+async function getUserList() {
+  try {
+    const response = await axios.get('http://localhost:9212/api/getUserList');
+    userList.value = response.data.userList.map(user => ({
+      ...user,
+      selected: false
+    }));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function selectUser(user) {
+  const index = selectedUsers.value.findIndex(u => u.member_id === user.member_id);
+
+  if (index > -1) {
+    selectedUsers.value.splice(index, 1);
+  } else {
+    selectedUsers.value.push(user);
+  }
+}
+
+function deleteUsers() {
+  const values = selectedUsers.value.map(user => user.member_id);
+
+  if (values.length === 0) {
+    console.log("삭제할 컨텐츠가 없습니다");
+    return;
+  }
+
+  if (window.confirm("정말로 선택된 회원을 삭제하시겠습니까?")) {
+    axios
+      .post("http://localhost:9212/api/manager_user", { values })
+      .then((res) => {
+        if (res.data.code === 200) {
+          console.log("삭제 성공");
+          userList.value = userList.value.filter(user => !values.includes(user.member_id));
+          selectedUsers.value = [];
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+       location.reload(); // 창을 새로고침합니다
+  } else {
+    console.log("삭제 취소");
+  }
+}
+
+
+function changePage(pageNumber) {
+  if (pageNumber >= 1 && pageNumber <= totalPages.value) {
+    currentPage.value = pageNumber;
+  }
+}
+
+function goBack() {
+  router.push({
+    name: 'manager_main'
+  });
+}
+
+
+const searchInput = ref('');
+const isSearchDisabled = ref(true);
+
+
+watchEffect(() => {
+  isSearchDisabled.value = searchInput.value.length === 0;
+});
+
+  const handleSearch = () => {
+    searchKeyword.value = searchInput.value; // 검색 키워드 업데이트
+
+    // 검색 결과를 화면에 표시하거나 다른 작업을 수행합니다.
+
+    searchInput.value = ''; // 검색 입력 초기화
+    isSearchDisabled.value = true; // 검색 버튼 비활성화
+  };
 </script>
+
 
 
 <style scoped>
@@ -251,54 +277,54 @@ th.column-large {
 
 /*********** 페이지 표시하는 번호 탭 *************/
 a {
-	-webkit-transition: all 0.3s ease;
-	transition: all 0.3s ease;
+   -webkit-transition: all 0.3s ease;
+   transition: all 0.3s ease;
 }
 
 .nav-links a {
-	margin: 1rem .6rem;
+   margin: 1rem .6rem;
 }
 .nav-links a.page-numbers {
-	color: #000000;
+   color: #000000;
 }
 .nav-links a.page-numbers:hover {
-	color: #000000;
+   color: #000000;
 }
 .nav-links .page-numbers.current,
 .nav-links .page-numbers.dots {
-	color: #000000;
+   color: #000000;
 }
 .nav-links a.next,
 .nav-links a.prev {
-	display: inline-block;
-	padding: .2rem .8rem;
-	background-color: #000000;
-	color: #fff;
-	border-radius: 2px;
+   display: inline-block;
+   padding: .2rem .8rem;
+   background-color: #000000;
+   color: #fff;
+   border-radius: 2px;
 }
 .nav-links a.next:hover,
 .nav-links a.prev:hover {
-	color: #fff;
+   color: #fff;
 }
 
 .nav-links a.prev::before,
 .nav-links a.next::after {
-	content: "";
-	position: relative;
-	display: inline-block;
-	width: 10px;
-	height: 10px;
-	border-left: 2px solid #ffffff;
-	border-bottom: 2px solid #ffffff;
-	margin-right: 5px;
+   content: "";
+   position: relative;
+   display: inline-block;
+   width: 10px;
+   height: 10px;
+   border-left: 2px solid #ffffff;
+   border-bottom: 2px solid #ffffff;
+   margin-right: 5px;
 }
 
 .nav-links a.prev::before {
-	transform: rotate(45deg);
+   transform: rotate(45deg);
 }
 
 .nav-links a.next::after {
-	transform: rotate(-135deg);
+   transform: rotate(-135deg);
 }
 
 .row{
@@ -316,3 +342,5 @@ a {
 }
 
 </style>
+
+

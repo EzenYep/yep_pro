@@ -1,6 +1,7 @@
 const db = require("../models");
 const Member = db.members;
 const jwt = require("jsonwebtoken")
+
 //create
 const addUser = async (req, res) => {
     let info = {
@@ -17,7 +18,8 @@ const addUser = async (req, res) => {
         console.log(err)
     });
 };
-//LogIn
+
+// login
 const oneUser = async (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
@@ -59,80 +61,39 @@ const oneUser = async (req, res) => {
     }
 };
 
-const crystarspwsok = async (req, res) => {
-    console.log(req.body);
-
-    const {password, confirmPasswordok} = req.body; // 새로 입력한 비밀번호와 확인용 비밀번호 입력
-
-    let matched = false; // 일치 여부 저장 변수
-
-    if (password === confirmPasswordok) {
-        matched = true; // 비밀번호 일치
-    }
-
-    if (matched) {
-        // 비밀번호 업데이트
-        const member = await Member.findOne({where: {password}}); // 비밀번호와 일치하는 회원 찾기
+//회원가입
+const searchUser = async (req, res) => {
+    let info = {
+        member_name: req.body.member_name,
+        tel: req.body.tel,
+    };
+    console.log(info)
+    try {
+        const member = await Member.findOne({
+            attributes: ["member_email"],
+            where: {
+                member_name: req.body.member_name,
+                tel: req.body.tel,
+            },
+        });
 
         if (member) {
-            member.password = password; // 새로운 비밀번호로 업데이트
-            await member.save(); // 회원 정보 저장
+            res.status(200).send({ memberEmail: member.member_email });
+        } else {
+            res.status(401)
         }
-    }
-
-    return res.send({matched});
-};
-
-// 비밀번호 변경
-const crystarspws = async (req, res) => {
-    console.log(req.body);
-
-    const {password} = req.body; // 비밀번호 입력
-
-    const member = await Member.findOne({where: {password}}); // 비밀번호와 일치하는 회원 찾기
-
-    let matched = false; // 일치 여부 저장 변수
-
-    if (member) {
-        matched = true; // 비밀번호 일치
-    }
-
-    return res.send({matched});
-};
-
-const crystars = async (req, res) => {
-    const email = req.body.email
-    console.log(email)
-    const crystar = await Member.findOne({
-        where:{member_email:email},
-        attributes: ['member_name', 'birthday', 'tel', 'member_email'],
-    });
-
-    if(crystar){
-        res.send({
-            code:200,
-            member_name: crystar.member_name,
-            member_birthday: crystar.birthday,
-            member_tel : crystar.tel,
-        })
-    }else {
-        res.send({code:400})
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ code: 500, message: "Internal Server Error" });
     }
 };
+// ------------------------------------------------------------------------------------
 
-const CrystalEvent = async () => {
-    // ...
-    await crystars(); // crystars 함수 호출
-    // ...
-};
+
 
 
 module.exports = {
     addUser,
     oneUser,
-    crystarspwsok,
-    crystarspws,
-    crystars,
-    CrystalEvent
+    searchUser,
 };
-
