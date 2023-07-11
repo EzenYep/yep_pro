@@ -9,6 +9,7 @@ const SeatPayment = db.seat_payments;
 const Payment = db.payments
 const {QueryTypes} = require("sequelize");
 const sequelize = require("sequelize");
+const Iamport = require("iamport");
 
 
 const theaterID = async (req, res) => {
@@ -131,7 +132,6 @@ const ReservedSeat = async (req, res) => {
         res.status(500).send(error);
     }
 };
-
 const makeReservation = async (req, res) => {
     try {
         const { movie_id, theater_name, screening_time, seat_ids, member_id } = req.body;
@@ -162,7 +162,6 @@ const makeReservation = async (req, res) => {
             return res.status(400).send({ message: "해당하는 상영 정보를 찾을 수 없습니다." });
         }
         const screening_id = screening.screening_id;
-
         // Payment 테이블에 새로운 엔트리를 생성합니다.
         const newPayment = await Payment.create({
             payment_date: new Date(),
@@ -179,14 +178,13 @@ const makeReservation = async (req, res) => {
                 payment_id: newPayment.payment_id
             });
         }
-
         res.status(200).send({ message: "예약 성공" });
-
     } catch (error) {
         console.error("예약 중에 오류가 발생했습니다:", error);
         res.status(500).send({ message: "서버 오류" });
     }
 };
+
 
 module.exports = {
     theaterID,

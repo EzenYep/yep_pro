@@ -141,6 +141,7 @@ import axios from "axios";
 import { reactive, ref, watchEffect, computed, onMounted, watch } from 'vue'
 import store from "@/store/store";
 
+const isSeatNotSelected = computed(() => selectedSeatIds.value.length === 0);
 const selectedSeatIds = ref([]); // Track selected seat IDs
 const theater_names = ref([]);
 const selectedTheater = ref('');
@@ -421,36 +422,70 @@ watch(selectedSeats, () => {
 })
 
 
-const isSeatNotSelected = computed(() => selectedSeatIds.value.length === 0);
+
+
 
 const makeReservation = async () => {
     const movieId = selectedMovie.value;
     const theaterName = selectedTheater.value;
     const screeningTime = selectedTime.value;
+    const IMP = window.IMP;
+    IMP.init("imp23252800")
     if (isSeatNotSelected.value) {
         // 좌석이 선택되지 않았을 때의 처리
-        alert("좌석을 선택해주세요.")
+        alert("좌석을 선택해주세요.");
         console.log("좌석을 선택해주세요.");
         return;
-    }else if(store.state.email === ''){
-        alert("로그인 해주세요.")
-    }
-    else {
-        try {
-            const response = await axios.post("http://localhost:9212/api/makeReservation", {
-                movie_id: selectedMovie.value,
-                theater_name: selectedTheater.value,
-                screening_time: selectedTime.value,
-                seat_ids: selectedSeatIds.value,
-                member_id:store.state.email
-            });
+    } else if (store.state.email === '') {
+        alert("로그인 해주세요.");
+    } else {
+        // 아임포트 결제 처리
+        IMP.request_pay({
+            pg: 'kcp',
+            pay_method: 'card',
+            merchant_uid: 'merchant_' + new Date().getTime(),
+            name: '영화 예매',
+            amount: 1000,  // 결제할 금액을 입력하세요.
+            buyer_email: store.state.email,
+            buyer_name: '테스트 사용자',
+            buyer_tel: '010-1234-5678',
+            buyer_addr: '서울특별시 강남구 신사동',
+            buyer_postcode: '01181'
+        }, (rsp) => {
+            if (rsp.success) {
+                // 결제 성공 시 처리
+                console.log('결제 성공:', rsp);
+                var msg = '결제가 완료되었습니다.';
+                alert(msg);
 
-            if (response && response.data) {
-                console.log("예약 성공:", response.data);
+                // 예약 처리
+                reserveSeats(movieId, theaterName, screeningTime, selectedSeatIds.value, store.state.email);
+            } else {
+                // 결제 실패 시 처리
+                console.log('결제 실패:', rsp.error_msg);
+                var errorMsg = '결제에 실패하였습니다.';
+                errorMsg += '에러내용: ' + rsp.error_msg;
+                alert(errorMsg);
             }
-        } catch (error) {
-            console.error("예약 중에 오류가 발생했습니다:", error);
+        });
+    }
+};
+
+const reserveSeats = async (movieId, theaterName, screeningTime, seatIds, memberId) => {
+    try {
+        const response = await axios.post("http://localhost:9212/api/makeReservation", {
+            movie_id: movieId,
+            theater_name: theaterName,
+            screening_time: screeningTime,
+            seat_ids: seatIds,
+            member_id: memberId
+        });
+
+        if (response && response.data) {
+            console.log("예약 성공:", response.data);
         }
+    } catch (error) {
+        console.error("예약 중에 오류가 발생했습니다:", error);
     }
 };
 
