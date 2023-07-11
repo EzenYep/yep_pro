@@ -141,7 +141,7 @@ const CrystalEvent = async () => {
 };
 
 // --------------------------------------------------------------------------------------------------
-//회원가입
+
 const searchUser = async (req, res) => {                //아이디 찾기
   let info = {
               member_name: req.body.member_name,
@@ -253,7 +253,8 @@ const updatePassword = async (req, res) => {
     return res.status(500).send({code:500,  message: '비밀번호 업데이트 실패' });
   }
 };
-
+// ------------------------------------------------------------------------------------
+ 
 
 
 module.exports = {

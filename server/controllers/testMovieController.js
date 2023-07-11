@@ -7,6 +7,7 @@ const MovieCategory = db.movie_categorus
 const File = db.files;
 const ScreeningPeriod = db.screening_periods;
 const Category = db.categorys
+const sequelize = require("sequelize");
 /*const NAVER_CLIENT_ID = 'A4rSDLRe1A8hSR2m7kYc'; // 네이버 API 클라이언트 ID
 const NAVER_CLIENT_SECRET = 'xQh6ziwNgJ'; // 네이버 API 클라이언트 Secret*/
 //const KOBIS_KEY = 'c7b8e13ad2c21601d786901a6dd853a1';//영화 진흥 위원회 api키
@@ -255,6 +256,52 @@ const movie_info = async (req, res) => {
 
 
 
+const searchmovie = async (req, res) => {
+    const { movie_title } = req.body;
+    // console.log(movie_title);
+  
+    try {
+      const searchResults = await db.sequelize.query(
+        `SELECT movie.movie_title, file.poster_url
+         FROM movie
+         INNER JOIN file ON movie.movie_id = file.movie_id
+         WHERE movie.movie_title LIKE :movie_title AND movie.movie_state = 1`,
+        {
+          type: QueryTypes.SELECT,
+          replacements: { movie_title: `%${movie_title}%` },
+          raw:true
+        }
+      );
+
+      const searchResults2 = await db.sequelize.query(
+        `SELECT movie.movie_title, file.poster_url
+         FROM movie
+         INNER JOIN file ON movie.movie_id = file.movie_id
+         WHERE movie.movie_title LIKE :movie_title AND movie.movie_state != 1`,
+        {
+          type: QueryTypes.SELECT,
+          replacements: { movie_title: `%${movie_title}%` },
+          raw:true
+        }
+      );
+
+      const movies = {
+        searchResults,
+        searchResults2,
+      };
+      console.log(movies);
+  
+      if (movies.searchResults.length > 0) {
+        res.status(200).send(movies);
+      } else {
+        res.status(401).send({ code: 401, message: '입력하신 정보와 일치하는 영화가 없습니다.' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ code: 500, message: "Internal Server Error" });
+    }
+  };
+
 module.exports = {
     searchMovies,
     category,
@@ -262,5 +309,6 @@ module.exports = {
     movie_url,
     getScreeningMoviePosters,
     getNonScreeningMoviePosters,
+    searchmovie,
     movie_info
 }

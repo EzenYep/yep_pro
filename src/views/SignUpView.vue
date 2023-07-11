@@ -60,10 +60,10 @@
                 </div>
             </div>
             
-        <div style="text-align:right">
-    <input type="checkbox" name="agreeAll" v-model="allChecked"  @change="toggleAll"  >
-    <label for="agreeAll" >모두 동의합니다</label>
-        </div>
+
+    <input type="checkbox" name="agreeAll" v-model="allChecked"  @change="toggleAll">
+    <label for="agreeAll">모두 동의합니다</label>
+
         </div>
 
         <div class="marketing">

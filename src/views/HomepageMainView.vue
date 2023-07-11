@@ -15,8 +15,9 @@
                             type="text"
                             class="searchTerm"
                             placeholder="검색어를 입력하세요."
+                            v-model="searchQuery"
                     />
-                    <button type="submit" class="searchButton">검색</button>
+                    <button type="submit" class="searchButton" @click="searchmovie">검색</button>
                 </div>
             </div>
         </div>
@@ -282,6 +283,16 @@ const non_movie_poster_url = async () => {
 
 non_movie_poster_url();
 
+const searchQuery = ref('');
+
+const searchmovie = () => { 
+  router.push({ name: "SearchMovieView",
+  query: { searchQuery:searchQuery.value },
+}) 
+}
+
+
+
 const goMovieInfos = (currentIndex) => {
     const index = currentMovieOffset.value + currentIndex;
     const selectedMovieId = movies.movieIds[index];
@@ -293,6 +304,7 @@ const goMovieInfos = (currentIndex) => {
     });
 };
 </script>
+
 <style scoped>
 .container {
     /*width: 70%;

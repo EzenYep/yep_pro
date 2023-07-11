@@ -24,10 +24,10 @@
                 <span></span>
                 로그인
             </a>
-            <a href="#" class="findid">아이디찾기</a>&nbsp;|
-            <a href="#" class="findpw">비밀번호찾기</a>
+            <a href="#" class="findid" @click="findid">아이디찾기</a>&nbsp;|
+            <a href="#" class="findpw" @click="findpw">비밀번호찾기</a>
 
-            <a href="#" class="createid">회원가입</a>
+            <a href="#" class="createid" @click="createid">회원가입</a>
 
 
             <a href="#2" class="kakaologin">
@@ -53,6 +53,22 @@ import {reactive} from "vue";
 import axios from "axios";
 import {useStore} from 'vuex'
 import router from "@/router";
+
+const findid = () => {
+    router.push({
+        name: 'find_id'
+    })
+}
+const findpw = () => {
+    router.push({
+        name: 'find_pw'
+    })
+}
+const createid = () => {
+    router.push({
+        name: 'sign_up'
+    })
+}
 
 
 const store = useStore();

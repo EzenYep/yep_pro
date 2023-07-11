@@ -35,9 +35,8 @@
 
 <script setup>
 import router from "@/router";
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import axios from "axios";
-import { reactive } from "vue";
 
 
 const findid=() => {
