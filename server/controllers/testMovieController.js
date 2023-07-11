@@ -7,7 +7,6 @@ const MovieCategory = db.movie_categorus
 const File = db.files;
 const ScreeningPeriod = db.screening_periods;
 const Category = db.categorys
-const sequelize = require("sequelize");
 /*const NAVER_CLIENT_ID = 'A4rSDLRe1A8hSR2m7kYc'; // 네이버 API 클라이언트 ID
 const NAVER_CLIENT_SECRET = 'xQh6ziwNgJ'; // 네이버 API 클라이언트 Secret*/
 //const KOBIS_KEY = 'c7b8e13ad2c21601d786901a6dd853a1';//영화 진흥 위원회 api키
