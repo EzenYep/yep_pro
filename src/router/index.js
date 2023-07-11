@@ -21,8 +21,6 @@ import FindPwView from "@/views/FindPwView.vue";
 import testView from "@/components/TestView.vue";
 import SearchMovieView from "@/views/SearchMovieView";
 import EveryTestView from "@/views/EveryTestView";
-import SearchTestView from "@/views/SearchTestView"
-import NoSearchMovieView from "@/views/NoSearchMovieView";
 const routes = [
     {
         path: '/',
@@ -114,14 +112,6 @@ const routes = [
         path: "/test",
         name: "EveryTestView",
         component: EveryTestView
-    }, {
-        path: "/searchtest",
-        name: "SearchTestView",
-        component: SearchTestView
-    }, {
-        path: "/nosearchmovie",
-        name: "NoSearchMovieView",
-        component: NoSearchMovieView
     }
 
 
