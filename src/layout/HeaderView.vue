@@ -59,11 +59,6 @@ const logout = () => {
     store.commit('CLEAR_TOKEN');
     router.push({ name: 'home' });
 };
-const tokencheck = ()=>{
-    console.log(store.state.token + "   dd     "+store.state.email)
-
-}
-tokencheck();
 const goHome=()=>{
     router.push({
         name: 'home',
