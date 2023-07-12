@@ -96,9 +96,9 @@ const routes = [
     },{
         path:  "/testSignup", //db연결 테스트 부분입니다.
         name: "eventTest",
-        compon0nt: testView
+        component: testView
     },{
-        path: "/managercorrection", // 관리자 영화 수정
+        path: "/np", // 관리자 영화 수정
         name: "correction",
         component: ManagerCorrectionView
     }, {
