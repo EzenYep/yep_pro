@@ -1,37 +1,134 @@
 <template>
-    <div class="findUser-box">
-      <h2>비밀번호 찾기</h2>
-      <hr class="center-hr" />
-      <div class="findbtn">
-        <button class="findIDPW" type="button">아이디찾기</button>
-        <div class="IdPwline"></div>
-        <button class="findIDPW" type="button">비밀번호찾기</button>
+  <div class="findUser-box">
+    <h2>비밀번호 찾기</h2>
+    <hr class="center-hr" />
+    <div class="findbtn">
+      <button class="findIDPW" type="button" @click="findid">아이디찾기</button>
+      <div class="IdPwline"></div>
+      <button class="findIDPW" type="button">비밀번호찾기</button>
+    </div>
+    <div class="a">
+      <div class="user-box">
+        <input type="text" name="" required="" v-model="body.name" @input="filterKoreanCharacters">
+        <label>이름</label>
       </div>
-      <div class="a">
-        <div class="user-box">
-          <input type="text" name="" required="">
-          <label>이름</label>
-        </div>
-        
-        <div class="user-box">
-          <input type="email" name="aa" required="">
-          <label>이메일</label>
-          <button id="sendMessage" value="">인증번호 전송</button>
-        </div>
-    
-        <div class="user-box">
-          <input type="text" name="bb" required="">
-          <label>인증번호</label>
-          <button id="sendMessage">인증</button>
-        </div>
-        <div class="d-flex justify-content-end">
-          <button id="next" type="button"><label>다음</label></button>
-        </div>
+      
+      <div class="user-box">
+        <input type="email" name="aa" required="" v-model="body.email">
+        <label>이메일</label>
+        <button id="sendMessage" value="" @click="sendEmail">인증번호 전송</button>
+      </div>
+  
+      <div class="user-box">
+        <input type="text" name="bb" required="" v-model="verificationCodeInput">
+        <label>인증번호</label>
+        <div id="emailError" class="error">{{ verificationResult }}</div>
+        <button id="sendMessage" @click="verifyCode">인증</button>
+      </div>
+      <div class="d-flex justify-content-end">
+        <button id="next" type="button" @click="findpwresult"><label>다음</label></button>
       </div>
     </div>
-  </template>
-  
-  <style scoped>
+  </div>
+</template>
+
+
+<script setup>
+import router from "@/router";
+import { ref, reactive } from 'vue';
+import axios from "axios";
+
+
+const findid=() => {
+  router.push({
+      name: 'find_id'
+  });
+}
+// ------------------------------------------------------------------------------------
+
+function filterKoreanCharacters(event) {    //이름 입력칸에 한글만 입력 가능
+  const input = event.target.value;
+  const filteredInput = input.replace(/[^가-힣]/g, '');
+  body.name = filteredInput;
+}
+// ------------------------------------------------------------------------------------
+
+let body = reactive({});
+
+const verificationResult = ref('');
+const verificationCodeInput = ref('');
+let verificationCode = '';
+
+const sendEmail = async () => {             //이메일 인증번호 전송
+      const data = {};
+      body = {
+        name: body.name,
+        email: body.email,
+      };
+      console.log(body.email)
+      console.log(body.name)
+      try {
+        const response = await axios.post('http://localhost:9212/api/user/sendEmail', body);
+        if (response.status === 200) {
+          alert("전송되었습니다.");
+          verificationCode = response.data.verificationCode; // 받은 verificationCode 저장
+          
+        } else {
+          alert("전송에 실패했습니다.");
+        }
+      } catch (error) {
+        console.error('이메일 전송 중 오류가 발생했습니다:', error);
+        data.result = '이메일 전송 중 오류가 발생했습니다.';
+      }
+    };
+
+   const verifyCode= () => {               //이메일+인증번호 입력칸 인증번호 확인
+    if (verificationCodeInput.value === verificationCode) {
+      verificationResult.value = '인증번호가 일치합니다.';
+    } else {
+      verificationResult.value = '인증번호가 일치하지 않습니다.';
+    }
+    console.log(verificationCodeInput.value);
+  }
+
+ 
+  // ------------------------------------------------------------------------------------
+
+  const findpwresult = async () => {
+  const data = {
+    member_name: body.name,
+    email: body.email,
+  };
+
+  if (!body.name) {
+    alert('이름을 입력해주세요.');
+  } else if (!body.email) {
+    alert('이메일을 입력해주세요.');
+  } else {
+    try {
+      const response = await axios.post('http://localhost:9212/api/user/findpwresult', data);
+      const code = response.status;
+      if (code === 200) {
+        router.push({ 
+          name: 'find_pw_result',
+          query: { memberEmail: body.email }, // memberEmail 값을 매개변수로 전달
+});
+
+      } else if (code === 401) {
+        alert('일치하는 계정이 없습니다.');
+      } else {
+        alert('비밀번호 찾기 중 오류가 발생했습니다.');
+      }
+    } catch (error) {
+      console.error('비밀번호 찾기 중 오류가 발생했습니다:', error);
+      alert('비밀번호 찾기 중 오류가 발생했습니다.');
+    }
+  }
+};
+</script>
+ 
+ 
+ <style scoped>
   .findUser-box {
     position: relative;
     margin: auto;
@@ -153,12 +250,13 @@
   color: white;
   border: none;
   text-align: right;
+  padding: 8px 13px;
   }
   .user-box [name="aa"]{
-    margin-left: -5%;
+    margin-left: -2%;
   }
   .user-box [name="bb"]{
-    margin-left: -19%;
+    margin-left: -15.5%;
   }
   
   </style>

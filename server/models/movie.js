@@ -1,3 +1,4 @@
+
 // movie.js
 module.exports = (sequelize, DataTypes) => {
     const Movie = sequelize.define('Movie', {
@@ -44,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
         });
         Movie.hasOne(models.File, {
             foreignKey: 'movie_id',
+            as: 'file',
             onDelete: 'CASCADE',
         });
         Movie.belongsToMany(models.Category, {
@@ -58,3 +60,4 @@ module.exports = (sequelize, DataTypes) => {
 
     return Movie;
 };
+

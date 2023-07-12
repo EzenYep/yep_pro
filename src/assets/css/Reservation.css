@@ -1,11 +1,12 @@
+
 .container {
     display: flex;
-    justify-content: center;    
+    justify-content: center;
 }
 
 .list {
-    border: 1rem; 
-    display: flex; 
+    border: 1rem;
+    display: flex;
     flex-direction: column;
     gap: 1rem;
     margin-top: 10%;
@@ -78,12 +79,206 @@
   }
 
 
-  .checkbox-large {
-    width: 25px;
-    height: 25px;
-  }
-  
-  .label-large {
-    font-size: 25px;
-    margin: 10px;
-  }
+/* 여기서부턴 좌석표 CSS */
+/* @import url("https://fonts.googleapis.com/css?family=Lato&display=swap"); */
+
+/* * {
+  box-sizing: border-box;
+} */
+
+.seat-table {
+  margin-top: 5%;
+}
+
+.seat-body {
+  background-color: #252535;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  align-items: center;
+  justify-content: center;
+  height: 30rem;
+  font-family: "Lato", sans-serif;
+  margin: 0;
+}
+
+.seat-container {
+  perspective: 1000px;
+  margin-bottom: 10px;
+}
+
+/* 좌석 통로 나누는 부분 */
+.seat:nth-of-type(2) {
+  margin-right: 20px;
+}
+.seat:nth-of-type(4) {
+  margin-right: 30px;
+}
+.seat:nth-last-of-type(2) {
+  margin-left: 20px;
+}
+.row:nth-child(3) .seat {
+  margin-bottom: 30px;
+}
+
+
+.seat:not(.occupied):hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+.showcase.seat:not(.occupied):hover {
+  cursor: default;
+  transform: scale(1);
+}
+
+.showcase {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #777;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+}
+.showcase li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+}
+.showcase li small {
+  margin-left: 2px;
+}
+
+.screen {
+  background-color: #ffffff;
+  height: 70px;
+  width: 100%;
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: black;
+}
+
+
+
+ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.seats {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+.seat {
+  background-color: #444451;
+  height: 24px;
+  width: 30px;
+  margin: 5px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  color: #2a2a32;
+  font-size: 8px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.seat input [type=checkbox] {
+  position: absolute;
+  opacity: 0;
+}
+.seat input[type=checkbox]:checked + label {
+  background: #ff99e6;
+  -webkit-animation-name: rubberBand;
+  animation-name: rubberBand;
+  animation-duration: 300ms;
+  animation-fill-mode: both;
+}
+.seat input[type=checkbox]:disabled + label {
+  background: #dddddd;
+  text-indent: -9999px;
+  overflow: hidden;
+}
+.seat input[type=checkbox]:disabled + label:after {
+  content: "X";
+  text-indent: 0;
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+.seat input[type=checkbox]:disabled + label:hover {
+  box-shadow: none;
+  cursor: not-allowed;
+}
+/*consider change to image to replace the follow two .seat label*/
+.seat label {
+  display: block;
+  position: relative;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.5rem;
+  padding: 4px 0;
+  background: #66b3ff;
+  border-radius: 5px;
+  animation-duration: 300ms;
+  animation-fill-mode: both;
+}
+.seat label:before {
+  content: "";
+  position: absolute;
+  width: 75%;
+  height: 75%;
+  top: 1px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 3px;
+}
+.seat label:hover {
+  cursor: pointer;
+  box-shadow: 0 0 0px 2px #5C6AFF;
+}
+
+.checkbox-large {
+  width: 25px;
+  height: 25px;
+}
+
+.label-large {
+  font-size: 20px;
+  margin: 10px;
+}
+
+.reserved-seat {
+  color: red; /* Apply your custom styling for reserved seats */
+  pointer-events: none; /* Disable mouse events on reserved seats */
+  cursor: not-allowed; /* Change the cursor for reserved seats */
+}
+
+.disabled-seat {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.selected-seat {
+  background-color: blue;
+}
+
+.button-container {
+  text-align: right;
+}
+.selected {
+  background-color: #007bff;
+  color: white;
+}
+

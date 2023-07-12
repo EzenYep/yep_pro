@@ -10,7 +10,7 @@
         <form>
             <div class="user-box">
                 <input type="text" name="" required="" v-model="body.email">
-                <label>아이디</label>
+                <label>이메일</label>
             </div>
             <div class="user-box">
                 <input type="password" name="" required="" v-model="body.password">
@@ -26,10 +26,10 @@
                 <span></span>
                 로그인
             </a>
-            <a href="#" class="findid">아이디찾기</a>&nbsp;|
-            <a href="#" class="findpw">비밀번호찾기</a>
+            <a href="#" class="findid" @click="findid">아이디찾기</a>&nbsp;|
+            <a href="#" class="findpw" @click="findpw">비밀번호찾기</a>
 
-            <a href="#" class="createid">회원가입</a>
+            <a href="#" class="createid" @click="createid">회원가입</a>
 
 
             <a href="#2" class="kakaologin">
@@ -56,6 +56,22 @@ import axios from "axios";
 import {useStore} from 'vuex'
 import router from "@/router";
 
+const findid = () => {
+    router.push({
+        name: 'find_id'
+    })
+}
+const findpw = () => {
+    router.push({
+        name: 'find_pw'
+    })
+}
+const createid = () => {
+    router.push({
+        name: 'sign_up'
+    })
+}
+
 
 const store = useStore();
 let body = reactive({});
@@ -72,7 +88,7 @@ const LogInEvent = async () => {
     if(code === 200){
 /*        const accessToken =  res.data.accessToken;
         const email = res.data.email;*/
-        store.commit('SET_TOKEN', { accessToken: res.data.accessToken, email: res.data.email})
+        store.commit('SET_TOKEN', { accessToken: res.data.accessToken, email: res.data.email , state:res.data.state})
         console.log(res.data.email)
         if(res.data.state === 0){
             await router.push({
@@ -89,7 +105,6 @@ const LogInEvent = async () => {
     }
 }
 </script>
-
 <style scoped>
 
 

@@ -1,3 +1,4 @@
+<!-- 체크 박스 작업 + 노드 이메일러 작업 -->
 <template>
     <div class="signup-box container-lg" >
         <h3>회원가입</h3>
@@ -6,8 +7,9 @@
         <hr class="center-hr" style="font-weight: 900;"/>
 
 
-        <label for="agree">
-            <input type="checkbox" name="agree" value="1"> 이용약관 동의<strong>(필수)</strong></label>
+
+    <input type="checkbox" name="agree" v-model="mustchk">
+    <label for="mustchk">이용약관 동의<strong>(필수)</strong></label>
 
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
@@ -25,10 +27,10 @@
                     </div>
                 </div>
             </div>
-<!-- sasdsdsdsa -->
-            <label for="agree">
-                <input type="checkbox" name="agree" value="2"> 개인정보수집 및 이용<strong>(필수)</strong></label>
 
+            
+    <input type="checkbox" name="agree" v-model="mustchk2">
+    <label for="mustchk2">개인정보수집 및 이용<strong>(필수)</strong></label>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingTwo">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -42,9 +44,9 @@
                 </div>
             </div>
 
-            <label for="agree">
-                <input type="checkbox" name="agree" value="3"> 이벤트 수신동의<strong>(선택)</strong></label>
-
+            
+    <input type="checkbox" name="agree" v-model="mustchk3" >
+    <label for="mustchk3">이벤트 수신동의<strong>(선택)</strong></label>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingThree">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -57,10 +59,11 @@
                     </div>
                 </div>
             </div>
-            <label for="agree_all" class="agree_all">
-                <input type="checkbox" name="agree_all" id="agree_all" @click="selectAll($event)">
-                <span>모두 동의합니다</span>
-            </label>
+            
+
+    <input type="checkbox" name="agreeAll" v-model="allChecked"  @change="toggleAll">
+    <label for="agreeAll">모두 동의합니다</label>
+
         </div>
 
         <div class="marketing">
@@ -91,30 +94,24 @@
 
 
         <div class="wrapper">
-            <div class="email">
-                <input id="email" type="text" placeholder="이메일을 입력해 주세요.">
-                <div id="emailError" class="error"></div>
-                <div class="auth">
-
-                    <button id="sendMessage">인증번호 전송</button>
-                </div>
-            </div>
-
-            <div class="email">
-                <input id="text" type="text" placeholder="인증번호를 입력해 주세요.">
-                <div id="emailError" class="error"></div>
-                <div class="auth">
-
-                    <button id="sendMessage">인증</button>
-                </div>
-            </div>
+            
+          
 
             <div class="as">
-                <input id="name"  type="text" placeholder="이름을 입력해 주세요.">
+                <input id="name"  type="text" placeholder="이름을 입력해 주세요." v-model="body.name" @input="filterKoreanCharacters">
                 <div id="nameError" class="error"></div>
             </div>
+
+            <div class="bday">
+            <label>생년월일</label>
+            <div>
+                <input type="date" id="yr"  v-model="body.birthday">                
+                
+            </div>
+        </div>
+
             <div class="as">
-                <input id="password" type="password" placeholder="비밀번호를 입력해 주세요." v-model="password1">
+                <input id="password" type="password" placeholder="비밀번호를 입력해 주세요." v-model="password1" >
                 <div id="passwordError" class="error">{{ passwordErrorMessage }}</div>
             </div>
             <div class="as">
@@ -123,20 +120,35 @@
             <div class="checkerror">{{ passwordCheckErrorMessage }}</div>
 
             <div class="phone">
-                <input id="phone1" type="text" size="1" maxlength="3" placeholder="***"> -
-                <input id="phone2" type="text" size="3" maxlength="4" placeholder="****"> -
-                <input id="phone3" type="text" size="3" maxlength="4" placeholder="****">
+                <input id="phone1" type="text" size="1" maxlength="3" placeholder="***" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" v-model="tel1"> -    <!-- 숫자만 입력하는 텍스트-->
+                <input id="phone2" type="text" size="3" maxlength="4" placeholder="****" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" v-model="tel2"> -
+                <input id="phone3" type="text" size="3" maxlength="4" placeholder="****" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" v-model="tel3">
                 <label>*전화번호를 입력해 주세요.</label>
             </div>
 
+            <div class="email">
+                <input id="email" type="email" placeholder="이메일을 입력해 주세요." v-model="body.email"  @input="restrictKorean" @blur="validEmail">
+                <div id="emailError" class="error">{{  result }}</div>
 
+                <div class="auth">
+                    <button id="sendMessage" @click="sendEmail" :disabled="!isValidEmail(body.email)">인증번호 받기</button>
+                </div>
+            </div>
+            <div class="email">
+                <input id="text" type="text" placeholder="인증번호를 입력해 주세요." maxlength="6" v-model="verificationCodeInput">
+                <div id="emailError" class="error">{{ verificationResult }}</div>
+                <div class="auth">
+
+                    <button id="verifybtn" @click="verifyCode">인증</button>
+                </div>
+            </div>
 
 
             <div class="line" id="line">
                 <hr>
             </div>
             <div class="d-flex justify-content-center" id="signupBtnWrapper">
-                <button id="signUpButton" >가입하기</button>
+                <button id="signUpButton" @click="LogInEvent">가입하기</button>
             </div>
         </div>
     </div>
@@ -145,34 +157,179 @@
 </template>
 
 <script setup>
-
-const selectAll = (e) => {      //모두 동의 체크박스
-    const agree_all = e.target;
-    const checkboxes = document.querySelectorAll('input[name="agree"]');
-
-    checkboxes.forEach((checkbox) => {
-        checkbox.checked = agree_all.checked;
-    });
-};
-
+import router from "@/router";
 import { ref, watch } from 'vue';
+import axios from "axios";
+import { reactive } from "vue";
+
+// 체크박스 선택에 대한 부분
+
+let body = reactive({});
+
+function filterKoreanCharacters(event) {
+  const input = event.target.value;
+  const filteredInput = input.replace(/[^가-힣]/g, '');
+  body.name = filteredInput;
+}
+
+
+const mustchk = ref(false);
+const mustchk2 = ref(false);
+const mustchk3 = ref(false);
+const allChecked = ref(false);
+
+watch([mustchk, mustchk2, mustchk3], () => {
+  if (mustchk.value && mustchk2.value && mustchk3.value) {
+    allChecked.value = true;
+  } else {
+    allChecked.value = false;
+  }
+});
+
+function toggleAll() {
+  if (allChecked.value) {
+    mustchk.value = true;
+    mustchk2.value = true;
+    mustchk3.value = true;
+  } else {
+    mustchk.value = false;
+    mustchk2.value = false;
+    mustchk3.value = false;
+  }
+}
+
+
+
+
+                                            //이메일 관련
+const verificationResult = ref('');
+const verificationCodeInput = ref('');
+let verificationCode = '';
+
+const sendEmail = async () => {             //이메일 인증번호 전송
+      const data = {};
+      body = {
+        email: body.email,
+        name: body.name,
+        birthday: body.birthday,
+      };
+      console.log(body.email)
+      try {
+        const response = await axios.post('http://localhost:9212/api/user/sendEmail', body);
+        if (response.status === 200) {
+          alert("전송되었습니다.");
+          verificationCode = response.data.verificationCode; // 받은 verificationCode 저장
+          
+        } else {
+          alert("전송에 실패했습니다.");
+        }
+      } catch (error) {
+        console.error('이메일 전송 중 오류가 발생했습니다:', error);
+        data.result = '이메일 전송 중 오류가 발생했습니다.';
+      }
+    };
+
+    function verifyCode() {               //이메일+인증번호 입력칸 인증번호 확인
+    if (verificationCodeInput.value === verificationCode) {
+      verificationResult.value = '인증번호가 일치합니다.';
+    } else {
+      verificationResult.value = '인증번호가 일치하지 않습니다.';
+    }
+  }
+
+  
+
+                                            //이메일 입력 조건
+const email = ref('');
+const emailErrorMessage = ref('');
+
+function isValidEmail(email) {
+  const emailchk = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+  return emailchk.test(email);
+}
+
+function validEmail() {
+  if (email.value === '' || email.value === undefined) return;
+
+  if (!isValidEmail(email.value)) {
+    emailErrorMessage.value = '올바른 이메일 형식으로 입력해주세요.';
+  } else {
+    emailErrorMessage.value = '';
+  }
+}
+
+
+function restrictKorean(event) {          //이메일 입력칸 한글x
+  const input = event.target.value;
+  const regex = /^[^ㄱ-ㅎㅏ-ㅣ가-힣]*$/;
+  if (!regex.test(input)) {
+    event.target.value = input.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+  }
+}
 
 const password1 = ref('');
 const password2 = ref('');
 const passwordErrorMessage = ref('');
 const passwordCheckErrorMessage = ref('');
+const tel1 = ref('');
+const tel2 = ref('');
+const tel3 = ref('');
 
-watch([password1, password2], () => {
-    if (password1.value !== password2.value) {
-        passwordCheckErrorMessage.value = "*비밀번호가 일치하지 않습니다.";
-    } else {
-        passwordCheckErrorMessage.value = '';
-    }
+watch([password1, password2], ([newPassword1, newPassword2]) => {
+  if (newPassword1 !== newPassword2) {
+    passwordCheckErrorMessage.value = "* 비밀번호가 일치하지 않습니다.";
+  } else {
+    passwordCheckErrorMessage.value = '';
+  }
 });
 
 
-</script>
+const LogInEvent = async () => {
+  const tel = tel1.value + tel2.value + tel3.value; // 전화번호 db 합치기
+    console.log(tel);
+  body = {
+    name: body.name,
+    email: body.email,
+    password: password1.value,
+    tel: tel,
+    birthday: body.birthday
+  };
+// ------------------------------------------------------------------------------------
 
+  if (!mustchk.value) {                 //필수 이용약관 체크시 페이지 전환
+    alert('이용약관 동의에 체크하세요.');
+  } else if (!mustchk2.value) {
+    alert('개인정보수집 및 이용에 체크하세요.');
+  } else if (password1.value !== password2.value) {  // 비밀번호 일치 여부 확인
+    alert('비밀번호가 일치하지 않습니다.'); 
+  } else if (!body.name) {
+    alert('이름을 입력하세요.');
+  } else if (!body.birthday) {
+    alert('생년월일은 입력하세요.');
+  } else if (!tel) {
+    alert('전화번호를 입력하세요.')
+  }else if (!body.email) {
+    alert('이메일을 입력하세요.')
+   }//else if (!) {
+  //   alert('인증번호를 입력하세요.')
+  // }
+   else {
+    await axios.post("http://localhost:9212/api/user/addUser", body).then((res) => {
+      const code = res.data.code;
+      if (code === 200) {
+        alert("가입 완료. 로그인 해주세요.");
+        router.push({ name: 'login' });
+      } else if (code === 401) {
+        alert('이미 존재하는 이메일입니다.')
+      }
+    });
+  }
+};
+
+
+
+
+</script>
 
 <style scoped>
 .checkerror{
@@ -251,6 +408,7 @@ input[type="checkbox"] {
     display: flex;
     align-items: center;
     justify-content: center;
+    
 }
 .email input {
     width: 100%;
@@ -272,6 +430,11 @@ input[type="checkbox"] {
     height: 30px;
     font-size: 13px;
     margin-left: 5%;
+} 
+
+#yr{
+    margin-bottom: 5%;
+    font-size: large;
 }
 .as {
     display: flex;
@@ -292,6 +455,7 @@ input[type="checkbox"] {
 }
 
 .phone input {
+  margin-top: -10px;
     width: 70px;
     padding: 10px 0;
     font-size: 16px;
@@ -301,7 +465,6 @@ input[type="checkbox"] {
     border-bottom: 1px solid #000000;           /*유저네임 밑 줄*/
     outline: none;
     background: transparent;
-    margin-left: 0;
 }
 .phone label{
     margin-left: 3%;

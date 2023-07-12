@@ -1,3 +1,4 @@
+
 // reportcomment.js
 module.exports = (sequelize, DataTypes) => {
     const ReportComment = sequelize.define('ReportComment', {
@@ -14,7 +15,11 @@ module.exports = (sequelize, DataTypes) => {
         member_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
+        },      reporttime: {
+            type: DataTypes.DATE,
+            allowNull: false,
         },
+
     }, {
         tableName: 'reportcomment',
         timestamps: false,
@@ -33,3 +38,4 @@ module.exports = (sequelize, DataTypes) => {
 
     return ReportComment;
 };
+

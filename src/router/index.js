@@ -20,6 +20,8 @@ import FindPwResultView from "@/views/FindPwResultView.vue";
 import FindPwView from "@/views/FindPwView.vue";
 import testView from "@/components/TestView.vue";
 import ManagerCorrectionView from "@/views/ManagerCorrectionView.vue";
+import SearchMovieView from "@/views/SearchMovieView";
+import store from "@/store/store";
 const routes = [
     {
         path: '/',
@@ -59,8 +61,8 @@ const routes = [
         path: "/movie_input",
         name: 'movie_input',
         component: MovieInputView
-    },{
-        path: "/movie_info",
+    },  {
+        path: "/movie/:id",  // 동적 라우트 매개변수 추가
         name: 'movie_info',
         component: MovieInfoView
     },{
@@ -94,14 +96,16 @@ const routes = [
     },{
         path:  "/testSignup", //db연결 테스트 부분입니다.
         name: "eventTest",
-        component: testView
+        compon0nt: testView
     },{
         path: "/managercorrection", // 관리자 영화 수정
         name: "correction",
         component: ManagerCorrectionView
+    }, {
+        path: "/searchmovie",
+        name: "SearchMovieView",
+        component: SearchMovieView
     }
-
-
 ]
 
 const router = createRouter({
@@ -109,4 +113,19 @@ const router = createRouter({
     routes
 })
 
+const adminPages = ['/manager_user', '/manager_main', '/manager_report','/movie_input'];  // 관리자 페이지 경로를 추가합니다.
+
+router.beforeEach((to, from, next) => {
+    const adminRequired = adminPages.includes(to.path);  // 관리자 권한이 필요한 페이지인지 확인합니다.
+    const loggedIn = store.state.token;
+    const state = store.state.userState;  // store에서 userState 값을 가져옵니다.
+
+    if (adminRequired && (!loggedIn || state !== 1)) {
+        // 관리자 페이지에 접근하려는데 로그인되지 않았거나 state 값이 1이 아닌 경우 로그인 페이지로 리디렉션합니다.
+        store.commit('CLEAR_TOKEN');
+        return next('/main/login');
+    }
+
+    next();
+});
 export default router

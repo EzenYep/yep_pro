@@ -1,3 +1,4 @@
+
 // seat_payment.js
 module.exports = (sequelize, DataTypes) => {
     const SeatPayment = sequelize.define('SeatPayment', {
@@ -24,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         SeatPayment.belongsTo(models.Seat, {
             foreignKey: 'seat_id',
             onDelete: 'CASCADE',
+            sourceKey: 'seat_id', // 추가: Seat 모델의 기본 키를 seat_id로 사용합니다.
         });
         SeatPayment.belongsTo(models.Payment, {
             foreignKey: 'payment_id',
@@ -32,4 +34,5 @@ module.exports = (sequelize, DataTypes) => {
     };
 
     return SeatPayment;
+
 };

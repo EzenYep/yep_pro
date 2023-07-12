@@ -21,19 +21,23 @@
       </div>
   
       <div class="d-flex justify-content-center">
-        <button id="next" type="button"><label>변경</label></button>
+        <button id="next" type="button" @click="updatePassword"><label>변경</label></button>
       </div>
     </div>
   </template>
   
   <script setup>
-  import { ref, watch } from 'vue';
+import { ref, watch } from 'vue';
+import router from "@/router";
+import axios from "axios";
+import { useRoute } from 'vue-router';
+const route = useRoute();
   
   const password1 = ref('');
   const password2 = ref('');
   const passwordErrorMessage = ref('');
   const passwordCheckErrorMessage = ref('');
-  
+  const member_email = route.query.memberEmail
   watch([password1, password2], () => {
     if (password1.value !== password2.value) {
       passwordCheckErrorMessage.value = "*비밀번호가 일치하지 않습니다.";
@@ -41,14 +45,44 @@
       passwordCheckErrorMessage.value = '';
     }
   });
+
+
+  const updatePassword = async () => {
+      
+  const data = {
+      member_email: member_email, // 이메일 값 받아오기
+      newPassword: password1.value  };
+      console.log(data);
+      
+  if (password1.value !== password2.value) {
+    alert('비밀번호가 일치하지 않습니다.'); 
+  } else {    
+    try {
+      const response = await axios.post("http://localhost:9212/api/user/updatePassword", data);
+      const code = response.status;
+      
+      if (code === 200) {
+        alert("비밀번호가 변경되었습니다.");
+        router.push({ name: 'login' });
+      } else {
+        alert("비밀번호 변경 중 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error('비밀번호 변경 중 오류가 발생했습니다:', error);
+      alert('비밀번호 변경 중 오류가 발생했습니다.');
+  }
+}
+
+}
+  
   </script>
   
   <style scoped>
   .findUser-box {
     position: relative;
     margin: auto;
-    width: 700px;
-    height: 60%;
+    width: 600px;
+    height: 600px;
     padding: 100px;
     margin-top: 50px;
     background: rgba(233, 202, 202, 0.402);

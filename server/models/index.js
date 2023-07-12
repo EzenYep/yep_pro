@@ -1,3 +1,4 @@
+
 'use strict';
 const { Sequelize, DataTypes } = require("sequelize");
 const env = process.env.NODE_ENV || "development";
@@ -55,3 +56,4 @@ db.theaters = Theater;
 db.reviews = Review;
 
 module.exports = db;
+

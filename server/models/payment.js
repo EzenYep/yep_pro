@@ -1,3 +1,4 @@
+
 // payment.js
 module.exports = (sequelize, DataTypes) => {
     const Payment = sequelize.define('Payment', {
@@ -53,3 +54,4 @@ module.exports = (sequelize, DataTypes) => {
 
     return Payment;
 };
+

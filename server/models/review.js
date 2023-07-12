@@ -1,3 +1,4 @@
+
 // review.js
 module.exports = (sequelize, DataTypes) => {
     const Review = sequelize.define('Review', {
@@ -43,3 +44,4 @@ module.exports = (sequelize, DataTypes) => {
 
     return Review;
 };
+
