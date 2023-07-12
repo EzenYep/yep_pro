@@ -1,12 +1,12 @@
 const db = require("../models");
 const Member = db.members;
 const jwt = require("jsonwebtoken")
-
+const axios = require('axios');
 const nodemailer = require('nodemailer');
 
 //create
 const addUser = async (req, res) => {
- 
+
 
   let info = {
     member_name: req.body.name,
@@ -81,21 +81,6 @@ const oneUser = async (req, res) => {
 };
 
 
-//회원가입
-const searchUser = async (req, res) => {
-    let info = {
-        member_name: req.body.member_name,
-        tel: req.body.tel,
-    };
-    console.log(info)
-    try {
-        const member = await Member.findOne({
-            attributes: ["member_email"],
-            where: {
-                member_name: req.body.member_name,
-                tel: req.body.tel,
-            },
-        });
 // --------------------------------------------------------------------------------------------------
 const crystarspwsok = async (req, res) => {
     console.log(req.body);
@@ -103,21 +88,23 @@ const crystarspwsok = async (req, res) => {
     const {password, confirmPasswordok} = req.body; // 새로 입력한 비밀번호와 확인용 비밀번호 입력
 
     let matched = false; // 일치 여부 저장 변수
-
-    if (password === confirmPasswordok) {
-        matched = true; // 비밀번호 일치
-    }
-
-    if (matched) {
-        // 비밀번호 업데이트
-        const member = await Member.findOne({where: {password}}); // 비밀번호와 일치하는 회원 찾기
-
-        if (member) {
-            res.status(200).send({ memberEmail: member.member_email });
-        } else {
-            res.status(401)
+    try {
+        if (password === confirmPasswordok) {
+            matched = true; // 비밀번호 일치
         }
-    } catch (error) {
+
+        if (matched) {
+            // 비밀번호 업데이트
+            const member = await Member.findOne({where: {password}}); // 비밀번호와 일치하는 회원 찾기
+
+            if (member) {
+                res.status(200).send({ memberEmail: member.member_email });
+            } else {
+                res.status(401)
+            }
+        }
+    }
+    catch (error) {
         console.error(error);
         res.status(500).send({ code: 500, message: "Internal Server Error" });
     }
@@ -169,35 +156,35 @@ const CrystalEvent = async () => {
 
 // --------------------------------------------------------------------------------------------------
 
-const searchUser = async (req, res) => {                //아이디 찾기
-  let info = {
-              member_name: req.body.member_name,
-              tel: req.body.tel,
-          };
-          console.log(info)
-  try {
-    const member = await Member.findOne({
-      attributes: ["member_email"],
-      where: {
-        member_name: req.body.member_name,
-        tel: req.body.tel,
-      },
-    });
+        const searchUser = async (req, res) => {                //아이디 찾기
+            let info = {
+                member_name: req.body.member_name,
+                tel: req.body.tel,
+            };
+            console.log(info)
+            try {
+                const member = await Member.findOne({
+                    attributes: ["member_email"],
+                    where: {
+                        member_name: req.body.member_name,
+                        tel: req.body.tel,
+                    },
+                });
 
-    if (member) {
-      res.status(200).send({ memberEmail: member.member_email });
-    } else {
-      res.status(401).send({ code:401, message: '입력하신 정보와 일치하는 이메일이 없습니다.'})
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ code: 500, message: "Internal Server Error" });
-  }
-};
+                if (member) {
+                    res.status(200).send({ memberEmail: member.member_email });
+                } else {
+                    res.status(401).send({ code:401, message: '입력하신 정보와 일치하는 이메일이 없습니다.'})
+                }
+            } catch (error) {
+                console.error(error);
+                res.status(500).send({ code: 500, message: "Internal Server Error" });
+            }
+        };  // <-- 여기서 함수가 끝납니다.
+
 // ------------------------------------------------------------------------------------
 
                                                    //이메일 인증
-const axios = require('axios');
 
 const generateRandomCode = () => {                //이메일 코드 생성
   const code = Math.floor(100000 + Math.random() * 900000).toString().substring(0, 6);
@@ -205,7 +192,7 @@ const generateRandomCode = () => {                //이메일 코드 생성
 };
 
 const sendEmail = async (req,res) => {
- 
+
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: { user: 'yepproject9212@gmail.com', pass: 'gmmndxidvegxphtf' },
@@ -225,7 +212,7 @@ const sendEmail = async (req,res) => {
       </form>  
     `,
   };
-  
+
   try {
     const info = await transporter.sendMail(mailOptions);
     console.log('이메일이 성공적으로 전송되었습니다.', info.messageId);
@@ -267,21 +254,21 @@ const sendEmail = async (req,res) => {
                                                     //새로운 비번 변경
 const updatePassword = async (req, res) => {
   try {
- 
+
     const memberpw = await Member.update({password: req.body.newPassword }, {where:{ member_email: req.body.member_email}})
 
     // 비밀번호 업데이트가 성공적으로 수행되었다는 응답을 반환합니다.
     if (memberpw) {
       res.status(200).send({message: ''});
       console.log('비밀번호 업데이트 성공');
-    } 
+    }
   } catch (error) {
     console.error('비밀번호 업데이트 실패:', error);
     return res.status(500).send({code:500,  message: '비밀번호 업데이트 실패' });
   }
 };
 // ------------------------------------------------------------------------------------
- 
+
 
 
 module.exports = {
@@ -294,7 +281,6 @@ module.exports = {
     searchUser,
     sendEmail,
     findpwresult,
-    updatePassword,
-
+    updatePassword
 };
 

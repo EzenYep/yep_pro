@@ -27,7 +27,7 @@
                                 v-for="theaterName in theater_names"
                                 :key="theaterName"
                                 @click="titles(theaterName)"
-                                :class="{ smaselected: selectedTheater === theaterName }"
+                                :class="{ selected: selectedTheater === theaterName }"
                             >
                                 {{ theaterName }}
                             </button>
@@ -219,11 +219,7 @@ const titles = async (theaterName) => {
     } catch (error) {
         console.error("영화 정보를 가져오는 중에 오류가 발생했습니다:", error);
     }
-};
-        }
-    } catch (error) {
-        console.error("영화 정보를 가져오는 중에 오류가 발생했습니다:", error);
-    }
+
 };
 
 const selectMovie = async (movie) => {
@@ -278,7 +274,6 @@ const updateSeatStatus = () => {
     const selectedTheaterName = selectedTheater.value;
     const selectedMovieId = selectedMovie.value;
     const screeningTime = selectedTime.value;
-
     if (!selectedMovieId || !selectedTheaterName || !screeningTime) {
         return;
     }
@@ -342,6 +337,7 @@ const isSeatReserved = (seat) => {
 };
 
 watchEffect(() => {
+
     if (selectedMovie.value && selectedTheater.value && selectedTime.value && theater_names.value) {
         seat();
         reservedSeat();
@@ -442,17 +438,6 @@ watch([selectedMovie, selectedTheater, selectedTime], () => {
 
 
 
-<style scoped src="../assets/css/Reservation.css">
-.checkbox-large {
-    width: 25px;
-    height: 25px;
-}
-
-.label-large {
-    font-size: 20px;
-    margin: 10px;
-}
-
 const makeReservation = async () => {
     const movieId = selectedMovie.value;
     const theaterName = selectedTheater.value;
@@ -495,7 +480,7 @@ const makeReservation = async () => {
                 errorMsg += '에러내용: ' + rsp.error_msg;
                 alert(errorMsg);
             }
-       });
+        });
         // 예약 처리
         //reserveSeats(movieId, theaterName, screeningTime, selectedSeatIds.value, store.state.email);
     }
@@ -518,9 +503,7 @@ const reserveSeats = async (movieId, theaterName, screeningTime, seatIds, member
         console.error("예약 중에 오류가 발생했습니다:", error);
     }
 };
-
 </script>
-
 <style scoped src="../assets/css/Reservation.css">
 
 </style>
