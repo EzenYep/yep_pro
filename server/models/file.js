@@ -1,3 +1,4 @@
+
 // file.js
 module.exports = (sequelize, DataTypes) => {
     const File = sequelize.define('File', {

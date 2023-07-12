@@ -19,8 +19,8 @@ import FindIdView from "@/views/FindIdView.vue";
 import FindPwResultView from "@/views/FindPwResultView.vue";
 import FindPwView from "@/views/FindPwView.vue";
 import testView from "@/components/TestView.vue";
+import ManagerCorrectionView from "@/views/ManagerCorrectionView.vue";
 import SearchMovieView from "@/views/SearchMovieView";
-import EveryTestView from "@/views/EveryTestView";
 import store from "@/store/store";
 const routes = [
     {
@@ -66,14 +66,6 @@ const routes = [
         name: 'movie_info',
         component: MovieInfoView
     },{
-        path: "/movie_view",
-        name: 'movieView',
-        component: MovieView
-    },{
-        path: "/mypage_view",
-        name: 'mypage',
-        component: MyPageView
-    },{
         path: "/my_page_crystal",
         name: 'my_page_crystal',
         component: MyPageCrystalView
@@ -104,18 +96,16 @@ const routes = [
     },{
         path:  "/testSignup", //db연결 테스트 부분입니다.
         name: "eventTest",
-        component: testView
+        compon0nt: testView
+    },{
+        path: "/managercorrection", // 관리자 영화 수정
+        name: "correction",
+        component: ManagerCorrectionView
     }, {
         path: "/searchmovie",
         name: "SearchMovieView",
         component: SearchMovieView
-    }, {
-        path: "/test",
-        name: "EveryTestView",
-        component: EveryTestView
     }
-
-
 ]
 
 const router = createRouter({

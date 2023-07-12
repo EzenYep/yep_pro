@@ -1,3 +1,4 @@
+
 // seat_payment.js
 module.exports = (sequelize, DataTypes) => {
     const SeatPayment = sequelize.define('SeatPayment', {
@@ -33,4 +34,5 @@ module.exports = (sequelize, DataTypes) => {
     };
 
     return SeatPayment;
+
 };

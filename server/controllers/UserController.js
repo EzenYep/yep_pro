@@ -1,7 +1,9 @@
 const db = require("../models");
 const Member = db.members;
 const jwt = require("jsonwebtoken")
+
 const nodemailer = require('nodemailer');
+
 //create
 const addUser = async (req, res) => {
  
@@ -31,8 +33,11 @@ const addUser = async (req, res) => {
     res.status(500).send({ code: 500, message: '회원 가입 중 오류가 발생했습니다.' });
   }
 };
+
+
 // --------------------------------------------------------------------------------------------------
 //LogIn
+
 const oneUser = async (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
@@ -74,6 +79,23 @@ const oneUser = async (req, res) => {
         return console.log(e)
     }
 };
+
+
+//회원가입
+const searchUser = async (req, res) => {
+    let info = {
+        member_name: req.body.member_name,
+        tel: req.body.tel,
+    };
+    console.log(info)
+    try {
+        const member = await Member.findOne({
+            attributes: ["member_email"],
+            where: {
+                member_name: req.body.member_name,
+                tel: req.body.tel,
+            },
+        });
 // --------------------------------------------------------------------------------------------------
 const crystarspwsok = async (req, res) => {
     console.log(req.body);
@@ -91,13 +113,16 @@ const crystarspwsok = async (req, res) => {
         const member = await Member.findOne({where: {password}}); // 비밀번호와 일치하는 회원 찾기
 
         if (member) {
-            member.password = password; // 새로운 비밀번호로 업데이트
-            await member.save(); // 회원 정보 저장
+            res.status(200).send({ memberEmail: member.member_email });
+        } else {
+            res.status(401)
         }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ code: 500, message: "Internal Server Error" });
     }
-
-    return res.send({matched});
 };
+
 // --------------------------------------------------------------------------------------------------
 // 비밀번호 변경(내정보)
 const crystarspws = async (req, res) => {
@@ -140,6 +165,7 @@ const CrystalEvent = async () => {
     await crystars(); // crystars 함수 호출
     // ...
 };
+
 
 // --------------------------------------------------------------------------------------------------
 

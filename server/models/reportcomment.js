@@ -1,3 +1,4 @@
+
 // reportcomment.js
 module.exports = (sequelize, DataTypes) => {
     const ReportComment = sequelize.define('ReportComment', {
@@ -37,3 +38,4 @@ module.exports = (sequelize, DataTypes) => {
 
     return ReportComment;
 };
+

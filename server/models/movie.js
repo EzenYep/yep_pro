@@ -1,3 +1,4 @@
+
 // movie.js
 module.exports = (sequelize, DataTypes) => {
     const Movie = sequelize.define('Movie', {
@@ -59,3 +60,4 @@ module.exports = (sequelize, DataTypes) => {
 
     return Movie;
 };
+

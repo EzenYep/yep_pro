@@ -9,5 +9,6 @@ ReservationRouter.post('/getSeat',reservationController.seatser)
 ReservationRouter.post("/getReserved",reservationController.ReservedSeat)
 ReservationRouter.post("/makeReservation",reservationController.makeReservation)
 
+module.exports = ReservationRouter; 
 
-module.exports = ReservationRouter;
+

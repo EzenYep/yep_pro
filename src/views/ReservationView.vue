@@ -27,7 +27,7 @@
                                 v-for="theaterName in theater_names"
                                 :key="theaterName"
                                 @click="titles(theaterName)"
-                                :class="{ selected: selectedTheater === theaterName }"
+                                :class="{ smaselected: selectedTheater === theaterName }"
                             >
                                 {{ theaterName }}
                             </button>
@@ -140,13 +140,14 @@
     </div>
 </template>
 
+
 <script setup>
 import axios from "axios";
 import { reactive, ref, watchEffect, computed, onMounted, watch } from 'vue'
 import store from "@/store/store";
-
 const isSeatNotSelected = computed(() => selectedSeatIds.value.length === 0);
 const selectedSeatIds = ref([]); // Track selected seat IDs
+
 const theater_names = ref([]);
 const selectedTheater = ref('');
 const selectedTime = ref('');
@@ -156,6 +157,7 @@ const selectedMovie = ref(null); // 선택한 영화 객체를 저장하는 변�
 const theater = ref({});
 let movieId = ref('');
 const seatNumber = ref('');
+
 const numbers = ref([]);
 const numbergroup = ref([]);
 
@@ -188,6 +190,9 @@ const theater_seat = async (theaterId) => {
     }
 };
 
+
+//극장 선택시 영화제목 가져옴
+
 const titles = async (theaterName) => {
     try {
         console.log(theaterName);
@@ -215,6 +220,11 @@ const titles = async (theaterName) => {
         console.error("영화 정보를 가져오는 중에 오류가 발생했습니다:", error);
     }
 };
+        }
+    } catch (error) {
+        console.error("영화 정보를 가져오는 중에 오류가 발생했습니다:", error);
+    }
+};
 
 const selectMovie = async (movie) => {
     try {
@@ -224,6 +234,7 @@ const selectMovie = async (movie) => {
         console.log(response.data);
 
         // 상영 시작 시간을 배열로 변환
+
         selectedMovie.value = movie.movie_title;
         times.value = response.data.map((screening) => screening.screening_start_time);
         console.log(times)
@@ -233,7 +244,6 @@ const selectMovie = async (movie) => {
 };
 const selectTime = (time) => {
     // 선택한 시간에 대한 처리 로직 작성
-
     selectedTime.value = time;
 };
 
@@ -244,7 +254,6 @@ const seat = async () => {
 
     if (response && response.data) {
         const movieSeat = response.data;
-
         const seats = movieSeat.map((seat) => ({
             seat_id: seat.seat_id,
             seat_number: seat.seat_number,
@@ -433,6 +442,16 @@ watch([selectedMovie, selectedTheater, selectedTime], () => {
 
 
 
+<style scoped src="../assets/css/Reservation.css">
+.checkbox-large {
+    width: 25px;
+    height: 25px;
+}
+
+.label-large {
+    font-size: 20px;
+    margin: 10px;
+}
 
 const makeReservation = async () => {
     const movieId = selectedMovie.value;
