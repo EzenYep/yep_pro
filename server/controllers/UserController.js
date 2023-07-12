@@ -40,7 +40,8 @@ const oneUser = async (req, res) => {
         const member = await Member.findOne({where: {member_email: email, password: password}}) // email 필드를 사용
         const accessToken = jwt.sign(
             {
-                member_id: member.member_id, // 'user' 객체 사용
+                member_id: member.member_id, // 'member' 객체 사용
+                member_state: Number(member.state)
             },
             `${process.env.JWT_KEY}`,  // 백틱 사용
             {expiresIn: 60 * 60 * 1000}

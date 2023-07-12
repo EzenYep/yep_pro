@@ -27,6 +27,7 @@
                                 v-for="theaterName in theater_names"
                                 :key="theaterName"
                                 @click="titles(theaterName)"
+                                :class="{ selected: selectedTheater === theaterName }"
                             >
                                 {{ theaterName }}
                             </button>
@@ -41,9 +42,11 @@
                                 v-for="movie in movies"
                                 :key="movie.movie_id"
                                 @click="selectMovie(movie)"
+                                :class="{ selected: selectedMovie === movie.movie_title }"
                             >
                                 {{ movie.movie_title }}
                             </button>
+
                         </div>
                     </td>
                     <td class="caption-col"> <!-- 시간 -->
@@ -55,6 +58,7 @@
                                 v-for="time in times"
                                 :key="time"
                                 @click="selectTime(time)"
+                                :class="{ selected: selectedTime === time }"
                             >
                                 {{ time }}
                             </button>
@@ -329,7 +333,7 @@ const isSeatReserved = (seat) => {
 };
 
 watchEffect(() => {
-    if (selectedMovie.value && selectedTheater.value && selectedTime.value) {
+    if (selectedMovie.value && selectedTheater.value && selectedTime.value && theater_names.value) {
         seat();
         reservedSeat();
     }
@@ -420,7 +424,12 @@ watch(selectedSeats, () => {
     console.log("ss")
     updateSeatStatus()
 })
-
+watch([selectedMovie, selectedTheater, selectedTime], () => {
+    // 좌석 정보 초기화 로직을 여기에 작성하세요.
+    selectedSeatIds.value = []; // 예약된 좌석 정보 초기화
+    reservedSeats.value = []; // 예약된 좌석 정보 초기화
+    updateSeatStatus(); // 좌석 상태 업데이트
+});
 
 
 
@@ -467,7 +476,9 @@ const makeReservation = async () => {
                 errorMsg += '에러내용: ' + rsp.error_msg;
                 alert(errorMsg);
             }
-        });
+       });
+        // 예약 처리
+        //reserveSeats(movieId, theaterName, screeningTime, selectedSeatIds.value, store.state.email);
     }
 };
 
