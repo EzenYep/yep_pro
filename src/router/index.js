@@ -22,6 +22,7 @@ import testView from "@/components/TestView.vue";
 import ManagerCorrectionView from "@/views/ManagerCorrectionView.vue";
 import SearchMovieView from "@/views/SearchMovieView";
 import store from "@/store/store";
+import MovieVIew from "@/views/MovieVIew.vue";
 const routes = [
     {
         path: '/',
@@ -105,6 +106,10 @@ const routes = [
         path: "/searchmovie",
         name: "SearchMovieView",
         component: SearchMovieView
+    },{
+        path:"/movie_view",
+        name: "movieView",
+        component: MovieVIew
     }
 ]
 
