@@ -110,6 +110,10 @@ const routes = [
         path:"/movie_view",
         name: "movieView",
         component: MovieVIew
+    },{
+        path:"/mypage",
+        name: "mypage",
+        component: MyPageView
     }
 ]
 
