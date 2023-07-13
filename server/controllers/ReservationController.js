@@ -7,9 +7,10 @@ const Seat = db.seats;
 const Member = db.members;
 const SeatPayment = db.seat_payments;
 const Payment = db.payments
-const {QueryTypes} = require("sequelize");
+const {QueryTypes, where} = require("sequelize");
 const sequelize = require("sequelize");
 const Iamport = require("iamport");
+const axios = require("axios");
 
 
 const theaterID = async (req, res) => {
@@ -184,7 +185,29 @@ const makeReservation = async (req, res) => {
         res.status(500).send({ message: "서버 오류" });
     }
 };
+const paylog = async (req,res) =>{
+    try{
+        console.log(req.body.movie_id)
 
+        const moviePay = await Movie.findOne({where:{movie_title:req.body.movie_id},raw:true})
+        console.log(moviePay)
+        if(moviePay){
+            const mpay = moviePay.price;
+            const member_id = await Member.findOne({where:{member_email:req.body.member_email}})
+            if(member_id){
+                const payLog = await Payment.findAll({where:{member_id:member_id.member_id}})
+                if(payLog){
+                    res.send({code:200,amount:mpay})
+                }else {
+                    res.send({code:400})
+                }
+            }
+        }
+
+    }catch (error) {
+        console.log(error)
+    }
+}
 
 module.exports = {
     theaterID,
@@ -192,6 +215,6 @@ module.exports = {
     screenTime,
     seatser,
     ReservedSeat,
-    makeReservation
-    // getScreenings
+    makeReservation,
+    paylog
 };
