@@ -21,6 +21,7 @@ import FindPwView from "@/views/FindPwView.vue";
 import testView from "@/components/TestView.vue";
 import SearchMovieView from "@/views/SearchMovieView";
 import EveryTestView from "@/views/EveryTestView";
+
 const routes = [
     {
         path: '/',

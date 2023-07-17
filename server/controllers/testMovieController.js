@@ -7,7 +7,6 @@ const MovieCategory = db.movie_categorus
 const File = db.files;
 const ScreeningPeriod = db.screening_periods;
 const Category = db.categorys
-const sequelize = require("sequelize");
 /*const NAVER_CLIENT_ID = 'A4rSDLRe1A8hSR2m7kYc'; // 네이버 API 클라이언트 ID
 const NAVER_CLIENT_SECRET = 'xQh6ziwNgJ'; // 네이버 API 클라이언트 Secret*/
 //const KOBIS_KEY = 'c7b8e13ad2c21601d786901a6dd853a1';//영화 진흥 위원회 api키
@@ -262,7 +261,7 @@ const searchmovie = async (req, res) => {
   
     try {
       const searchResults = await db.sequelize.query(
-        `SELECT movie.movie_title, file.poster_url
+        `SELECT movie.movie_title, file.poster_url, movie.movie_id
          FROM movie
          INNER JOIN file ON movie.movie_id = file.movie_id
          WHERE movie.movie_title LIKE :movie_title AND movie.movie_state = 1`,
@@ -274,10 +273,10 @@ const searchmovie = async (req, res) => {
       );
 
       const searchResults2 = await db.sequelize.query(
-        `SELECT movie.movie_title, file.poster_url
+        `SELECT movie.movie_title, file.poster_url, movie.movie_id
          FROM movie
          INNER JOIN file ON movie.movie_id = file.movie_id
-         WHERE movie.movie_title LIKE :movie_title AND movie.movie_state != 1`,
+         WHERE movie.movie_title LIKE :movie_title AND (movie.movie_state = 0 OR movie.movie_state = 2)`,
         {
           type: QueryTypes.SELECT,
           replacements: { movie_title: `%${movie_title}%` },
@@ -291,7 +290,7 @@ const searchmovie = async (req, res) => {
       };
       console.log(movies);
   
-      if (movies.searchResults.length > 0) {
+      if (movies) {
         res.status(200).send(movies);
       } else {
         res.status(401).send({ code: 401, message: '입력하신 정보와 일치하는 영화가 없습니다.' });
