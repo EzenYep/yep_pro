@@ -51,7 +51,7 @@ const commentCreate = async (req, res) => {
                 if (createdReview) {
                     res.send({code: 200});
                 } else {
-                    res.send({code: 400});
+                    res.send({code: 404});
                 }
             } else {
                 return res.status(404).json({error: '결제 정보를 찾을 수 없습니다.'});
@@ -60,7 +60,6 @@ const commentCreate = async (req, res) => {
             return res.status(404).json({error: '멤버를 찾을 수 없습니다.'});
         }
     } catch (error) {
-        console.error('리뷰 생성 중에 오류가 발생했습니다:', error);
         res.status(500).json({error: '리뷰 생성 중에 오류가 발생했습니다.'});
     }
 };

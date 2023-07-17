@@ -80,79 +80,55 @@ const oneUser = async (req, res) => {
     }
 };
 
+/*
+const naverCallback = async (req, res) => {
+    const code = req.query.code;
+    const state = req.query.state;
 
-// --------------------------------------------------------------------------------------------------
-const crystarspwsok = async (req, res) => {
-    console.log(req.body);
-
-    const {password, confirmPasswordok} = req.body; // 새로 입력한 비밀번호와 확인용 비밀번호 입력
-
-    let matched = false; // 일치 여부 저장 변수
     try {
-        if (password === confirmPasswordok) {
-            matched = true; // 비밀번호 일치
-        }
+        const result = await axios.post('https://nid.naver.com/oauth2.0/token', {
+            grant_type: 'authorization_code',
+            client_id: process.env.NAVER_APP_KEY,
+            client_secret: process.env.NAVER_APP_SECRET,
+            code,
+            state
+        });
 
-        if (matched) {
-            // 비밀번호 업데이트
-            const member = await Member.findOne({where: {password}}); // 비밀번호와 일치하는 회원 찾기
+        const { access_token } = result.data;
+        // 이후 access_token을 사용하여 네이버 API를 호출하거나,
+        // 사용자 로그인 및 회원가입 절차를 진행합니다.
+        // ...
 
-            if (member) {
-                res.status(200).send({ memberEmail: member.member_email });
-            } else {
-                res.status(401)
+        // 네이버 API를 통해 이메일, 생년월일, 전화번호 정보 가져오기
+        const userProfileResult = await axios.get('https://openapi.naver.com/v1/nid/me', {
+            headers: {
+                Authorization: `Bearer ${access_token}`
             }
+        });
+
+        const { email, birthday, mobile } = userProfileResult.data.response;
+// 이메일, 생년월일, 전화번호를 사용하여 DB에서 회원 정보 확인 또는 생성
+        const existingMember = await Member.findOne({ where: { member_email: email } });
+
+        if (!existingMember) {
+            // DB에 해당 정보가 없는 경우, 회원 추가
+            const newMember = await Member.create({
+                member_email: email,
+                member_birthday: birthday,
+                member_mobile: mobile
+            });
+            res.redirect(`/auth/success?email=${email}`);
+        } else {
+            // DB에 이메일 정보가 있는 경우, 로그인 처리
+            res.redirect(`/auth/success?email=${email}`);
         }
-    }
-    catch (error) {
+
+    } catch (error) {
         console.error(error);
-        res.status(500).send({ code: 500, message: "Internal Server Error" });
+        res.redirect('/auth/failure');
     }
 };
-
-// --------------------------------------------------------------------------------------------------
-// 비밀번호 변경(내정보)
-const crystarspws = async (req, res) => {
-    console.log(req.body);
-
-    const {password} = req.body; // 비밀번호 입력
-
-    const member = await Member.findOne({where: {password}}); // 비밀번호와 일치하는 회원 찾기
-
-    let matched = false; // 일치 여부 저장 변수
-
-    if (member) {
-        matched = true; // 비밀번호 일치
-    }
-
-    return res.send({matched});
-};
-const crystars = async (req, res) => {
-    const email = req.body.email
-    console.log(email)
-    const crystar = await Member.findOne({
-        where:{member_email:email},
-        attributes: ['member_name', 'birthday', 'tel', 'member_email'],
-    });
-
-    if(crystar){
-        res.send({
-            code:200,
-            member_name: crystar.member_name,
-            member_birthday: crystar.birthday,
-            member_tel : crystar.tel,
-        })
-    }else {
-        res.send({code:400})
-    }
-};
-
-const CrystalEvent = async () => {
-    // ...
-    await crystars(); // crystars 함수 호출
-    // ...
-};
-
+*/
 
 // --------------------------------------------------------------------------------------------------
 
@@ -269,18 +245,16 @@ const updatePassword = async (req, res) => {
 };
 // ------------------------------------------------------------------------------------
 
+// 네이버 로그인 라우트
+
 
 
 module.exports = {
     addUser,
     oneUser,
-    crystarspwsok,
-    crystarspws,
-    crystars,
-    CrystalEvent,
     searchUser,
     sendEmail,
     findpwresult,
-    updatePassword
+    updatePassword,
 };
 

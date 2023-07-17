@@ -6,7 +6,7 @@ const getUserList = async (req, res) => {
     const userList = await Member.findAll();
     res.status(200).json({ userList });
   } catch (error) {
-    console.error('회원 목록을 가져오는데 실패했습니다:', error);
+    console.error('회원 목록을 가져오는데 실패했습니다.', error);
     res.status(500).json({ message: '회원 목록을 가져오는데 실패했습니다.' });
   }
 };

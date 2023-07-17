@@ -5,17 +5,17 @@
       <div class="horizontal-line" ></div>
     </div>
 
-
     <div>
       <div class="wrap">
         <div class="search">
-  <div>
-    <input type="text" class="searchTerm" placeholder="검색어를 입력하세요." v-model="searchInput" />
-    <button type="button" class="searchButton" @click="handleSearch" :disabled="isSearchDisabled">O</button>
-  </div>
+          <div>
+            <input type="text" class="searchTerm" placeholder="검색어를 입력하세요." v-model="searchInput" />
+            <button type="button" class="searchButton" @click="handleSearch" :disabled="isSearchDisabled">O</button>
+          </div>
         </div>
       </div>
     </div>
+
 
     <div class="container-list">
       <div class="user-list">
@@ -132,8 +132,8 @@ function selectUser(user) {
 }
 
 function deleteUsers() {
-  const values = selectedUsers.value.map(user => user.member_id);
-
+  const values = selectedUsers.value.map(user => user.member_id); // 선택된 유저의 member_id를 가져옵니다
+  
   if (values.length === 0) {
     console.log("삭제할 컨텐츠가 없습니다");
     return;
@@ -144,7 +144,7 @@ function deleteUsers() {
       .post("http://localhost:9212/api/manager_user", { values })
       .then((res) => {
         if (res.data.code === 200) {
-          console.log("삭제 성공");
+          console.log("삭제 성공"); // 창을 새로고침합니다
           userList.value = userList.value.filter(user => !values.includes(user.member_id));
           selectedUsers.value = [];
         }
@@ -152,12 +152,11 @@ function deleteUsers() {
       .catch((err) => {
         console.log(err);
       });
-       location.reload(); // 창을 새로고침합니다
+      location.reload();
   } else {
     console.log("삭제 취소");
   }
 }
-
 
 function changePage(pageNumber) {
   if (pageNumber >= 1 && pageNumber <= totalPages.value) {
@@ -170,7 +169,6 @@ function goBack() {
     name: 'manager_main'
   });
 }
-
 
 const searchInput = ref('');
 const isSearchDisabled = ref(true);
@@ -188,8 +186,9 @@ watchEffect(() => {
     searchInput.value = ''; // 검색 입력 초기화
     isSearchDisabled.value = true; // 검색 버튼 비활성화
   };
-</script>
 
+
+</script>
 
 
 <style scoped>

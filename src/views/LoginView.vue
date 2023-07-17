@@ -1,52 +1,30 @@
 //LoginView
 
 <template>
-
+    <div class="aaa"></div>
     <div class="login-box">
         <h2>LOGIN</h2>
 
-        <hr class="center-hr"/>
+        <hr class="center-hr" />
 
-        <form>
-            <div class="user-box">
-                <input type="text" name="" required="" v-model="body.email">
-                <label>이메일</label>
-            </div>
-            <div class="user-box">
-                <input type="password" name="" required="" v-model="body.password">
-                <label>비밀번호</label>
-            </div>
-            <label class="checkbox"> <!--아이디 저장 기능은 보류-->
-                <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> 아이디 저장
-            </label>
-            <a @click="LogInEvent" class="login">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                로그인
-            </a>
-            <a href="#" class="findid" @click="findid">아이디찾기</a>&nbsp;|
-            <a href="#" class="findpw" @click="findpw">비밀번호찾기</a>
+        <div class="user-box">
+            <input type="text" name="" required="" v-model="body.email" @keyup.enter="LogInEvent">
+            <label>이메일</label>
+        </div>
+        <div class="user-box">
+            <input type="password" name="" required="" v-model="body.password" @keyup.enter="LogInEvent">
+            <label>비밀번호</label>
+        </div>
+        <label class="checkbox"> <!--아이디 저장 기능은 보류-->
+            <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> 아이디 저장
+        </label>
+        <input type="submit" @click="LogInEvent" @keyup.enter="LogInEvent" class="login" value="로그인" >
 
-            <a href="#" class="createid" @click="createid">회원가입</a>
+        <a href="#" class="findid" @click="findid">아이디찾기</a>&nbsp;|
+        <a href="#" class="findpw" @click="findpw">비밀번호찾기</a>
 
+        <a href="#" class="createid" @click="createid">회원가입</a>
 
-            <a href="#2" class="kakaologin">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                카카오 로그인
-            </a>
-            <a href="#3" class="naverlogin">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                네이버 로그인
-            </a>
-        </form>
     </div>
 </template>
 
@@ -75,6 +53,7 @@ const createid = () => {
 
 const store = useStore();
 let body = reactive({});
+
 const LogInEvent = async () => {
     body ={
         email: body.email,
@@ -86,8 +65,8 @@ const LogInEvent = async () => {
     console.log(res)
     const code = res.data.code;
     if(code === 200){
-/*        const accessToken =  res.data.accessToken;
-        const email = res.data.email;*/
+        /*        const accessToken =  res.data.accessToken;
+                const email = res.data.email;*/
         store.commit('SET_TOKEN', { accessToken: res.data.accessToken, email: res.data.email , state:res.data.state})
         console.log(res.data.email)
         if(res.data.state === 0){
@@ -105,16 +84,24 @@ const LogInEvent = async () => {
     }
 }
 </script>
+
 <style scoped>
 
-
-
+.aaa{
+    margin-bottom: 10%;
+}
+.center-hr{
+    color: #FF8551;
+    border-style: solid;
+    border-width: 2px;
+}
 .login-box {
     position: relative;
+
     margin: auto;
     width: 500px;
     padding: 40px;
-    background: rgba(95, 53, 53, 0.5);
+    background: #FFFAF8;
     box-sizing: border-box;
     border-radius: 10px;
 }
@@ -174,7 +161,8 @@ const LogInEvent = async () => {
     transition: .5s;
     margin-top: 50px;
     letter-spacing: 4px;
-    background: #90baff;
+    background: #FFE2C0;
+    width: 100%;
 
 }
 .findid{
@@ -196,7 +184,7 @@ const LogInEvent = async () => {
     font-size: small;
     margin-left:49%;
 }
-.kakaologin {
+/* .kakaologin {
     position: relative;
     display: inline-block;
     padding: 10px 168px;
@@ -228,7 +216,7 @@ const LogInEvent = async () => {
     background: #00ff4c;
 
 
-}
+} */
 
 
 .login-box a span {
