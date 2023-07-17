@@ -21,8 +21,10 @@ import FindPwView from "@/views/FindPwView.vue";
 import testView from "@/components/TestView.vue";
 import ManagerCorrectionView from "@/views/ManagerCorrectionView.vue";
 import SearchMovieView from "@/views/SearchMovieView";
+
 import store from "@/store/store";
 import MovieVIew from "@/views/MovieVIew.vue";
+
 const routes = [
     {
         path: '/',
