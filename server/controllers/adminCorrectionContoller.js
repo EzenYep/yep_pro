@@ -43,10 +43,43 @@ const deleteMovies = async (req, res) => {
         return res.status(500).json({ message: '회원 삭제 실패' });
     }
 };
+const updateMovie = async (req, res) => {
+    try {
+        // 수정할 필드와 값을 요청에서 가져옵니다.
+        const { movie_title, movie_state, start_date, end_date,movie_id } = req.body;
+
+        // 데이터베이스에서 해당 영화를 조회합니다.
+        const movie = await Movie.findOne({ where: { movie_id: movie_id } });
+        if (!movie) {
+            return res.status(404).json({ error: '영화를 찾을 수 없습니다.' });
+        }
+
+        // 필드를 수정합니다.
+        movie.movie_title = movie_title;
+        movie.movie_state = movie_state;
+
+        // 영화와 연결된 screening_period도 수정합니다.
+        const screeningPeriod = await ScreeningPeriod.findOne({ where: { movie_id: movie_id } });
+        if (screeningPeriod) {
+            screeningPeriod.start_date = start_date;
+            screeningPeriod.end_date = end_date;
+            await screeningPeriod.save();
+        }
+
+        // 수정된 영화 정보와 screening_period를 저장합니다.
+        await Promise.all([movie.save(), screeningPeriod.save()]);
+
+        return res.status(200).json({ message: '영화 정보가 수정되었습니다.' });
+    } catch (error) {
+        console.error('영화 정보 수정 실패:', error);
+        return res.status(500).json({ error: '서버 오류' });
+    }
+};
 
 
 module.exports = {
     getMovieList,
-    deleteMovies
+    deleteMovies,
+    updateMovie
    
 };
