@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="search">
-      <input type="text" class="searchTerm"  v-model="searchQuery" />
+      <input type="text" class="searchTerm" @keyup.enter="searchMovie" v-model="searchQuery" />
       <button type="submit" class="searchButton" @click="searchMovie">검색</button>
     </div>
 
@@ -14,7 +14,7 @@
     <div class="movielist">
       <div class="item" v-for="movie in searchResults" :key="movie.movie_id" id="onmovie">
         <!-- <div class="movieposter"  @click="showMovieDetail(movie.movie_id)"> -->
-          <img :src="movie.poster_url" alt="포스터" />
+          <img :src="movie.poster_url" alt="포스터" @click="showMovieDetail(movie.movie_id)"/>
         <h4>{{ movie.movie_title  }}</h4> <!--영화 제목-->
       </div>
     </div>
@@ -27,7 +27,7 @@
       <div class="item" v-for="movie in searchResults2" :key="movie.movie_id" id="offmovie">
         <!-- <div class="movieposter" @click="showMovieDetail(movie.movie_id)"> -->
           <!-- 포스터 {{ movie.poster_url }} -->
-          <img :src="movie.poster_url" alt="포스터" />
+          <img :src="movie.poster_url" alt="포스터" @click="showMovieDetail(movie.movie_id)"/>
         <h4>{{ movie.movie_title  }}</h4>
       </div>
     </div>
@@ -48,9 +48,13 @@ const searchResults2 = ref([]);
 
 const searchMovie = async () => {           //검색결과 페이지 내에 검색후 결과 출력
   try {
+
+    if (!searchQuery.value) {
     searchResults.value = [];
     searchResults2.value = [];
     console.log(searchQuery.value);
+    return;
+    }
 
     router.replace({
       name: 'SearchMovieView',
@@ -88,6 +92,7 @@ const searchMovie2 = async () => {      //(메인페이지)페이지 로딩이 �
 
     const data = response.data;
     searchResults.value = data.searchResults;
+    console.log(searchResults.value)
     searchResults2.value = data.searchResults2;  
 
   } catch (error) {
@@ -100,10 +105,13 @@ const totalResults = computed(() => {           //영화 검색 건수 합치기
   return searchResults.value.length + searchResults2.value.length;
 });
 
- const showMovieDetail = async () => {      //영화 이미지 누르면 상세정보 페이지로 이동
-
+const showMovieDetail = async (movieId) => {
+  console.log(movieId)
+  router.push({
+    name: 'movie_info', 
+    params: { id: movieId } 
+  });
 };
-
 
 
 </script>

@@ -19,33 +19,35 @@
             <label class="checkbox"> <!--아이디 저장 기능은 보류-->
                 <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> 아이디 저장
             </label>
-            <a @click="LogInEvent" class="login">
+            <a @click="LogInEvent">
+                <input type="submit" @keyup.enter="LogInEvent" class="login" value="로그인" >
                 <span></span>
                 <span></span>
                 <span></span>
                 <span></span>
-                로그인
+                
             </a>
+
             <a href="#" class="findid" @click="findid">아이디찾기</a>&nbsp;|
             <a href="#" class="findpw" @click="findpw">비밀번호찾기</a>
 
             <a href="#" class="createid" @click="createid">회원가입</a>
 
 
-            <a href="#2" class="kakaologin">
+            <!-- <a href="#2" class="kakaologin" @click="kakaoLogin">
                 <span></span>
                 <span></span>
                 <span></span>
                 <span></span>
                 카카오 로그인
             </a>
-            <a href="#3" class="naverlogin">
+            <a href="#3" class="naverlogin" @click="naverLogin">
                 <span></span>
                 <span></span>
                 <span></span>
                 <span></span>
-                네이버 로그인
-            </a>
+                네이버 로그인 -->
+            <!-- </a> -->
         </form>
     </div>
 </template>
@@ -75,6 +77,19 @@ const createid = () => {
 
 const store = useStore();
 let body = reactive({});
+
+// const kakaoLogin = () => {
+//     const KAKAO_CLIENT_ID = 'd41f8e2127cfde2d758144a5f14b8958';
+//   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${'http://localhost:8080/auth/kakao/callback'}&response_type=code`;
+//   window.location.href = KAKAO_AUTH_URL;
+// }
+
+// const naverLogin = () => {
+//    const NAVER_APP_KEY='_lOHDN4nzsTQQCoSinv4';
+//   const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?client_id=${NAVER_APP_KEY}&response_type=code&redirect_uri=${'http://localhost:8080/auth/naver/callback'}&state=${'YEP TEST'}`;
+//   window.location.href = NAVER_AUTH_URL;
+// }
+
 const LogInEvent = async () => {
     body ={
         email: body.email,
@@ -104,9 +119,14 @@ const LogInEvent = async () => {
         location.reload();
     }
 }
-</script>
-<style scoped>
 
+
+
+
+</script>
+
+
+<style scoped>
 
 
 .login-box {
@@ -175,6 +195,7 @@ const LogInEvent = async () => {
     margin-top: 50px;
     letter-spacing: 4px;
     background: #90baff;
+    width: 100%;
 
 }
 .findid{
@@ -196,7 +217,7 @@ const LogInEvent = async () => {
     font-size: small;
     margin-left:49%;
 }
-.kakaologin {
+/* .kakaologin {
     position: relative;
     display: inline-block;
     padding: 10px 168px;
@@ -228,7 +249,7 @@ const LogInEvent = async () => {
     background: #00ff4c;
 
 
-}
+} */
 
 
 .login-box a span {

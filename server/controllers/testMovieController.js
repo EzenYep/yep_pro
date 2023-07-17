@@ -261,7 +261,7 @@ const searchmovie = async (req, res) => {
   
     try {
       const searchResults = await db.sequelize.query(
-        `SELECT movie.movie_title, file.poster_url
+        `SELECT movie.movie_title, file.poster_url, movie.movie_id
          FROM movie
          INNER JOIN file ON movie.movie_id = file.movie_id
          WHERE movie.movie_title LIKE :movie_title AND movie.movie_state = 1`,
@@ -273,10 +273,10 @@ const searchmovie = async (req, res) => {
       );
 
       const searchResults2 = await db.sequelize.query(
-        `SELECT movie.movie_title, file.poster_url
+        `SELECT movie.movie_title, file.poster_url, movie.movie_id
          FROM movie
          INNER JOIN file ON movie.movie_id = file.movie_id
-         WHERE movie.movie_title LIKE :movie_title AND movie.movie_state != 1`,
+         WHERE movie.movie_title LIKE :movie_title AND (movie.movie_state = 0 OR movie.movie_state = 2)`,
         {
           type: QueryTypes.SELECT,
           replacements: { movie_title: `%${movie_title}%` },
@@ -290,7 +290,7 @@ const searchmovie = async (req, res) => {
       };
       console.log(movies);
   
-      if (movies.searchResults.length > 0) {
+      if (movies) {
         res.status(200).send(movies);
       } else {
         res.status(401).send({ code: 401, message: '입력하신 정보와 일치하는 영화가 없습니다.' });
