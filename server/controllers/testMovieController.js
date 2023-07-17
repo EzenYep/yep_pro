@@ -87,7 +87,7 @@ const movie_input = async (req, res) => {
 
         const newMovie = await Movie.create({
             movie_title: info.movie_title,
-            movie_state: info.startDate > new Date() ? 1 : 2,
+            movie_state: new Date(info.startDate) > Date.now() ? 2 : 1,
             movie_description: info.movie_description,
             age_rating: info.ageRating,
             director: info.director,
@@ -242,7 +242,7 @@ const movie_info = async (req, res) => {
             replacements,
             type: sequelize.QueryTypes.SELECT
         });
-
+        console.log(movie_info_data)
         // movie_info_data를 원하는 방식으로 처리하거나 응답으로 전송합니다.
 
         res.status(200).json(movie_info_data);

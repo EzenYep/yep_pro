@@ -1,8 +1,12 @@
 <template>
-    <div class="container1">
-        <div class="image-wrap">
-            <!-- 여기에 이미지를 추가하세요 -->
-            <img src="이미지_파일_경로" alt="광고">
+    <div class="top-container">
+        <div class="video-wrap">
+            <iframe
+                :src="`https://www.youtube.com/embed/${urls.videoUrl}?autoplay=1`"
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
         </div>
 
         <div class="search-wrap">
@@ -17,13 +21,14 @@
 
         <div class="category-wrap">
             <ul>
-                <li data-category="action"><a href="#">액션</a></li>
-                <li data-category="sf"><a href="#">SF/판타지</a></li>
-                <li data-category="romance"><a href="#">로맨스</a></li>
-                <li data-category="horror"><a href="#">호러/스릴러</a></li>
-                <li data-category="comedy"><a href="#">코미디</a></li>
-                <li data-category="family"><a href="#">가족</a></li>
-                <li data-category="animation"><a href="#">애니메이션</a></li>
+                <li data-category="action"><a href="#" @click="showMoviesByCategory(1)">액션</a></li>
+                <li data-category="sf"><a href="#" @click="showMoviesByCategory(2)">SF/판타지</a></li>
+                <li data-category="romance"><a href="#" @click="showMoviesByCategory(3)">로맨스</a></li>
+                <li data-category="horror"><a href="#" @click="showMoviesByCategory(4)">호러/스릴러</a></li>
+                <li data-category="comedy"><a href="#" @click="showMoviesByCategory(5)">코미디</a></li>
+                <li data-category="family"><a href="#" @click="showMoviesByCategory(6)">가족</a></li>
+                <li data-category="animation"><a href="#" @click="showMoviesByCategory(7)">애니메이션</a></li>
+
             </ul>
             <ul>
                 <li v-for="category in categories" :key="category" :data-category="category">
@@ -35,91 +40,79 @@
 
 
 
-        <div class="container2">
-            <a class="photoLink" href="#">
-                <div id="item1" class="item">
-                    <div class="color">
-                        <img src="이미지_경로" alt="이미지_설명">
-                    </div>
-                </div>
-            </a>
+        <div class="bottom-container">
+            <div class="item">
+                <a class="box-image" href="#">
+                    <span class="color">
+                        <img :src="state.posters[0]" alt="">
+                    </span>
+                </a>
+                <div class="box-content"><strong class="title">{{ state.movieTitles[0] }}</strong></div>
+            </div>
 
-            <a class="photoLink" href="#">
-                <div id="item2" class="item">
-                    <div class="color">
-                        <img src="이미지_경로" alt="이미지_설명">
-                    </div>
-                </div>
-            </a>
+            <div class="item">
+                <a class="box-image" href="#">
+                    <span class="color">
+                        <img :src="state.posters[1]" alt="">
+                    </span>
+                </a>
+                <div class="box-content"><strong class="title">{{ state.movieTitles[1] }}</strong></div>
+            </div>
 
-            <a class="photoLink" href="#">
-                <div id="item3" class="item">
-                    <div class="color">
-                        <img src="이미지_경로" alt="이미지_설명">
-                    </div>
-                </div>
-            </a>
+            <div class="item">
+                <a class="box-image" href="#">
+                    <span class="color">
+                        <img :src="state.posters[2]" alt="">
+                    </span>
+                </a>
+                <div class="box-content"><strong class="title">{{ state.movieTitles[2] }}</strong></div>
+            </div>
 
-            <a class="photoLink" href="#">
-                <div id="item4" class="item">
-                    <div class="color">
-                        <img src="이미지_경로" alt="이미지_설명">
-                    </div>
-                </div>
-            </a>
+            <div class="item">
+                <a class="box-image" href="#">
+                    <span class="color">
+                        <img :src="state.posters[3]" alt="">
+                    </span>
+                </a>
+                <div class="box-content"><strong class="title">{{ state.movieTitles[3] }}</strong></div>
+            </div>
         </div>
 
-        <div class="container2">
-            <a class="photoLink" href="#">
-                <div id="item5" class="item">
-                    <div class="color">
-                        <img src="이미지_경로" alt="이미지_설명">
-                    </div>
-                </div>
-            </a>
+        <div class="bottom-container2">
+            <div class="item">
+                <a class="box-image" href="#">
+                    <span class="color">
+                        <img :src="state.posters[4]" alt="">
+                    </span>
+                </a>
+                <div class="box-content"><strong class="title">{{ state.movieTitles[4] }}</strong></div>
+            </div>
 
-            <a class="photoLink" href="#">
-                <div id="item6" class="item">
-                    <div class="color">
-                        <img src="이미지_경로" alt="이미지_설명">
-                    </div>
-                </div>
-            </a>
+            <div class="item">
+                <a class="box-image" href="#">
+                    <span class="color">
+                        <img :src="state.posters[5]" alt="">
+                    </span>
+                </a>
+                <div class="box-content"><strong class="title">{{ state.movieTitles[5] }}</strong></div>
+            </div>
 
-            <a class="photoLink" href="#">
-                <div id="item7" class="item">
-                    <div class="color">
-                        <img src="이미지_경로" alt="이미지_설명">
-                    </div>
-                </div>
-            </a>
+            <div class="item">
+                <a class="box-image" href="#">
+                    <span class="color">
+                        <img :src="state.posters[6]" alt="">
+                    </span>
+                </a>
+                <div class="box-content"><strong class="title">{{ state.movieTitles[6] }}</strong></div>
+            </div>
 
-            <a class="photoLink" href="#">
-                <div id="item8" class="item">
-                    <div class="color">
-                        <img src="이미지_경로" alt="이미지_설명">
-                    </div>
-                </div>
-            </a>
-        </div>
-
-
-        <div class="row">
-            <div class="col-sm-12 text-xs-center">
-                <nav class="navigation pagination" role="navigation">
-                    <h2 class="screen-reader-text">Navigazione articoli</h2>
-                    <div class="nav-links">
-                        <a class="prev page-numbers" href="#"><i class="ion-ios-arrow-back"></i></a>
-                        <a class='page-numbers' href='#'>1</a>
-                        <a class='page-numbers' href='#'>2</a>
-                        <a class='page-numbers' href='#'>3</a>
-                        <a class='page-numbers' href='#'>4</a>
-                        <a class='page-numbers' href='#'>5</a>
-                        <span class="page-numbers dots">&hellip;</span>
-                        <a class='page-numbers' href='#'>8</a>
-                        <a class="next page-numbers" href="#"><i class="ion-ios-arrow-forward"></i></a>
-                    </div>
-                </nav>
+            <div class="item">
+                <a class="box-image" href="#">
+                    <span class="color">
+                        <img :src="state.posters[7]" alt="">
+                    </span>
+                </a>
+                <div class="box-content"><strong class="title">{{ state.movieTitles[7] }}</strong></div>
             </div>
         </div>
     </div>
@@ -127,7 +120,123 @@
 
 </template>
 
-<script>
+<script setup>
+import axios from "axios"
+import { reactive } from "vue";
+
+
+const urls = reactive({
+    videoUrl: "",
+});
+
+const movie_url = async () => {
+    const res = await axios.get("http://localhost:9212/api/movie/trailer_url");
+    const videoID = res.data.trailer_url;
+    urls.videoUrl = videoID.split("watch?v=")[1];
+    console.log(urls.videoUrl);
+};
+movie_url();
+
+const state = reactive({
+    posters: [],
+    movieTitles: [],
+    movieIds: [],
+    non_posters: [],
+    non_movieTitles: [],
+    selectedPoster: [],
+    categories: ['action', 'sf', 'romance', 'horror', 'comedy', 'family', 'animation'], //'action', 'sf', 'romance', 'horror', 'comedy', 'family', 'animation'
+    activeCategory: 'action'
+});
+
+// const fetchImageUrls = async () => {
+//   try {
+//     const res = await axios.get("http://localhost:9212/api/movie/image_urls");
+//     const imageUrls = res.data.imageUrls;
+//     state.posters = imageUrls;
+//   } catch (error) {
+//     console.error("Error fetching image URLs:", error);
+//   }
+// };
+
+// // 이미지 경로를 가져오는 로직 실행
+// fetchImageUrls();
+
+const movie_poster_url = async () => {
+    try {
+        const res = await axios.get(
+            "http://localhost:9212/api/movie/screening_poster_url"
+        );
+        console.log(res.data.posters);
+
+        const posters = res.data.posters;
+
+        state.posters = posters.map((poster) => poster.poster_url);
+        state.movieTitles = posters.map((poster) => poster.movie_title);
+        state.movieIds = posters.map((poster) => poster.movie_id);
+        console.log(state.movieIds)
+        const randomIndex = Math.floor(Math.random() * posters.length);
+        state.selectedPoster = state.posters[randomIndex];
+
+        // movie_poster_url 함수가 실행될 때 영화 ID를 출력하여 확인
+        console.log(state.movieIds);
+
+    } catch (error) {
+        console.error("Error retrieving movie posters:", error);
+    }
+};
+movie_poster_url();
+
+
+const showMoviesByCategory = (category) => {
+  state.posters = [];
+  state.movieTitles = [];
+  state.movieIds = [];
+  console.log("aaaaaaa");
+  // `http://localhost:9212/api/movies/movie_category?category=${category}`
+  axios.get(`http://localhost:9212/api/movies/movie_category?category=${category}`)
+    .then((response) => {
+      const getMoviePostersByCategory = response.data;
+      const movieArray = Object.values(getMoviePostersByCategory);
+      console.log(movieArray);
+
+      movieArray.forEach((posters) => {
+        const categoryPosters = posters.map((poster) => {
+          return {
+            poster_url: poster.poster_url,
+            movie_title: poster.movie_title,
+            movie_id: poster.movie_id
+          };
+        });
+
+        state.posters.push(...categoryPosters.map((poster) => poster.poster_url));
+        state.movieTitles.push(...categoryPosters.map((poster) => poster.movie_title));
+        state.movieIds.push(...categoryPosters.map((poster) => poster.movie_id));
+      });
+
+      const randomIndex = Math.floor(Math.random() * state.posters.length);
+      state.selectedPoster = state.posters[randomIndex];
+
+      console.log(state.movieIds);
+    })
+    .catch((error) => {
+      console.error('Error fetching movies by category:', error);
+    });
+};
+
+
+
+
+
+
+
+
+
+
+const searchMovies = () => {
+  // 검색어를 이용하여 영화를 검색하는 로직을 추가하세요.
+};
+
+
 
 /*
 export default {
@@ -155,19 +264,29 @@ export default {
 
 <style scoped>
 /********************* 검색 버튼과 전체 스타일 *******************/
-
-
-.image-wrap {
-    margin-bottom: 20px;
+.top-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.image-wrap img {
-    margin-left: 700px;
+.top-container iframe {
     width: 100%;
-    max-height: 200px; /* 필요에 따라 높이 조정 */
-    object-fit: cover;
-    border-radius: 5px;
+    height: 500px;
 }
+
+.video-wrap {
+  margin-bottom: 20px;
+}
+
+.video-wrap img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
 
 body{
     background: #f2f2f2;
@@ -207,10 +326,11 @@ body{
 }
 
 .search-wrap{
-    width: 250px;
+    width: 30%;
     position: relative;
-    margin-top: 300px;
-    margin-left: 800px;
+    margin-top: 10%;
+    margin-left: 70%;
+    text-align: right;
 }
 
 
@@ -220,20 +340,20 @@ ul {
     padding: 0;
     list-style: none;
     display: table;
-    width: 1100px;
+    width: 120%;
     text-align: center;
 }
 li {
     display: table-cell;
     position: relative;
-    padding: 15px 0;
+    padding: 2rem 0;
+    width: 5%;
 }
 a {
     color: black;
     text-transform: uppercase;
     text-decoration: none;
     letter-spacing: 0.15em;
-
     display: inline-block;
     padding: 15px 20px;
     position: relative;
@@ -251,105 +371,92 @@ a:after {
     transition: width 0.3s ease 0s, left 0.3s ease 0s;
     width: 0;
 }
-a:hover:after {
+
+a:not(.box-image):not(.box-content):hover::after {
     width: 100%;
     left: 0;
 }
 
+a:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+
 .category-wrap{
     position: relative;
     top: -150px;
+    margin-right: 19%;
 }
 
 
 /**************** 영화 이미지 넣는 부분 - 카테고리 별로 나와야함 ******************/
-.container1 {
+.top-container {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
 }
 
 
-.container2 {
+.bottom-container {
     display: flex;
     justify-content: center;
     position: relative;
-    animation: 1.5s up;
+    /* animation: 1.5s up; */
     top: -300px;
 }
 
-a.photoLink {
+.bottom-container2 {
+    display: flex;
+    justify-content: center;
     position: relative;
-    float: left;
+    /* animation: 1.5s up; */
+    top: -300px;
+    margin-top: 3%;
+}
+.item {
+  position: relative;
+  float: left;
+  overflow: hidden;
+  margin: 10px 3%;
+  min-width: 0px;
+  max-width: 300px;
+  min-height: 0px;
+  max-height: 380px;
+  width: 100%;
+  border-radius: 0.5rem;
+}
+
+.box-image {
+  position: relative;
+}
+
+.box-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.box-content {
+  margin-left: 10%;
+  margin-top: 5%;
+}
+
+.title {
+    display: block;
+    color: #333333;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     overflow: hidden;
-    margin: 10px 3%;
-    min-width: 150px;
-    max-width: 310px;
-    min-height: 300px;
-    max-height: 1000px;
-    width: 100%;
-    background: #000000;
-    text-align: center;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
-    border-radius: .5rem;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+strong {
+    font-weight: 500;
 }
 
-div.item * {
-    box-sizing: border-box;
-    transition: all .2s ease-in-out;
-    height: 100px;
-    width: 100px;
-}
-
-div.item {
-    vertical-align: top;
-    height: 210px;
-    width: 100%;
-}
-
-div.item i {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    border-radius: 50%;
-    font-size: 34px;
-    color: #000000;
-    width: 60px;
-    height: 60px;
-    line-height: 60px;
-    background: #ffffff;
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform .5s 0 ease;
-}
-
-div.item a {
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    position: absolute;
-}
-
-div.item:hover i {
-    transform: translate(-50%, -50%) scale(1);
-    transition: transform .3s .1s cubic-bezier(.37,1.05,.5,1.21);
-}
-
-#item{
-    background: center center no-repeat;
-    background-size: cover;
-}
-
-div.color:hover {
-    opacity: 1 !important;
-}
-
-div.color{
-    width:100%;
-    height: 100%;
-    opacity: 0;
-    background-color: #000000;
-}
 
 .screen-reader-text {
     clip: rect(1px, 1px, 1px, 1px);
@@ -378,65 +485,6 @@ div.color{
     width: auto;
     z-index: 100000;
     display: none;
-}
-
-
-/*********** 페이지 표시하는 번호 탭 *************/
-a {
-    -webkit-transition: all 0.3s ease;
-    transition: all 0.3s ease;
-}
-
-.nav-links a {
-    margin: 1rem .6rem;
-}
-.nav-links a.page-numbers {
-    color: #000000;
-}
-.nav-links a.page-numbers:hover {
-    color: #000000;
-}
-.nav-links .page-numbers.current,
-.nav-links .page-numbers.dots {
-    color: #000000;
-}
-.nav-links a.next,
-.nav-links a.prev {
-    display: inline-block;
-    padding: .2rem .8rem;
-    background-color: #000000;
-    color: #fff;
-    border-radius: 2px;
-}
-.nav-links a.next:hover,
-.nav-links a.prev:hover {
-    color: #fff;
-}
-
-.nav-links a.prev::before,
-.nav-links a.next::after {
-    content: "";
-    position: relative;
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-left: 2px solid #ffffff;
-    border-bottom: 2px solid #ffffff;
-    margin-right: 5px;
-}
-
-.nav-links a.prev::before {
-    transform: rotate(45deg);
-}
-
-.nav-links a.next::after {
-    transform: rotate(-135deg);
-}
-
-.row{
-    margin-left: 260px;
-    margin-top: -300px;
-    position: relative;
 }
 
 </style>

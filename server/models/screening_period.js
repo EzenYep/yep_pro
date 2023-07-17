@@ -1,3 +1,4 @@
+
 // screening_period.js
 module.exports = (sequelize, DataTypes) => {
     const ScreeningPeriod = sequelize.define('ScreeningPeriod', {
@@ -32,4 +33,5 @@ module.exports = (sequelize, DataTypes) => {
     };
 
     return ScreeningPeriod;
+
 };

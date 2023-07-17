@@ -41,11 +41,11 @@
                 </div>
                 <div class="input-group">
                     <label for="ageRating" style="margin-left: 35px">나이</label><span>:</span><br>
-                    <input type="text" id="ageRating" v-model="movieDetails.ageRating"><br>
+                    <input type="number" id="ageRating" v-model.number="movieDetails.ageRating"><br>
                 </div>
                 <div class="input-group">
                     <label for="price" style="margin-left: 35px">가격</label><span>:</span><br>
-                    <input type="text" id="price" v-model="movieDetails.price"><br>
+                    <input type="number" id="price" v-model.number="movieDetails.price"><br>
                 </div>
                 <div class="input-group">
                     <label for="movie_description">영화 줄거리:</label>
@@ -54,16 +54,12 @@
                     <textarea placeholder="영화 줄거리" v-model="movieDetails.movieDescription"></textarea>
                 </div>
                 <div class="input-group-date">
-                    <label for="start_year" style="margin-right: 30px">시작일</label><span style="margin-right: 30px">:</span>
-                    <input type="text" id="start_year" v-model="movieDetails.startYear"><span>년</span>
-                    <input type="text" id="start_month" v-model="movieDetails.startMonth"><span>월</span>
-                    <input type="text" id="start_day" v-model="movieDetails.startDay"><span>일</span>
+                    <label for="start_date" style="margin-right: 30px">시작일</label><span style="margin-right: 30px">:</span>
+                    <input type="date" id="start_date" v-model="movieDetails.startDate"><br>
                 </div>
                 <div class="input-group-date">
-                    <label for="end_day" style="margin-right: 30px">종영일</label><span style="margin-right: 30px">:</span>
-                    <input type="text" id="end_year" v-model="movieDetails.endYear"><span>년</span><br>
-                    <input type="text" id="end_month" v-model="movieDetails.endMonth"><span>월</span><br>
-                    <input type="text" id="end_day" v-model="movieDetails.endDay"><span>일</span><br>
+                    <label for="end_date" style="margin-right: 30px">종영일</label><span style="margin-right: 30px">:</span>
+                    <input type="date" id="end_date" v-model="movieDetails.endDate" :min="movieDetails.startDate"><br>
                 </div>
                 <div class="buttons">
                     <div>
@@ -78,28 +74,26 @@
 
 <script setup>
 import router from '@/router';
-import {ref, onMounted, reactive} from 'vue';
+import {ref, onMounted, reactive, watch} from 'vue';
 import axios from 'axios';
+import store from "@/store/store";
 
 // Initialize genres as a reactive reference to an empty array
 
 const movieDetails = reactive({
     directorNm: '',
-    startYear: '',
-    startMonth: '',
-    startDay: '',
+    startDate: '',
+    endDate: '',
     postUrl: '',
     videoUrl: '',
-    endYear: '',
-    endMonth: '',
-    endDay: '',
     ageRating: '',
     movieDescription: '',
-    price:'',
+    price: '',
     selectedGenre1: '',
     selectedGenre2: '',
     selectedGenre3: ''
 });
+
 const genres = ref([]);
 // Define a function to fetch genres
 const fetchGenres = async () => {
@@ -108,6 +102,19 @@ const fetchGenres = async () => {
         // Assign the fetched categories to genres
         genres.value = response.data;
     }
+}
+
+const validateDate = () => {
+    const startDate = new Date(movieDetails.startDate);
+    const endDate = new Date(movieDetails.endDate);
+
+    // 만약 종영일이 시작일보다 이전이라면, 경고 메시지를 표시하고 함수를 종료합니다.
+    if (endDate <= startDate) {
+        alert('종영일은 시작일보다 이후여야 합니다.');
+        return false;
+    }
+
+    return true;
 }
 
 // Call the function when the component is mounted
@@ -121,27 +128,24 @@ const searchMovies = async () => {
 
     // if the response is successful, populate the movieDetails reactive object
     if (response && response.data) {
-        const dateParts = response.data.releaseDate.split('-');
-
         movieDetails.directorNm = response.data.directors;
-        movieDetails.startYear = dateParts[0];
-        movieDetails.startMonth = dateParts[1];
-        movieDetails.startDay = dateParts[2];
+        movieDetails.startDate = response.data.releaseDate;
         movieDetails.postUrl = response.data.posterUrl;
         movieDetails.videoUrl = response.data.videoUrl;
     }
 }
 let body = reactive({});
 const movie_input = () => {
-    const startDate = movieDetails.startYear + movieDetails.startMonth + movieDetails.startDay;
-    const endDate = movieDetails.endYear + movieDetails.endMonth + movieDetails.endDay;
+    if (!validateDate()) {
+        return;
+    }
     body = {
         movieNm: searchMovie.value,
         director: movieDetails.directorNm,
         postUrl: movieDetails.postUrl,
         videoUrl: movieDetails.videoUrl,
-        startDate: startDate,
-        endDate: endDate,
+        startDate: movieDetails.startDate,
+        endDate: movieDetails.endDate,
         ageRating: movieDetails.ageRating,
         movieDescription: movieDetails.movieDescription,
         price: movieDetails.price,
@@ -150,17 +154,23 @@ const movie_input = () => {
         selectedGenre3: movieDetails.selectedGenre3
     }
     console.log(body)
-    axios.post("http://localhost:9212/api/movie/movie_input", body)
-        .then((res) => {
-            const code = res.data.code;
-            if(code === 200){
-                router.push({
-                    name:"manager_main"
-                })
-            }
-        })
+    axios.post("http://localhost:9212/api/movie/movie_input", body).then((res) => {
+        const code = res.data.code;
+        if (code === 200) {
+            router.push({
+                name: "manager_main",
+            });
+        }
+    })
         .catch((error) => {
-            console.error(error);
+            if (error.response && error.response.status === 401) {
+                // 토큰이 없거나 만료된 경우 처리하는 로직을 추가하세요.
+                // 예를 들어 사용자를 로그인 페이지로 리디렉션할 수 있습니다.
+                router.push({name: "login"})
+                console.error('Unauthorized');
+            } else {
+                console.error(error);
+            }
         });
 
 }
@@ -221,7 +231,7 @@ const goBack = () => {
 }
 
 .input-group-date input {
-    width: 10%; /* Adjust as needed */
+    width: 50%; /* Adjust as needed */
 }
 
 textarea {

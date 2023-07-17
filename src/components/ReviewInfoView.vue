@@ -1,20 +1,25 @@
 <template>
     <div class="comments-section">
-        <div class="comment">
-            <h5>
-                평균 별점:
-                <div class="starkit">
-                    <div class="stars-outer">
-                        <div class="stars-empty">
-                            ★★★★★
+        <div v-if="averagestarkit !== '리뷰가 없습니다'">
+            <div class="comment">
+                <h5>
+                    평균 별점:
+                    <div class="starkit">
+                        <div class="stars-outer">
+                            <div class="stars-empty">
+                                ★★★★★
+                            </div>
+                            <div class="stars-fill" :style="{ width: starPercentage(averagestarkit) }">
+                                ★★★★★
+                            </div>
                         </div>
-                        <div class="stars-fill" :style="{ width: starPercentage(averagestarkit) }">
-                            ★★★★★
-                        </div>
+                        ({{ averagestarkit }})
                     </div>
-                    ({{ averagestarkit }}점)
-                </div>
-            </h5>
+                </h5>
+            </div>
+        </div>
+        <div v-else>
+            리뷰가 없습니다
         </div>
 
         <div class="comment" v-for="(comment, index) in comments" :key="index">
@@ -82,6 +87,9 @@ const report_comment = async (reviewId) => {
 
 
 const averagestarkit = computed(() => {
+    if (comments.value.length === 0) {
+        return "리뷰가 없습니다";
+    }
     const totalstarkit = comments.value.reduce((total, comment) => total + comment.starkit, 0);
     return (totalstarkit / comments.value.length).toFixed(1);
 });

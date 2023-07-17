@@ -127,7 +127,7 @@ const goEventPage = () => {
     });
 };
 
-const slideSize = 3;
+const slideSize = 4;
 const sliderContainerRef = ref(null);
 const currentMovieOffset = ref(0); // 무비차트 슬라이드의 오프셋
 const currentNonMovieOffset = ref(0); // 상영 예정작 슬라이드의 오프셋

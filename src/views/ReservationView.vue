@@ -27,6 +27,7 @@
                                 v-for="theaterName in theater_names"
                                 :key="theaterName"
                                 @click="titles(theaterName)"
+                                :class="{ selected: selectedTheater === theaterName }"
                             >
                                 {{ theaterName }}
                             </button>
@@ -41,9 +42,11 @@
                                 v-for="movie in movies"
                                 :key="movie.movie_id"
                                 @click="selectMovie(movie)"
+                                :class="{ selected: selectedMovie === movie.movie_title }"
                             >
                                 {{ movie.movie_title }}
                             </button>
+
                         </div>
                     </td>
                     <td class="caption-col"> <!-- 시간 -->
@@ -55,6 +58,7 @@
                                 v-for="time in times"
                                 :key="time"
                                 @click="selectTime(time)"
+                                :class="{ selected: selectedTime === time }"
                             >
                                 {{ time }}
                             </button>
@@ -136,13 +140,14 @@
     </div>
 </template>
 
+
 <script setup>
 import axios from "axios";
 import { reactive, ref, watchEffect, computed, onMounted, watch } from 'vue'
 import store from "@/store/store";
-
 const isSeatNotSelected = computed(() => selectedSeatIds.value.length === 0);
 const selectedSeatIds = ref([]); // Track selected seat IDs
+
 const theater_names = ref([]);
 const selectedTheater = ref('');
 const selectedTime = ref('');
@@ -152,6 +157,7 @@ const selectedMovie = ref(null); // 선택한 영화 객체를 저장하는 변�
 const theater = ref({});
 let movieId = ref('');
 const seatNumber = ref('');
+
 const numbers = ref([]);
 const numbergroup = ref([]);
 
@@ -184,6 +190,9 @@ const theater_seat = async (theaterId) => {
     }
 };
 
+
+//극장 선택시 영화제목 가져옴
+
 const titles = async (theaterName) => {
     try {
         console.log(theaterName);
@@ -210,6 +219,7 @@ const titles = async (theaterName) => {
     } catch (error) {
         console.error("영화 정보를 가져오는 중에 오류가 발생했습니다:", error);
     }
+
 };
 
 const selectMovie = async (movie) => {
@@ -220,6 +230,7 @@ const selectMovie = async (movie) => {
         console.log(response.data);
 
         // 상영 시작 시간을 배열로 변환
+
         selectedMovie.value = movie.movie_title;
         times.value = response.data.map((screening) => screening.screening_start_time);
         console.log(times)
@@ -229,7 +240,6 @@ const selectMovie = async (movie) => {
 };
 const selectTime = (time) => {
     // 선택한 시간에 대한 처리 로직 작성
-
     selectedTime.value = time;
 };
 
@@ -240,7 +250,6 @@ const seat = async () => {
 
     if (response && response.data) {
         const movieSeat = response.data;
-
         const seats = movieSeat.map((seat) => ({
             seat_id: seat.seat_id,
             seat_number: seat.seat_number,
@@ -265,7 +274,6 @@ const updateSeatStatus = () => {
     const selectedTheaterName = selectedTheater.value;
     const selectedMovieId = selectedMovie.value;
     const screeningTime = selectedTime.value;
-
     if (!selectedMovieId || !selectedTheaterName || !screeningTime) {
         return;
     }
@@ -329,7 +337,8 @@ const isSeatReserved = (seat) => {
 };
 
 watchEffect(() => {
-    if (selectedMovie.value && selectedTheater.value && selectedTime.value) {
+
+    if (selectedMovie.value && selectedTheater.value && selectedTime.value && theater_names.value) {
         seat();
         reservedSeat();
     }
@@ -420,8 +429,12 @@ watch(selectedSeats, () => {
     console.log("ss")
     updateSeatStatus()
 })
-
-
+watch([selectedMovie, selectedTheater, selectedTime], () => {
+    // 좌석 정보 초기화 로직을 여기에 작성하세요.
+    selectedSeatIds.value = []; // 예약된 좌석 정보 초기화
+    reservedSeats.value = []; // 예약된 좌석 정보 초기화
+    updateSeatStatus(); // 좌석 상태 업데이트
+});
 
 
 
@@ -429,46 +442,103 @@ const makeReservation = async () => {
     const movieId = selectedMovie.value;
     const theaterName = selectedTheater.value;
     const screeningTime = selectedTime.value;
-    const IMP = window.IMP;
-    IMP.init("imp23252800")
-    if (isSeatNotSelected.value) {
-        // 좌석이 선택되지 않았을 때의 처리
-        alert("좌석을 선택해주세요.");
-        console.log("좌석을 선택해주세요.");
-        return;
-    } else if (store.state.email === '') {
-        alert("로그인 해주세요.");
-    } else {
-        // 아임포트 결제 처리
-        IMP.request_pay({
-            pg: 'kcp',
-            pay_method: 'card',
-            merchant_uid: 'merchant_' + new Date().getTime(),
-            name: '영화 예매',
-            amount: 1000,  // 결제할 금액을 입력하세요.
-            buyer_email: store.state.email,
-            buyer_name: '테스트 사용자',
-            buyer_tel: '010-1234-5678',
-            buyer_addr: '서울특별시 강남구 신사동',
-            buyer_postcode: '01181'
-        }, (rsp) => {
-            if (rsp.success) {
-                // 결제 성공 시 처리
-                console.log('결제 성공:', rsp);
-                var msg = '결제가 완료되었습니다.';
-                alert(msg);
-
-                // 예약 처리
-                reserveSeats(movieId, theaterName, screeningTime, selectedSeatIds.value, store.state.email);
-            } else {
-                // 결제 실패 시 처리
-                console.log('결제 실패:', rsp.error_msg);
-                var errorMsg = '결제에 실패하였습니다.';
-                errorMsg += '에러내용: ' + rsp.error_msg;
-                alert(errorMsg);
-            }
-        });
+    const data = {
+        member_email : store.state.email,
+        movie_id: movieId
     }
+    const res = await axios.post("http://localhost:9212/api/coponCheck", data)
+    const code = res.data.code;
+    const amount = res.data.amount
+    if(code===200){
+        const IMP = window.IMP;
+        IMP.init("imp23252800")
+        if (isSeatNotSelected.value) {
+            // 좌석이 선택되지 않았을 때의 처리
+            alert("좌석을 선택해주세요.");
+            console.log("좌석을 선택해주세요.");
+            return;
+        } else if (store.state.email === '') {
+            alert("로그인 해주세요.");
+        } else {
+            alert("할인금액으로 결제를 진행하겠습니다.")
+            // 아임포트 결제 처리
+            IMP.request_pay({
+                pg: 'kcp',
+                pay_method: 'card',
+                merchant_uid: 'merchant_' + new Date().getTime(),
+                name: '영화 예매',
+                amount: amount*0.8,  // 결제할 금액을 입력하세요.
+                buyer_email: store.state.email,
+                buyer_name: '테스트 사용자',
+                buyer_tel: '010-1234-5678',
+                buyer_addr: '서울특별시 강남구 신사동',
+                buyer_postcode: '01181'
+            }, (rsp) => {
+                if (rsp.success) {
+                    // 결제 성공 시 처리
+                    console.log('결제 성공:', rsp);
+                    var msg = '결제가 완료되었습니다.';
+                    alert(msg);
+
+                    // 예약 처리
+                    reserveSeats(movieId, theaterName, screeningTime, selectedSeatIds.value, store.state.email);
+                } else {
+                    // 결제 실패 시 처리
+                    console.log('결제 실패:', rsp.error_msg);
+                    var errorMsg = '결제에 실패하였습니다.';
+                    errorMsg += '에러내용: ' + rsp.error_msg;
+                    alert(errorMsg);
+                }
+            });
+            // 예약 처리
+            //reserveSeats(movieId, theaterName, screeningTime, selectedSeatIds.value, store.state.email);
+        }
+    }else { //구매내역이 있을겨우
+        const IMP = window.IMP;
+        IMP.init("imp23252800")
+        if (isSeatNotSelected.value) {
+            // 좌석이 선택되지 않았을 때의 처리
+            alert("좌석을 선택해주세요.");
+            console.log("좌석을 선택해주세요.");
+            return;
+        } else if (store.state.email === '') {
+            alert("로그인 해주세요.");
+        } else {
+            // 아임포트 결제 처리
+            IMP.request_pay({
+                pg: 'kcp',
+                pay_method: 'card',
+                merchant_uid: 'merchant_' + new Date().getTime(),
+                name: '영화 예매',
+                amount: amount,  // 결제할 금액을 입력하세요.
+                buyer_email: store.state.email,
+                buyer_name: '테스트 사용자',
+                buyer_tel: '010-1234-5678',
+                buyer_addr: '서울특별시 강남구 신사동',
+                buyer_postcode: '01181'
+            }, (rsp) => {
+                if (rsp.success) {
+                    // 결제 성공 시 처리
+                    console.log('결제 성공:', rsp);
+                    var msg = '결제가 완료되었습니다.';
+                    alert(msg);
+
+                    // 예약 처리
+                    reserveSeats(movieId, theaterName, screeningTime, selectedSeatIds.value, store.state.email);
+                } else {
+                    // 결제 실패 시 처리
+                    console.log('결제 실패:', rsp.error_msg);
+                    var errorMsg = '결제에 실패하였습니다.';
+                    errorMsg += '에러내용: ' + rsp.error_msg;
+                    alert(errorMsg);
+                }
+            });
+            // 예약 처리
+            //reserveSeats(movieId, theaterName, screeningTime, selectedSeatIds.value, store.state.email);
+        }
+    }
+
+
 };
 
 const reserveSeats = async (movieId, theaterName, screeningTime, seatIds, memberId) => {
@@ -488,9 +558,7 @@ const reserveSeats = async (movieId, theaterName, screeningTime, seatIds, member
         console.error("예약 중에 오류가 발생했습니다:", error);
     }
 };
-
 </script>
-
 <style scoped src="../assets/css/Reservation.css">
 
 </style>

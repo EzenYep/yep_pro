@@ -1,3 +1,4 @@
+
 // seat.js
 module.exports = (sequelize, DataTypes) => {
     const Seat = sequelize.define('Seat', {

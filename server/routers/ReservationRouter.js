@@ -8,6 +8,7 @@ ReservationRouter.post('/getScreenTime',reservationController.screenTime)
 ReservationRouter.post('/getSeat',reservationController.seatser)
 ReservationRouter.post("/getReserved",reservationController.ReservedSeat)
 ReservationRouter.post("/makeReservation",reservationController.makeReservation)
+ReservationRouter.post("/coponCheck",reservationController.paylog)
+module.exports = ReservationRouter; 
 
 
-module.exports = ReservationRouter;

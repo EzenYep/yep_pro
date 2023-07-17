@@ -1,3 +1,6 @@
+
+//userRouter
+
 const userController = require("../controllers/UserController.js");
 const passport = require("passport");
 
@@ -9,6 +12,7 @@ const userRouter = require("express").Router();
 userRouter.post("/user/signInUser", userController.oneUser);
 
 userRouter.post("/user/addUser", userController.addUser);
+
 
 userRouter.post("/user/searchUser", userController.searchUser);
 
@@ -26,5 +30,6 @@ userRouter.get('/auth/naver/callback', passport.authenticate('naver', {
     successRedirect: '/',
     failureRedirect: '/auth/naver',
 }));
+
 
 module.exports = userRouter;
