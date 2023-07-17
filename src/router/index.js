@@ -101,7 +101,7 @@ const routes = [
         name: "eventTest",
         component: testView
     },{
-        path: "/np", // 관리자 영화 수정
+        path: "/correction", // 관리자 영화 수정
         name: "correction",
         component: ManagerCorrectionView
     }, {
@@ -125,7 +125,7 @@ const router = createRouter({
 })
 
 
-const adminPages = ['/manager_user', '/manager_main', '/manager_report','/movie_input'];  // 관리자 페이지 경로를 추가합니다.
+const adminPages = ['/manager_user', '/manager_main', '/manager_report','/movie_input','correction'];  // 관리자 페이지 경로를 추가합니다.
 
 router.beforeEach((to, from, next) => {
     const adminRequired = adminPages.includes(to.path);  // 관리자 권한이 필요한 페이지인지 확인합니다.

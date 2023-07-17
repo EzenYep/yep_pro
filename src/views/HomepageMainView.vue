@@ -16,9 +16,8 @@
                             class="searchTerm"
                             placeholder="검색어를 입력하세요."
                             v-model="searchQuery"
-                            @keyup.enter="searchmovie"
                     />
-                    <button type="submit" class="searchButton"  @click="searchmovie">검색</button>
+                    <button type="submit" class="searchButton" @click="searchmovie">검색</button>
                 </div>
             </div>
         </div>
@@ -287,19 +286,12 @@ non_movie_poster_url();
 
 const searchQuery = ref('');
 
-
-const searchmovie = async () => {
-  try {
-    if (!searchQuery.value) {
-      return;
-    }
-    router.push({ name: "SearchMovieView",
+const searchmovie = () => { 
+  router.push({ name: "SearchMovieView",
   query: { searchQuery:searchQuery.value },
 }) 
-  } catch (error) {
-    console.error('Error searching movies:', error);
-  }
-};
+}
+
 
 
 const goMovieInfos = (currentIndex) => {

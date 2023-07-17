@@ -2,113 +2,85 @@
 <div>
     <div class="container">
         <br>
-        <div class="row" style = "background-color :gray">
-            <div class="col1" align="right">
-                <br>
-                <button style="width:120px; height:50px; border:1px; background-color:rgba(0,0,0,0);
-      font-size: 1.3em; font-weight: bold">예매관리</button>
-                <div class="vr"></div>
-                <button style="width:120px; height:50px; border:1px; background-color:rgba(0,0,0,0);
-      font-size: 1.3em; font-weight: normal" @click="goMypageCrystal">회원관리</button>
-            <!-- </div>
-
-            <div class="col2" align="left" > -->
-                <div style="width:60px; height:25px; border:1px; float:left;">{{my_data.member_name}}</div>
-                <div style="width:120px; height:25px; border:1px; float:left;">님 안녕하세요</div>
-           
-                <div style="width:30px; height:25px; border:1px; float:left;"></div>
-                <div style="width:80px; height:20px; border:1px; float:left;">예매 내역</div>
-                    <div style="width: 80px; height: 15px; border: 1px; float: left;">{{ paymentCount }} 건</div>
-            </div>
-            <div>
-                <br>
-            </div>
-            <!-- <div class="row2" align="center">
-                <div class="con1"  style="width: 85%; height:155px; border:1px; float:center; background-color:#11DEFB">
-                </div>
-                <br>
-            </div> -->
-        </div>
-
-        <div class="row" style="background-color : background-color:rgba(0,0,0,0);">
-            <br><br>
-        </div>
-
-        <div class="text1" align="left" style=" font-size:1.5em;">
-          
-            나의 예매 내역<button type="submit" class="btn btn-danger" style="float:right;"   @click="cancelSelectedReservations" >예매취소</button>
-        </div>
-        <div class="row" style = "background-color :gray">
-
+        <div class="row" style="background-color: gray; height: 250px;">
             <div class="row6" align="center">
                 <br>
-                <div class="con7"  style="width:85%; height:180px; border:1px; float:center; background-color:#11DEFB">
-
-                    <table>
-                        <thead>
-                        <tr>
-                            <th class="column column-small">구분</th>
-                            <th class="column column-small">영화 이름</th>
-                            <th class="column column-small">상영관</th>
-                            <th class="column column-large">상영시간</th>
-                            <th class="column column-large">좌석</th>
-                            <th class="column column-large">예매상태</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="(reservation, index) in reservationList" :key="index">
-                        <td class="column column-small">
-                            <input
-                                class="form-check-input"
-                                type="checkbox"
-                                :value="reservation"
-                                v-model="selectedMovie"
-                            />
-                        </td>
-                        <td class="column column-small">{{ reservation.movie_title }}</td>
-                        <td class="column column-small">{{ reservation.theater_name }}</td>
-                        <td class="column column-large">{{ reservation.screening_start_time }}</td>
-                        <td class="column column-large">{{ reservation.seat_number }}</td>
-                        <td class="column column-large">{{ reservation.pay_state }}</td>
-                    </tr>
-                    </tbody>
-
-                    </table>
-
-
-                  
+                <div class="con7" style="width: 85%; height: 90%; border: 1px; float: center; line-height: 250%; background-color: rgba(0, 0, 0, 0);">
+                    <div class="reservation-list">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th class="column column-small">구분</th>
+                                <th class="column column-small">영화 이름</th>
+                                <th class="column column-small">상영관</th>
+                                <th class="column column-large">상영시간</th>
+                                <th class="column column-large">좌석</th>
+                                <th class="column column-large">예매상태</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(reservation, index) in currentPageReservations" :key="index">
+                                <td class="column column-small">
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        :value="reservation"
+                                        v-model="selectedMovie"
+                                    />
+                                </td>
+                                <td class="column column-small">{{ reservation.movie_title }}</td>
+                                <td class="column column-small">{{ reservation.theater_name }}</td>
+                                <td class="column column-large">{{ reservation.screening_start_time }}</td>
+                                <td class="column column-large">{{ reservation.seat_number }}</td>
+                                <td class="column column-large">{{ reservation.pay_state }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <br><br>
-
-        </div>
-        <div class="row" style="background-color : background-color:rgba(0,0,0,0);">
-            <br><br>
         </div>
 
-        <div>
-
-        </div>
-
-        <div class="row" style="background-color :background-color:rgba(0,0,0,0);">
-            <br><br>
-        </div>
-
-        <br><br>
-        <div class="row" style = "background-color :gray; height:250px;">
-            <div class="row6" align="center">
-                <br>
-                <div class="con7"  style="width:85%; height:90%; border:1px; float:center; line-height:250%; background-color:rgba(0,0,0,0); ">
-
-                </div>
-            </div>
-
+        <!-- 페이지네이션 네비게이션 -->
+        <nav aria-label="Page navigation example">
+            <br>
+            <ul class="pagination justify-content-center">
+                <li class="page-item" :class="{ disabled: currentPage === 0 }">
+                    <a class="page-link" href="#" @click.prevent="gotoFirstPage" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" :class="{ disabled: currentPage === 0 }">
+                    <a class="page-link" href="#" @click.prevent="prevPage" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li
+                    class="page-item"
+                    v-for="page in visiblePages"
+                    :key="page"
+                    :class="{ active: page === currentPage + 1 }"
+                >
+                    <a class="page-link" href="#" @click.prevent="gotoPage(page)">{{ page }}</a>
+                </li>
+                <li class="page-item" :class="{ disabled: currentPage === totalPages - 1 }">
+                    <a class="page-link" href="#" @click.prevent="nextPage" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" :class="{ disabled: currentPage === totalPages - 1 }">
+                    <a class="page-link" href="#" @click.prevent="gotoLastPage" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
         </div>
         <MovieSlide></MovieSlide>
          <MyReview></MyReview>
         <div>
         </div>
-    </div></div>
+    </div>
 
 </template>
 
@@ -220,15 +192,57 @@ const cancelSelectedReservations = async () => {
 
 
 
-
-// ------------------------------------------------------------------------------------------------
-
-
-
 const goMypageCrystal = () => {
     router.push({
         name: 'my_page_crystal',
     });
+};
+
+// 페이징 처리
+let currentPage = ref(0);
+let reservationsPerPage = ref(1);
+
+const currentPageReservations = computed(() => {
+    const start = currentPage.value * reservationsPerPage.value;
+    const end = start + reservationsPerPage.value;
+    return reservationList.value.slice(start, end);
+});
+
+const totalPages = computed(() => Math.ceil(reservationList.value.length / reservationsPerPage.value));
+
+const pageRange = computed(() => {
+    const start = Math.max(currentPage.value - 2, 0);
+    const end = Math.min(start + 5, totalPages.value);
+    return { start, end };
+});
+
+const visiblePages = computed(() => {
+    const { start, end } = pageRange.value;
+    return Array.from({ length: end - start }, (_, i) => start + i + 1);
+});
+
+const nextPage = () => {
+    if (currentPage.value < totalPages.value - 1) {
+        currentPage.value++;
+    }
+};
+
+const prevPage = () => {
+    if (currentPage.value > 0) {
+        currentPage.value--;
+    }
+};
+
+const gotoPage = (page) => {
+    currentPage.value = page - 1;
+};
+
+const gotoFirstPage = () => {
+    currentPage.value = 0;
+};
+
+const gotoLastPage = () => {
+    currentPage.value = totalPages.value - 1;
 };
 
 </script>
