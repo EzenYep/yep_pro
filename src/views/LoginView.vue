@@ -54,6 +54,7 @@ const createid = () => {
 const store = useStore();
 let body = reactive({});
 
+
 const LogInEvent = async () => {
     body ={
         email: body.email,
@@ -83,9 +84,15 @@ const LogInEvent = async () => {
         location.reload();
     }
 }
+
+
+
+
 </script>
 
+
 <style scoped>
+
 
 .aaa{
     margin-bottom: 10%;

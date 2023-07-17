@@ -2,8 +2,11 @@
 //userRouter
 
 const userController = require("../controllers/UserController.js");
+const passport = require("passport");
 
 const userRouter = require("express").Router();
+// const kakaoLoginController = require("../controllers/KakaoLoginController.js");
+
 
 userRouter.post("/user/signInUser", userController.oneUser);
 
@@ -19,5 +22,11 @@ userRouter.post("/user/updatePassword", userController.updatePassword);
 
 userRouter.post("/user/signInUser", userController.oneUser);
 
+// userRouter.post("/auth/kakao/callback", kakaoLoginController.kakaoCallback);
+
+userRouter.get('/auth/naver/callback', passport.authenticate('naver', {
+    successRedirect: '/',
+    failureRedirect: '/auth/naver',
+}));
 
 module.exports = userRouter;
