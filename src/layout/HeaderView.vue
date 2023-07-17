@@ -37,7 +37,8 @@
                 <span class="divider" @click="goEvent">이벤트</span>
             </div>
             <div  id="btns">
-                <button @click="goMyPage">마이</button>
+                <button v-if="isUserLoggedIn" @click="goMyPage">마이</button>
+                <button v-else @click="goLoginPage">마이</button>
                 <button v-if="isUserLoggedIn" @click="logout">로그아웃</button>
                 <button v-else @click="goLoginPage">로그인</button>
             </div>
@@ -95,31 +96,11 @@ const goEvent=()=>{
         name : "event"
     }))
 }
-/*
-* <script>안에 넣을려면 아롷개 쓰시면 됩니다.
-    methods: {
-        goHome() {
-            this.$router.push({
-                name: 'home',
-            });
-        },
-        goLoginPage() {
-            this.$router.push({
-                name: 'login',
-            });
-        },
-        goComplainPage() {
-            this.$router.push({
-                name: 'complain',
-            });
-        },
-        goMovie() {
-            this.$router.push({
-                name: 'movieView',
-            });
-        },
-    },
-* */
+const my=()=>{
+    console.log(store.state.email)
+    console.log(store.state.userState)
+}
+my()
 </script>
 
 <style scoped>

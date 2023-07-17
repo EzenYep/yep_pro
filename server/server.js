@@ -16,15 +16,25 @@ const userRouter = require("./routers/UserRouter.js");
 app.use("/api", userRouter);
 const movieRouter = require("./routers/testMovieRouter")
 app.use("/api",movieRouter)
-const adminUserRouter = require("./routers/adminUserRouter.js");
-app.use("/api", adminUserRouter);
 const adminCorrectionRouter = require("./routers/adminCorrectionRouter.js");
 app.use("/api", adminCorrectionRouter);
 const reviewRouter = require("./routers/reviewRouter")
 app.use("/api",reviewRouter)
+
 const ReservationRouter = require("./routers/ReservationRouter")
 app.use("/api",ReservationRouter)
 
+const passwordRoutes = require("./routers/passwordRoutes")
+app.use("/api",passwordRoutes)
+
+const myPageRouter = require("././routers/myPageRouter")
+app.use("/api",myPageRouter)
+
+const adminUserRouter = require("./routers/adminUserRouter.js");
+app.use("/api", adminUserRouter);
+
+const adminReportRouter = require("./routers/adminReportRouter.js");
+app.use("/api", adminReportRouter);
 app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 대기 중");
 });

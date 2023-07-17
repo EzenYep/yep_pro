@@ -1,4 +1,3 @@
-
 <template>
   <div class="container">
     
@@ -26,8 +25,13 @@
       <div class="wrap">
         <div class="search">
           <div>
-            <input type="text" class="searchTerm" placeholder="검색어를 입력하세요." v-model="searchInput" />
-            <button type="button" class="searchButton" @click="handleSearch" :disabled="isSearchDisabled">O</button>
+<input type="text" class="searchTerm" placeholder="검색어를 입력하세요." v-model="searchInput" />
+<button type="button" class="searchButton" @click="handleSearch">O</button>
+
+
+
+
+
           </div>
         </div>
       </div>
@@ -46,7 +50,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in paginatedUserList" :key="user.id">
+          <tr v-for="user in filteredUserList" :key="user.id">
 
               <td>
                 <input
@@ -99,7 +103,7 @@
 
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed  } from 'vue';
 import axios from 'axios';
 import router from '@/router';
 
@@ -201,6 +205,81 @@ function goback() {
   });
 }
 
+// 검색 관련 로직
+
+const searchInput = ref('');
+const isSearchDisabled = ref(true);
+const isSearchResultVisible = ref(false);
+
+const filteredUserList = computed(() => {
+  if (!searchInput.value || !isSearchResultVisible.value) {
+    return paginatedUserList.value;
+  }
+
+  const searchTerm = searchInput.value.toLowerCase();
+  return paginatedUserList.value.filter(user =>
+    user.reporter_email.toLowerCase().includes(searchTerm) ||
+    user.comment.toLowerCase().includes(searchTerm) ||
+    user.payment_member_email.toLowerCase().includes(searchTerm) ||
+    user.reporttime.toLowerCase().includes(searchTerm)
+  );
+});
+
+async function loadReportData() {
+  try {
+    const response = await axios.get('http://localhost:9212/api/getReportDetails');
+    const reportData = response.data;
+    totalUsers.value = reportData.length;
+    totalPages.value = Math.ceil(totalUsers.value / pageSize);
+
+    const startIndex = (currentPage.value - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    paginatedUserList.value = reportData.slice(startIndex, endIndex);
+
+    // paginatedUserList를 기반으로 filteredUserList 업데이트
+    filteredUserList.value = paginatedUserList.value;
+  } catch (error) {
+    console.error('신고 데이터를 불러오는 데 실패했습니다:', error);
+  }
+}
+
+function handleSearch() {
+  if (!searchInput.value) {
+    return;
+  }
+
+  const searchTerm = searchInput.value.toLowerCase();
+  filteredUserList.value = paginatedUserList.value.filter(user =>
+    user.reporter_email.toLowerCase().includes(searchTerm) ||
+    user.comment.toLowerCase().includes(searchTerm) ||
+    user.payment_member_email.toLowerCase().includes(searchTerm) ||
+    user.reporttime.toLowerCase().includes(searchTerm)
+  );
+
+
+
+  // 필요한 로직을 추가하여 검색 결과를 처리합니다.
+  const searchResults = filteredUserList.value.filter(user =>
+    user.reporter_email.toLowerCase().includes(searchTerm) ||
+    user.comment.toLowerCase().includes(searchTerm) ||
+    user.payment_member_email.toLowerCase().includes(searchTerm) ||
+    user.reporttime.toLowerCase().includes(searchTerm)
+  );
+
+  // 검색 결과를 화면에 표시하거나 다른 작업을 수행합니다.
+  isSearchResultVisible.value = true;
+  paginatedUserList.value = searchResults;
+
+  // 검색 입력 초기화
+  searchInput.value = '';
+
+  // 검색 버튼 비활성화
+  isSearchDisabled.value = true;
+}
+
+onMounted(loadReportData);
+
+
 </script>
 
 
@@ -298,54 +377,54 @@ th.column-large {
 
 /*********** 페이지 표시하는 번호 탭 *************/
 a {
-	-webkit-transition: all 0.3s ease;
-	transition: all 0.3s ease;
+   -webkit-transition: all 0.3s ease;
+   transition: all 0.3s ease;
 }
 
 .nav-links a {
-	margin: 1rem .6rem;
+   margin: 1rem .6rem;
 }
 .nav-links a.page-numbers {
-	color: #000000;
+   color: #000000;
 }
 .nav-links a.page-numbers:hover {
-	color: #000000;
+   color: #000000;
 }
 .nav-links .page-numbers.current,
 .nav-links .page-numbers.dots {
-	color: #000000;
+   color: #000000;
 }
 .nav-links a.next,
 .nav-links a.prev {
-	display: inline-block;
-	padding: .2rem .8rem;
-	background-color: #000000;
-	color: #fff;
-	border-radius: 2px;
+   display: inline-block;
+   padding: .2rem .8rem;
+   background-color: #000000;
+   color: #fff;
+   border-radius: 2px;
 }
 .nav-links a.next:hover,
 .nav-links a.prev:hover {
-	color: #fff;
+   color: #fff;
 }
 
 .nav-links a.prev::before,
 .nav-links a.next::after {
-	content: "";
-	position: relative;
-	display: inline-block;
-	width: 10px;
-	height: 10px;
-	border-left: 2px solid #ffffff;
-	border-bottom: 2px solid #ffffff;
-	margin-right: 5px;
+   content: "";
+   position: relative;
+   display: inline-block;
+   width: 10px;
+   height: 10px;
+   border-left: 2px solid #ffffff;
+   border-bottom: 2px solid #ffffff;
+   margin-right: 5px;
 }
 
 .nav-links a.prev::before {
-	transform: rotate(45deg);
+   transform: rotate(45deg);
 }
 
 .nav-links a.next::after {
-	transform: rotate(-135deg);
+   transform: rotate(-135deg);
 }
 
 .row{

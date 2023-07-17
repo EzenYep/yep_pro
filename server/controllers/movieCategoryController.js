@@ -12,16 +12,16 @@ const getMoviePostersByCategory = async (req, res) => {
 
   try {
     const movies = await db.sequelize.query(
-      'SELECT movie.movie_title,movie.movie_id, file.poster_url, category.category_name ' +
-      'FROM movie ' +
-      'INNER JOIN movie_category ON movie.movie_id = movie_category.movie_id ' +
-      'INNER JOIN category ON category.category_id = movie_category.category_id ' +
-      'INNER JOIN file ON file.movie_id = movie.movie_id ' +
-      'WHERE category.category_id = :category',
-      {
-        type: QueryTypes.SELECT,
-        replacements: { category },
-      }
+        'SELECT movie.movie_title,movie.movie_id, file.poster_url, category.category_name ' +
+        'FROM movie ' +
+        'INNER JOIN movie_category ON movie.movie_id = movie_category.movie_id ' +
+        'INNER JOIN category ON category.category_id = movie_category.category_id ' +
+        'INNER JOIN file ON file.movie_id = movie.movie_id ' +
+        'WHERE category.category_id = :category',
+        {
+          type: QueryTypes.SELECT,
+          replacements: { category },
+        }
     );
 
     console.log(movies);
@@ -46,6 +46,6 @@ const getMoviePostersByCategory = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-  
+
 module.exports = { getMoviePostersByCategory };
 

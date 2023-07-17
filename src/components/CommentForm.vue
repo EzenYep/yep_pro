@@ -55,16 +55,28 @@ const addComment = async () => {
             comment:text.value,
             starkit:rating.value
         };
-        const res = await axios.post("http://localhost:9212/api/review/commentCreate",data);
-        console.log(res.data)
-        if(res.data.code ===200){
-            await router.push({name: "home"})
-        }else {
-            alert("회원님은 이 영화를 감상하시지 않으셧습니다.")
-            return;
-        }
+        axios.post("http://localhost:9212/api/review/commentCreate",data)
+            .then(res => {
+                console.log(res.data)
+                if(res.data.code ===200){
+                    router.push({name: "home"})
+                }
+            })
+            .catch(err => {
+                if(err.response && err.response.data) {
+                    const errorCode = err.response.data.code;
+                    if(errorCode === 404) {
+                        alert('결제 정보를 찾을 수 없습니다.');
+                    } else {
+                        alert('결제 정보를 찾을 수 없습니다.');
+                    }
+                } else {
+                    console.error(err);
+                }
+            });
     }
 };
+
 const goLogin = ()=>{
     router.push({
         name:'login'
