@@ -9,16 +9,21 @@
             </iframe>
         </div>
 
-        <div class="search-wrap">
-            <div class="search">
-                <input type="text" class="searchTerm" placeholder="검색">
-                <button type="submit" class="searchButton">
-                    <i class="fa fa-search"></i>
-                </button>
+        <div>
+            <div class="wrap">
+                <div class="search">
+                    <input
+                            type="text"
+                            class="searchTerm"
+                            placeholder="검색어를 입력하세요."
+                            v-model="searchQuery"
+                            @keyup.enter="searchmovie"
+                    />
+                    <button type="submit" class="searchButton" style="background-color:#FFE2C0; border-radius: 4px; border: solid #FFE2C0;" @click="searchmovie">검색</button>
+                </div>
             </div>
         </div>
-
-
+        <hr style="border-color: #FF8551; opacity: 1;">
         <div class="category-wrap">
             <ul>
                 <li data-category="action"><a href="#" @click="showMoviesByCategory(1)">액션</a></li>
@@ -37,21 +42,18 @@
             </ul>
         </div>
 
-
-
-
         <div class="bottom-container">
             <div class="item">
-                <a class="box-image" href="#">
+                <a class="box-image" :href="getMovieInfoLink(state.movieIds[0])">
                     <span class="color">
-                        <img :src="state.posters[0]" alt="">
+                        <img :src="state.posters[0]" alt="" >
                     </span>
                 </a>
                 <div class="box-content"><strong class="title">{{ state.movieTitles[0] }}</strong></div>
             </div>
 
             <div class="item">
-                <a class="box-image" href="#">
+                <a class="box-image" :href="getMovieInfoLink(state.movieIds[1])">
                     <span class="color">
                         <img :src="state.posters[1]" alt="">
                     </span>
@@ -60,7 +62,7 @@
             </div>
 
             <div class="item">
-                <a class="box-image" href="#">
+                <a class="box-image" :href="getMovieInfoLink(state.movieIds[2])">
                     <span class="color">
                         <img :src="state.posters[2]" alt="">
                     </span>
@@ -69,7 +71,7 @@
             </div>
 
             <div class="item">
-                <a class="box-image" href="#">
+                <a class="box-image" :href="getMovieInfoLink(state.movieIds[3])">
                     <span class="color">
                         <img :src="state.posters[3]" alt="">
                     </span>
@@ -80,7 +82,7 @@
 
         <div class="bottom-container2">
             <div class="item">
-                <a class="box-image" href="#">
+                <a class="box-image" :href="getMovieInfoLink(state.movieIds[4])">
                     <span class="color">
                         <img :src="state.posters[4]" alt="">
                     </span>
@@ -89,7 +91,7 @@
             </div>
 
             <div class="item">
-                <a class="box-image" href="#">
+                <a class="box-image" :href="getMovieInfoLink(state.movieIds[5])">
                     <span class="color">
                         <img :src="state.posters[5]" alt="">
                     </span>
@@ -98,7 +100,7 @@
             </div>
 
             <div class="item">
-                <a class="box-image" href="#">
+                <a class="box-image" :href="getMovieInfoLink(state.movieIds[6])">
                     <span class="color">
                         <img :src="state.posters[6]" alt="">
                     </span>
@@ -107,7 +109,7 @@
             </div>
 
             <div class="item">
-                <a class="box-image" href="#">
+                <a class="box-image" :href="getMovieInfoLink(state.movieIds[7])">
                     <span class="color">
                         <img :src="state.posters[7]" alt="">
                     </span>
@@ -122,8 +124,8 @@
 
 <script setup>
 import axios from "axios"
-import { reactive } from "vue";
-
+import { reactive, ref, } from "vue";
+import router from "@/router";
 
 const urls = reactive({
     videoUrl: "",
@@ -147,6 +149,8 @@ const state = reactive({
     categories: ['action', 'sf', 'romance', 'horror', 'comedy', 'family', 'animation'], //'action', 'sf', 'romance', 'horror', 'comedy', 'family', 'animation'
     activeCategory: 'action'
 });
+
+const getMovieInfoLink = (movieIds) => `http://localhost:8080/movie/${movieIds}`;
 
 // const fetchImageUrls = async () => {
 //   try {
@@ -223,41 +227,42 @@ const showMoviesByCategory = (category) => {
     });
 };
 
+const searchQuery = ref('');
+const currentMovieOffset = ref(0);
 
 
+const searchmovie = async () => {
+  try {
+    if (!searchQuery.value) {
+      return;
+    }
+    router.push({ name: "SearchMovieView",
+  query: { searchQuery:searchQuery.value },
+}) 
+  } catch (error) {
+    console.error('Error searching movies:', error);
+  }
+};
 
 
-
-
-
-
-
-const searchMovies = () => {
-  // 검색어를 이용하여 영화를 검색하는 로직을 추가하세요.
+const goMovieInfos = (currentIndex) => {
+    const index = currentMovieOffset.value + currentIndex;
+    const selectedMovieId = state.movieIds[index];
+    router.push({
+        name: "movie_info",
+        params: {
+            id: selectedMovieId,
+        },
+    });
 };
 
 
 
-/*
-export default {
-  data() {
-    return {
-      categories: ['action', 'sf', 'romance', 'horror', 'comedy', 'family', 'animation'],
-      activeCategory: 'action',
-      searchTerm: '',
-    };
-  },
-  methods: {
-    showMoviesByCategory(category) {
-      this.activeCategory = category;
-      // 해당 카테고리에 해당하는 영화를 표시하는 로직을 추가하세요.
-    },
-    searchMovies() {
-      // 검색어를 이용하여 영화를 검색하는 로직을 추가하세요.
-    },
-  },
-};
-*/
+
+// const searchMovies = () => {
+//   // 검색어를 이용하여 영화를 검색하는 로직을 추가하세요.
+// };
+
 
 </script>
 
@@ -293,26 +298,25 @@ body{
     font-family: 'Open Sans', sans-serif;
 }
 
-.search {
-    width: 100%;
-    position: relative;
-    display: flex;
-}
-
 .searchTerm {
-    width: 100%;
-    border: 3px solid #000000;
-    border-right: none;
-    padding: 5px;
-    height: 35px;
-    border-radius: 5px 0 0 5px;
-    outline: none;
-    color: #000000;
+    width: 30%;
+    border-radius: 4px;
+    border: solid #FFE2C0;
 }
 
-.searchTerm:focus{
-    color: #ffffff;
+.search {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 50px;
+    /* left: 66.5%;  /* 야매로 왼쪽기준으로 만듬 */
+    text-align: right;
+    color: #FFE2C0;
 }
+
+
+/* .searchTerm:focus{
+    color: #ffffff;
+} */
 
 .searchButton {
     width: 40px;
@@ -367,7 +371,7 @@ a:after {
     height: 2px;
     left: 50%;
     position: absolute;
-    background: black;
+    background: #FF8551;
     transition: width 0.3s ease 0s, left 0.3s ease 0s;
     width: 0;
 }

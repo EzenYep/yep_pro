@@ -2,21 +2,21 @@
     <div class="container">
         <div class="caption">
             <h3 style="margin-left:1rem;">Event</h3>
-            <div class="horizontal-line" ></div>
+            <div class="horizontal-line" style="background-color:#FF8551" ></div>
         </div>
         <div class="caption-event">
             <h5 style="margin-left:1rem;">이벤트 제목자리</h5>
-            <div class="horizontal-line-event" ></div>
+            <div class="horizontal-line-event" style="background-color:#FF8551" ></div>
         </div>
         <div class="event-img">
             <img class="event-img-detail" src="../assets/test.jpg">
         </div>
         <div class="back-btn">
-            <button class="back-btn-detail" @click="goBack">뒤로 가기</button>
+            <button class="back-btn-detail" style=" background-color: #FFE2C0;  border-radius: 10px;" @click="goBack">뒤로 가기</button>
         </div>
         <div class="last">  
             <h6 class="teamname">Yep | 이용약관 | 개인정보처리방침 | 이현진 | 김영강 | 윤종혁 | 문정혜 | 방우리 | 황 건</h6>
-            <button class="topbutton" @click="scrollToTop">TOP</button>
+            <button class="topbutton" style="  opacity:0.5; " @click="scrollToTop">TOP</button>
         </div>
     </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
-    <div class="row" style="background-color: gray; height: 250px;">
-        <div class="row6" align="center">
+    <div class="row" style="background-color: #FFFAF8; height: 250px;">
+        <div class="row6" align="center" >
             <br>
             <div class="con7" style="width: 85%; height: 90%; border: 1px; float: center; line-height: 250%; background-color: rgba(0, 0, 0, 0);">
                 <div class="user-list">
@@ -40,57 +40,55 @@
                                     <span>{{ review.comment }}</span>
                                 </template>
                             </td>
-                            <td style="color:black;width:10%;" align="center">
-                                <template v-if="review.isEditing">
-                                    <button @click="toggleEdit(review)">저장</button>
-                                </template>
-                                <template v-else>
-                                    <button @click="toggleEdit(review)">편집</button>
-                                </template>
-                            </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             <div class="v-line2" align="right">
-                <div class="hello"></div>
-                <button class="btn btn-danger" @click="deleteSelectedReviews">삭제</button>
             </div>
         </div>
     </div>
     <nav aria-label="Page navigation example">
         <br>
-        <ul class="pagination justify-content-center">
-            <li class="page-item" :class="{ disabled: currentPage === 0 }">
-                <a class="page-link" href="#" @click.prevent="gotoFirstPage" aria-label="First">
-                    <span aria-hidden="true">&laquo;&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item" :class="{ disabled: currentPage === 0 }">
-                <a class="page-link" href="#" @click.prevent="prevPage" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li
-                class="page-item"
-                v-for="page in visiblePages"
-                :key="page"
-                :class="{ active: page === currentPage + 1 }"
-            >
-                <a class="page-link" href="#" @click.prevent="gotoPage(page)">{{ page }}</a>
-            </li>
-            <li class="page-item" :class="{ disabled: currentPage === totalPages - 1 }">
-                <a class="page-link" href="#" @click.prevent="nextPage" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-            <li class="page-item" :class="{ disabled: currentPage === totalPages - 1 }">
-                <a class="page-link" href="#" @click.prevent="gotoLastPage" aria-label="Last">
-                    <span aria-hidden="true">&raquo;&raquo;</span>
-                </a>
-            </li>
-        </ul>
+        <div class="pagination-container text-center">
+            <ul class="pagination">
+                <li class="page-item" :class="{ disabled: currentPage === 0 }">
+                    <a class="page-link" href="#" @click.prevent="gotoFirstPage" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" :class="{ disabled: currentPage === 0 }">
+                    <a class="page-link" href="#" @click.prevent="prevPage" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li
+                    class="page-item"
+                    v-for="page in visiblePages"
+                    :key="page"
+                    :class="{ active: page === currentPage + 1 }"
+                >
+                    <a class="page-link" href="#" @click.prevent="gotoPage(page)">{{ page }}</a>
+                </li>
+                <li class="page-item" :class="{ disabled: currentPage === totalPages - 1 }">
+                    <a class="page-link" href="#" @click.prevent="nextPage" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" :class="{ disabled: currentPage === totalPages - 1 }">
+                    <a class="page-link" href="#" @click.prevent="gotoLastPage" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="button-container">
+            <button class="btn btn-primary" @click="toggleEditSelectedReviews" style="background-color: #FFE2C0; border-color: transparent; color: black;">
+                {{ editingSelectedReviews ? '저장' : '수정' }}
+            </button>
+            <button class="btn btn-danger" @click="deleteSelectedReviews" style="border-color: transparent; color: black;">삭제</button>
+        </div>
     </nav>
 </template>
 
@@ -225,14 +223,37 @@ const toggleEdit = async (review) => {
         await editReview({ ...review, review_id: review.review_id });
     }
 };
+
+const toggleEditSelectedReviews = async () => {
+    if (editingSelectedReviews.value) {
+        // 저장 버튼이 클릭된 경우, 선택된 리뷰들을 저장
+        for (const review of reviewList.value) {
+            if (selectedItems.value.includes(review.review_id)) {
+                if (review.isEditing) {
+                    await toggleEdit(review);
+                }
+            }
+        }
+    } else {
+        // 수정 버튼이 클릭된 경우, 선택된 리뷰들의 편집 모드를 토글
+        for (const review of reviewList.value) {
+            if (selectedItems.value.includes(review.review_id)) {
+                review.isEditing = !review.isEditing;
+            }
+        }
+    }
+};
+
+const editingSelectedReviews = computed(() => {
+    return selectedItems.value.some((itemId) => {
+        const review = reviewList.value.find((item) => item.review_id === itemId);
+        return review && review.isEditing;
+    });
+});
+
 </script>
 
 <style scoped>
-.hello {
-    width: 20px;
-    height: auto;
-    display: inline-block;
-}
 
 /************* 회원조회 칼럼 *************/
 table {
@@ -244,17 +265,20 @@ table {
 th {
     padding: 10px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #FF8551;
+    text-align: center;
 }
 
 td {
     padding: 40px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #FF8551;
+    text-align: center;
 }
 
 th.column {
-    background-color: #f2f2f2;
+    background-color: #FFFAF8;
+    text-align: center;
 }
 
 th.column-small {
@@ -275,4 +299,25 @@ th.column-large {
     font-size: 15px;
     padding: 6px 25px 6px 25px;
 }
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    flex-grow: 1; /* 새로운 스타일 추가 */
+}
+
+.button-container {
+    text-align: right;
+    flex-shrink: 0; /* 새로운 스타일 추가 */
+}
+
 </style>
+

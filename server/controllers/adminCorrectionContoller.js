@@ -76,10 +76,36 @@ const updateMovie = async (req, res) => {
     }
 };
 
+const updateComment = async (req, res) => {
+    try {
+        // 수정할 필드와 값을 요청에서 가져옵니다.
+        const { starkit, comment, review_id } = req.body;
+
+        // 데이터베이스에서 해당 리뷰를 조회합니다.
+        const review = await Review.findOne({ where: { review_id: req.body.review_id } }); // review_id를 기준으로 리뷰를 조회하도록 수정
+
+        if (!review) {
+            return res.status(404).json({ error: '리뷰를 찾을 수 없습니다.' });
+        } else {
+            // 필드를 수정합니다.
+            review.comment = comment;
+            review.starkit = starkit;
+            review.review_id = review_id;
+
+            // 수정된 리뷰 정보를 저장합니다.
+            await review.save();
+
+            return res.status(200).json({ message: '리뷰 정보가 수정되었습니다.' });
+        }
+    } catch (error) {
+        console.error('리뷰 정보 수정 실패:', error);
+        return res.status(500).json({ error: '서버 오류' });
+    }
+};
 
 module.exports = {
     getMovieList,
     deleteMovies,
-    updateMovie
-   
+    updateMovie,
+    updateComment
 };
