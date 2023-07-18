@@ -70,6 +70,8 @@ const movie_info_db = async () =>{
     movie_data.start_date = formattedStartDate;
 }
 movie_info_db();
+
+
 </script>
 
 <style scoped>

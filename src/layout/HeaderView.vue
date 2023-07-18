@@ -1,9 +1,10 @@
-<template>
-    <div class="container">
+<template >
+    <div class="container" style="background-color : #FFFAF8;">
         <div class="fullWidth">
             <div class="fullWidth">
                 <nav class="navbar navbar-expand-lg" id="navbar2">
-                    <a class="navbar-brand" @click="goHome">Navbar</a>
+                    <button class="navbar-brand" @click="goHome"  style="background-color: transparent; border: none;">
+                        <img src="../img/logo.png" alt="로고" class="image-button__image"  style="width: 100px; height: auto;"></button>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -11,14 +12,17 @@
                         <ul class="navbar-nav">
                             <li class="nav-item">
 
-                                <a class="nav-link active"  v-if="isUserLoggedIn" @click="logout"  aria-current="page" style="font-size: 0.5rem;">로그아웃</a>
-                                <a class="nav-link active" v-else aria-current="page" @click="goLoginPage" style="font-size: 0.5rem;">로그인</a>
+                                <button class="nav-link active"  v-if="isUserLoggedIn" @click="logout"  aria-current="page" style="font-size: 0.8rem;
+                                background-color: transparent; border: none;font-weight: bolder;">로그아웃</button>
+                                <button class="nav-link active" v-else aria-current="page" @click="goLoginPage" style="font-size: 0.8rem;font-weight: bolder;">로그인</button>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page"  @click="goLoginPage" style="font-size: 0.5rem;">회원가입</a>
+                                <button class="nav-link active"  v-if="!isUserLoggedIn" aria-current="page"  @click="gosign_upPage" style="font-size: 0.8rem;
+                                background-color: transparent; border: none;font-weight: bolder;">회원가입</button>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page"  @click="goComplainPage" style="font-size: 0.5rem;">고객센터</a>
+                                <button class="nav-link active" aria-current="page"  @click="goComplainPage" style="font-size: 0.8rem;
+                                background-color: transparent; border: none;font-weight: bolder;">고객센터</button>
                             </li>
                         </ul>
                     </div>
@@ -26,23 +30,30 @@
             </div>
         </div>
     </div>
-    <div class="container" id="navbar_parent" >
-        <div id="navbar">
+    <div class="container" id="navbar_parent" style="background-color : #FFFAF8;" >
+        <div id="navbar" >
             <div id="navItems" />
             <div id="navItems">
-                <span class="divider" @click="goMovie">영화</span>
+                <button class="divider" @click="goMovie" style="background-color: transparent; border: none;
+                padding-left: 20px; padding-right: 20px;">영화</button>
                 <span class="divider">ㅣ</span>
-                <span class="divider" @click="goReservation">예매</span>
+                <button class="divider" @click="goReservation" style="background-color: transparent; border: none;
+                padding-left: 20px; padding-right: 20px;">예매</button>
                 <span class="divider">ㅣ</span>
-                <span class="divider" @click="goEvent">이벤트</span>
+                <button class="divider" @click="goEvent" style="background-color: transparent; border: none;
+                padding-left: 20px; padding-right: 20px;">이벤트</button>
             </div>
             <div  id="btns">
-                <button v-if="isUserLoggedIn" @click="goMyPage">마이</button>
-                <button v-else @click="goLoginPage">마이</button>
-                <button v-if="isUserLoggedIn" @click="logout">로그아웃</button>
-                <button v-else @click="goLoginPage">로그인</button>
+                <button v-if="isUserLoggedIn" @click="goMyPage" class="image-button1">
+                <img src="../img/Group273.png" alt="마이" class="image-button__image">
+                </button>
+                <button v-else @click="goLoginPage2"  class="image-button1">
+                <img src="../img/Group273.png" alt="마이" class="image-button__image"></button>
+                <button v-if="isUserLoggedIn" @click="logout" class="image-button2"><img src="../img/Group271.png" alt="로그아웃" class="image-button__image"></button>
+                <button v-else @click="goLoginPage" class="image-button2"><img src="../img/Group270.png" alt="로그인" class="image-button__image"></button>
             </div>
-        </div>
+         </div>
+        <br>
     </div>
 
 </template>
@@ -67,6 +78,19 @@ const goHome=()=>{
 }
 
 const goLoginPage = () => {
+    router.push({
+        name: 'login',
+    });
+};
+
+const gosign_upPage = () => {
+    router.push({
+        name: 'sign_up',
+    });
+};
+
+const goLoginPage2 = () => {
+    alert("가입되지 않은 회원입니다.")
     router.push({
         name: 'login',
     });
@@ -116,8 +140,11 @@ my()
     display: flex;
     justify-content: space-between;
     margin-top: 3%; /* 구분 기호의 좌우 여백 설정 */
-    border: 1px solid #000000; /* 외곽선 추가 */
+    border: 2px solid #FF8551; /* 외곽선 추가 */
     padding: 0; /* 내부 여백 설정 */
+    border-left: 2px solid #FFFAF8;
+        border-right: 2px solid #FFFAF8;
+
 }
 #navbar_parent{
     width:100%;
@@ -131,6 +158,7 @@ my()
     display: flex;
     justify-content: center;
     align-items: center;
+    
 }
 #btns{
     width:33%;
@@ -146,5 +174,29 @@ my()
 .fullWidth{
     width: 100%;
 }
+
+.image-button1 {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+.image-button2 {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.image-button__image {
+  display: block;
+  width: 25px;
+  height: 35px;
+  object-fit: contain;
+}
+
 
 </style>
