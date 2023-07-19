@@ -82,22 +82,24 @@
         <!-- 가로 레이아웃 -->
         <div class="horizontal-container">
 
-            <div class="horizontal-layout">
-                <div class="image">
-                    <!--<img src="../assets/photo1.jpg" alt="Photo 1">-->
-                    <div style="width: 35rem; height: 35rem; background-color: aqua;"></div>
-                </div>
-                <div class="buttons">
-                    <button class="button" @click="goReservationPage">빠른 예매</button>
-                    <button class="button" @click="goMyPage">예매 내역</button>
-                    <button class="button" @click="goEventPage">할인 안내</button>
-                </div>
-                <div class="image">
-                    <!--<img src="../assets/photo1.jpg" alt="Photo 1">-->
-                    <img :src="movies.selectedPoster">
-                </div>
+
+        <div class="horizontal-layout">
+            <div class="image">
+                <!--<img src="../assets/photo1.jpg" alt="Photo 1">-->
+                <div style="width: 35rem; height: 35rem; background-color: aqua;"></div>
+            </div>
+            <div class="buttons">
+                <button class="button" @click="goReservationPage">빠른 예매</button>
+                <button class="button" @click="goMyPage">예매 내역</button>
+                <button class="button" @click="goEventPage">할인 안내</button>
+            </div>
+            <div class="image">
+                <!--<img src="../assets/photo1.jpg" alt="Photo 1">-->
+                <img :src="movies.selectedPoster">
+
             </div>
         </div>
+    </div>
 
         <!-- 하단 영역 -->
         <div class="last">
@@ -440,8 +442,10 @@ const goMovieInfos2 = (currentIndex) => {
     position: relative;
 }
 .horizontal-container {
-    width: 100%;
-    overflow: hidden;
+
+  width: 100%;
+  overflow: hidden;
+
 }
 
 /* 밑에 광고 이미지 양옆으로 붙여야함*/
