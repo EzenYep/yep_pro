@@ -58,8 +58,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="(reservation, index) in reservationList" :key="index">
-                            <td class="column column-small">
+                                <tr v-for="(reservation, index) in currentPageReservations" :key="index">                               <td class="column column-small">
                                 <input
                                     class="form-check-input"
                                     type="checkbox"
@@ -278,7 +277,7 @@
     
 // 페이징 처리
 let currentPage = ref(0);
-let reservationsPerPage = ref(3);
+let reservationsPerPage = ref(1); // 1 -> 10
 
 const currentPageReservations = computed(() => {
     const start = currentPage.value * reservationsPerPage.value;
@@ -322,7 +321,6 @@ const gotoFirstPage = () => {
 const gotoLastPage = () => {
     currentPage.value = totalPages.value - 1;
 };
-
     </script>
     
     <!-- Add "scoped" attribute to limit CSS to this component only -->

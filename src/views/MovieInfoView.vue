@@ -105,9 +105,6 @@ img {
     align-items: center;
 }
 
-.title {
-
-}
 
 .horizontal-line {
   height: 1px;

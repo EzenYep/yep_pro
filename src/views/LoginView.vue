@@ -1,39 +1,41 @@
 <template>
+<body style="min-height: 800px;background-color: #FFFAF8;">
+
     <div class="aaa"></div>
         <div class="login-box">
             <h2>LOGIN</h2>
-
+    
             <div class="horizontal-line" style="height: 2px;  background-color: #FF8551;margin-bottom: 5%;"></div>
-
-            <div class="user-box">
-                <input type="text" name="" required="" v-model="body.email" @keyup.enter="LogInEvent">
-                <label>이메일</label>
-            </div>
+    
+                <div class="user-box">
+                    <input type="text" name="" required="" v-model="body.email" @keyup.enter="LogInEvent">
+                    <label>이메일</label>
+                </div>
                 <div class="user-box">
                     <input type="password" name="" required="" v-model="body.password" @keyup.enter="LogInEvent">
                     <label>비밀번호</label>
                 </div>
-            <label class="checkbox">
-                <input type="checkbox" value="remember-me" id="rememberMe" v-model="body.rememberMe"> 아이디 저장
-            </label>
-
-
+                <label class="checkbox"> <!--아이디 저장 기능은 보류-->
+                    <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> 아이디 저장
+                </label>
                     <input type="submit" @click="LogInEvent" @keyup.enter="LogInEvent" class="login" value="로그인" >
-
+    
                     <a href="#" class="findid" @click="findid">아이디찾기</a>&nbsp;<label class="sero" style="color: #FF8551; margin-right: 5px;">|</label>
                 <a href="#" class="findpw" @click="findpw">비밀번호찾기</a>
-
+    
                 <a href="#" class="createid" @click="createid">회원가입</a>
-
+    
         </div>
         <div class="abcd" style="height: 40%;width: 100%;background-color: #FF8551;"></div>
+</body>
     </template>
-
+    
     <script setup>
-    import {reactive,onMounted} from "vue";
+    import {reactive} from "vue";
     import axios from "axios";
     import {useStore} from 'vuex'
     import router from "@/router";
+    
     const findid = () => {
         router.push({
             name: 'find_id'
@@ -49,28 +51,16 @@
             name: 'sign_up'
         })
     }
-    onMounted(() => {
-        const savedEmail = localStorage.getItem('savedEmail');
-        if (savedEmail) {
-            body.email = savedEmail;
-        }
-    });
-
+    
+    
     const store = useStore();
-    let body = reactive({ email: "", password: "", rememberMe: false });
-
-
+    let body = reactive({});
+    
     const LogInEvent = async () => {
         body ={
             email: body.email,
             password: body.password,
         };
-        console.log('Remember me:', body.rememberMe);
-        if (body.rememberMe) {
-            localStorage.setItem('savedEmail', body.email);
-        } else {
-            localStorage.removeItem('savedEmail');
-        }
         try {
             const res =  await axios.post("http://localhost:9212/api/user/signInUser", body)
 
@@ -81,7 +71,6 @@
                         const email = res.data.email;*/
                 store.commit('SET_TOKEN', { accessToken: res.data.accessToken, email: res.data.email , state:res.data.state})
                 console.log(res.data.email)
-
                 if(res.data.state === 0){
                     await router.push({
                         name: "home"

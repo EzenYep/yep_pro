@@ -5,14 +5,19 @@
             <div class="horizontal-line" style="background-color:#FF8551" ></div>
         </div>
         <div class="caption-event">
-            <h5 style="margin-left:1rem;">이벤트 제목자리</h5>
+            <h5 style="margin-left:1rem;">회원가입 대박 이벤트</h5>
             <div class="horizontal-line-event" style="background-color:#FF8551" ></div>
         </div>
         <div class="event-img">
-            <img class="event-img-detail" src="../assets/test.jpg">
+            <img class="event-img-detail" src="../img/event.png">
+            
+            
+        </div>
+        <div class="event-img2">
+            <img class="event-img-datail" src="../img/red.png">
         </div>
         <div class="back-btn">
-            <button class="back-btn-detail" style=" background-color: #FFE2C0;  border-radius: 10px;  border:1px solid black;" @click="goBack">뒤로 가기</button>
+            <!--<button class="back-btn-detail" style=" background-color: #FFE2C0;  border-radius: 10px;  border:1px solid black;" @click="goBack">뒤로 가기</button>-->
         </div>
         <div class="last">  
             <h6 class="teamname">Yep | 이용약관 | 개인정보처리방침 | 이현진 | 김영강 | 윤종혁 | 문정혜 | 방우리 | 황 건</h6>

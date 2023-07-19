@@ -116,6 +116,10 @@ const routes = [
         path:"/mypage",
         name: "mypage",
         component: MyPageView
+    },{
+        path:"/payment",
+        name: "payment",
+        component: PaymentView
     }
 ]
 

@@ -82,10 +82,7 @@ const report_comment = async (reviewId) => {
     } else {
         alert("신고가 처리되지 않았습니다.");
     }
-};
-
-
-
+}; 
 const averagestarkit = computed(() => {
     if (comments.value.length === 0) {
         return "리뷰가 없습니다";

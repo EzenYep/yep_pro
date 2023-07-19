@@ -2,7 +2,7 @@
     <body style="background-color: #FFFAF8;">
     <HeaderView></HeaderView>
     <TheView></TheView>
-    </body>
+</body>
 </template>
 
 <script setup>

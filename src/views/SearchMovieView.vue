@@ -1,9 +1,12 @@
 <template>
+<body style="min-height: 1500px;background-color: #FFFAF8;">
+
   <div class="container">
     <div class="search">
       <input type="text" class="searchTerm" @keyup.enter="searchMovie" v-model="searchQuery" />
       <button type="submit" class="searchButton" style="background-color:#FFE2C0; border-radius: 4px; border: solid #FFE2C0;" @click="searchMovie">검색</button>
     </div>
+    <div class="horizontal-line" style="height: 2px;  background-color: #FF8551;margin-bottom: 5%;margin-top: 10%;"></div>
 
     <h3>검색결과</h3>
     <div class="horizontal-line" style="height: 2px;  background-color: #FF8551;margin-bottom: 5%;"></div>
@@ -43,9 +46,11 @@
       <h4>{{ movie.movie_title  }}</h4> <!--영화 제목-->
       </div>
     </div>
+    <div class="horizontal-line" style="height: 2px;  background-color: #FF8551;margin-bottom: 5%;margin-top: 10%;"></div>
 
     <div class="bbb"></div>
   </div>
+</body>
 </template>
 
 <script setup>
@@ -153,7 +158,7 @@ const showMovieDetail = async (movieId) => {
     position: relative;
     margin: auto;
     /* margin-top: 10px; */
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     text-align: right;
 }
 .searchresultnum{

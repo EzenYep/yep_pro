@@ -7,15 +7,15 @@
                     <td class="caption-col"> <!-- 지역 -->
                         <h4 class="caption">지역 선택</h4>
                         <div class="list">
-                            <button type="button" class="btn btn-light;" @click="theater_seat(1)">서울</button>
-                            <button type="button" class="btn btn-light;" @click="theater_seat(2)">인천</button>
-                            <button type="button" class="btn btn-light;" @click="theater_seat(3)">경기</button>
-                            <button type="button" class="btn btn-light;" @click="theater_seat(4)">강원</button>
-                            <button type="button" class="btn btn-light;" @click="theater_seat(5)">경상</button>
-                            <button type="button" class="btn btn-light;" @click="theater_seat(6)">충청/대전</button>
-                            <button type="button" class="btn btn-light;" @click="theater_seat(7)">부산/울산</button>
-                            <button type="button" class="btn btn-light;" @click="theater_seat(8)">전라/광주</button>
-                            <button type="button" class="btn btn-light;" @click="theater_seat(9)">제주</button>
+                            <button type="button" class="btn btn-light;" @click="theater_seat('서울')">서울</button>
+                            <button type="button" class="btn btn-light;" @click="theater_seat('인천')">인천</button>
+                            <button type="button" class="btn btn-light;" @click="theater_seat('경기')">경기</button>
+                            <button type="button" class="btn btn-light;" @click="theater_seat('강원')">강원</button>
+                            <button type="button" class="btn btn-light;" @click="theater_seat('경상')">경상</button>
+                            <button type="button" class="btn btn-light;" @click="theater_seat('충천/대전')">충청/대전</button>
+                            <button type="button" class="btn btn-light;" @click="theater_seat('부산/울산')">부산/울산</button>
+                            <button type="button" class="btn btn-light;" @click="theater_seat('전라/광주')">전라/광주</button>
+                            <button type="button" class="btn btn-light;" @click="theater_seat('제주')">제주</button>
                         </div>
                     </td>
                     <td class="caption-col"> <!-- 상영관 -->
@@ -150,6 +150,7 @@
 import axios from "axios";
 import { reactive, ref, watchEffect, computed, onMounted, watch } from 'vue'
 import store from "@/store/store";
+import router from "@/router";
 const isSeatNotSelected = computed(() => selectedSeatIds.value.length === 0);
 const selectedSeatIds = ref([]); // Track selected seat IDs
 
@@ -177,21 +178,21 @@ const selectedSeats = reactive({
 })
 
 //지역 선택시 극장 가져옴
-const theater_seat = async (theaterId) => {
+const theater_seat = async (theaterLocation) => {
     theater_names.value = [];
     movies.value = [];
     times.value = [];
     selectedTheater.value = null;
     selectedMovie.value = null;
-    console.log("함수 실행", theaterId);
-    const response = await axios.post("http://localhost:9212/api/getTheaterId", { theaterId: theaterId });
+    console.log("함수 실행", theaterLocation);
+    const response = await axios.post("http://localhost:9212/api/getTheaterId", { theaterLocation: theaterLocation });
 
     console.log("값 받아오기");
     console.log(response);
     console.log("값 확인 후 이벤트 실행");
 
     if (response && response.data) {
-        theater_names.value = [response.data.theater_name];
+        theater_names.value = response.data.map(item => item.theater_name);
     }
 };
 
@@ -454,15 +455,15 @@ const makeReservation = async () => {
     const theaterName = selectedTheater.value;
     const screeningTime = selectedTime.value;
     const data = {
-        member_email : store.state.email,
+        member_email: store.state.email,
         movie_id: movieId
     }
+
     const res = await axios.post("http://localhost:9212/api/coponCheck", data)
     const code = res.data.code;
     const amount = res.data.amount
+    const quantity = selectedSeatIds.value.length;
     if(code===200){
-        const IMP = window.IMP;
-        IMP.init("imp23252800")
         if (isSeatNotSelected.value) {
             // 좌석이 선택되지 않았을 때의 처리
             alert("좌석을 선택해주세요.");
@@ -472,41 +473,10 @@ const makeReservation = async () => {
             alert("로그인 해주세요.");
         } else {
             alert("할인금액으로 결제를 진행하겠습니다.")
-            // 아임포트 결제 처리
-            IMP.request_pay({
-                pg: 'kcp',
-                pay_method: 'card',
-                merchant_uid: 'merchant_' + new Date().getTime(),
-                name: '영화 예매',
-                amount: amount*0.8,  // 결제할 금액을 입력하세요.
-                buyer_email: store.state.email,
-                buyer_name: '테스트 사용자',
-                buyer_tel: '010-1234-5678',
-                buyer_addr: '서울특별시 강남구 신사동',
-                buyer_postcode: '01181'
-            }, (rsp) => {
-                if (rsp.success) {
-                    // 결제 성공 시 처리
-                    console.log('결제 성공:', rsp);
-                    var msg = '결제가 완료되었습니다.';
-                    alert(msg);
-
-                    // 예약 처리
-                    reserveSeats(movieId, theaterName, screeningTime, selectedSeatIds.value, store.state.email);
-                } else {
-                    // 결제 실패 시 처리
-                    console.log('결제 실패:', rsp.error_msg);
-                    var errorMsg = '결제에 실패하였습니다.';
-                    errorMsg += '에러내용: ' + rsp.error_msg;
-                    alert(errorMsg);
-                }
-            });
-            // 예약 처리
-            //reserveSeats(movieId, theaterName, screeningTime, selectedSeatIds.value, store.state.email);
+            reserveSeats(movieId, theaterName, screeningTime, selectedSeatIds.value, store.state.email);
+            router.push({ name: 'payment', query: { amount: amount ,quantity:quantity} });
         }
-    }else { //구매내역이 있을겨우
-        const IMP = window.IMP;
-        IMP.init("imp23252800")
+    }else if(code === 300) { //구매내역이 있을겨우
         if (isSeatNotSelected.value) {
             // 좌석이 선택되지 않았을 때의 처리
             alert("좌석을 선택해주세요.");
@@ -516,40 +486,11 @@ const makeReservation = async () => {
             alert("로그인 해주세요.");
         } else {
             // 아임포트 결제 처리
-            IMP.request_pay({
-                pg: 'kcp',
-                pay_method: 'card',
-                merchant_uid: 'merchant_' + new Date().getTime(),
-                name: '영화 예매',
-                amount: amount,  // 결제할 금액을 입력하세요.
-                buyer_email: store.state.email,
-                buyer_name: '테스트 사용자',
-                buyer_tel: '010-1234-5678',
-                buyer_addr: '서울특별시 강남구 신사동',
-                buyer_postcode: '01181'
-            }, (rsp) => {
-                if (rsp.success) {
-                    // 결제 성공 시 처리
-                    console.log('결제 성공:', rsp);
-                    var msg = '결제가 완료되었습니다.';
-                    alert(msg);
-
-                    // 예약 처리
-                    reserveSeats(movieId, theaterName, screeningTime, selectedSeatIds.value, store.state.email);
-                } else {
-                    // 결제 실패 시 처리
-                    console.log('결제 실패:', rsp.error_msg);
-                    var errorMsg = '결제에 실패하였습니다.';
-                    errorMsg += '에러내용: ' + rsp.error_msg;
-                    alert(errorMsg);
-                }
-            });
-            // 예약 처리
-            //reserveSeats(movieId, theaterName, screeningTime, selectedSeatIds.value, store.state.email);
+            alert("결제를 진행하겠습니다.")
+            reserveSeats(movieId, theaterName, screeningTime, selectedSeatIds.value, store.state.email);
+            router.push({ name: 'payment', query: { amount: amount*0.8 ,quantity:quantity} });
         }
     }
-
-
 };
 
 const reserveSeats = async (movieId, theaterName, screeningTime, seatIds, memberId) => {

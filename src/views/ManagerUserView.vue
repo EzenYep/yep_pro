@@ -42,8 +42,8 @@
             </td>
             <td :style="{ color: 'black' }">{{ user.member_name }}</td>
             <td :style="{ color: 'black' }">{{ user.member_email }}</td>
-            <td :style="{ color: 'black' }">{{ user.birthday }}</td>
             <td :style="{ color: 'black' }">{{ user.tel }}</td>
+            <td :style="{ color: 'black' }">{{ user.birthday }}</td>
           </tr>
         </tbody>               
       </table>
