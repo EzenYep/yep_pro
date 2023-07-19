@@ -1,6 +1,8 @@
 <template>
+    <body style="background-color: #FFFAF8;">
     <HeaderView></HeaderView>
     <TheView></TheView>
+    </body>
 </template>
 
 <script setup>

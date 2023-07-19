@@ -2,6 +2,20 @@
     <div class="row" style="background-color: #FFFAF8; height: 250px;">
         <div class="row6" align="center" >
             <br>
+
+
+            <div class="text1">
+                <h4 class="review-title">나의 리뷰 내역</h4>
+                <div class="button-container">
+                    <button class="btn btn-danger" style="font-weight: normal;" @click="toggleEditSelectedReviews">
+                        {{ editingSelectedReviews ? '저장' : '수정' }}
+                    </button>
+                    <button class="btn btn-danger" style="background-color: #FF9D9D; font-weight: normal;" @click="deleteSelectedReviews">삭제</button>
+
+                </div>
+            </div>
+
+
             <div class="con7" style="width: 85%; height: 90%; border: 1px; float: center; line-height: 250%; background-color: rgba(0, 0, 0, 0);">
                 <div class="user-list">
                     <table>
@@ -49,9 +63,9 @@
             </div>
         </div>
     </div>
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example" class="pagination-container">
         <br>
-        <div class="pagination-container text-center">
+        <div class="pagination justify-content-center">
             <ul class="pagination">
                 <li class="page-item" :class="{ disabled: currentPage === 0 }">
                     <a class="page-link" href="#" @click.prevent="gotoFirstPage" aria-label="First">
@@ -83,13 +97,10 @@
                 </li>
             </ul>
         </div>
-        <div class="button-container">
-            <button class="btn btn-primary" @click="toggleEditSelectedReviews" style="background-color: #FFE2C0; border-color: transparent; color: black;">
-                {{ editingSelectedReviews ? '저장' : '수정' }}
-            </button>
-            <button class="btn btn-danger" @click="deleteSelectedReviews" style="border-color: transparent; color: black;">삭제</button>
-        </div>
+
     </nav>
+
+
 </template>
 
 <script setup>
@@ -258,19 +269,21 @@ const editingSelectedReviews = computed(() => {
 /************* 회원조회 칼럼 *************/
 table {
     margin-top: 20px;
-    width: 100%;
+    width: 100%; /* 원하는 값으로 조정하세요 */
     border-collapse: collapse;
-}
-
-th {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #FF8551;
-    text-align: center;
 }
 
 td {
     padding: 40px;
+    text-align: left;
+    border-bottom: 1px solid #FF8551;
+    text-align: center;
+    font-size: 15px; /* 원하는 폰트 크기로 수정하세요 */
+}
+
+
+th {
+    padding: 10px;
     text-align: left;
     border-bottom: 1px solid #FF8551;
     text-align: center;
@@ -286,24 +299,14 @@ th.column-small {
 }
 
 th.column-large {
-    width: 200px;
+    width: 150px; /* 원하는 값으로 조정하세요 */
 }
 
-.btn-danger {
-    font-size: 15px;
-    padding: 6px 25px 6px 25px;
-    margin-right: 10px;
-}
+
 
 .btn-light {
     font-size: 15px;
     padding: 6px 25px 6px 25px;
-}
-
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .pagination-container {
@@ -311,13 +314,58 @@ nav {
     justify-content: center;
     align-items: center;
     margin-top: 30px;
-    flex-grow: 1; /* 새로운 스타일 추가 */
+}
+
+.text1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 1px;
+}
+
+.review-title {
+    margin: 0;
+    margin-bottom: 5px;
 }
 
 .button-container {
-    text-align: right;
-    flex-shrink: 0; /* 새로운 스타일 추가 */
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
 }
 
+
+
+.btn-danger {
+    font-size: 15px;
+    padding: 6px 25px 6px 25px;
+    margin-right: 10px;
+    color: black;
+    background-color: #FFE2C0;
+    font-weight: bold;
+    border: 1px solid black;
+}
+
+
+/* .user-list table {
+  font-size: 15px;
+} */
+
+.user-list td {
+    padding: 5px;
+    line-height: 90px;
+    vertical-align: middle; /* 수정된 부분 */
+}
+
+/* .user-list th, */
+.user-list input {
+    line-height: 90px;
+    vertical-align: middle; /* 수정된 부분 */
+}
+
+.user-list .text1 {
+    height: 90px;
+    vertical-align: middle; /* 수정된 부분 */
+}
 </style>
 
