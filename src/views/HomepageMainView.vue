@@ -7,7 +7,7 @@
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
         ></iframe>
-         
+        
         <div>
             <div class="wrap">
                 <div class="search">
@@ -17,10 +17,8 @@
                             placeholder="검색어를 입력하세요."
                             v-model="searchQuery"
                             @keyup.enter="searchmovie"
-                            style="width: 30%;border-radius: 4px;border: solid #FFE2C0;margin-top: 10%;"
                     />
-                    <button type="submit" class="searchButton" style="background-color:#FFE2C0; border-radius: 4px; border: solid #FFE2C0;"
-                     @click="searchmovie">검색</button>
+                    <button type="submit" class="searchButton" style="background-color:#FFE2C0; border-radius: 4px; border: solid #FFE2C0;" @click="searchmovie">검색</button>
                 </div>
             </div>
         </div>
@@ -58,6 +56,7 @@
         <div>
             <h3>상영예정작</h3>
         </div>
+        <br>
         <!-- 상영 예정작-->
         <div class="movie-chart">
             <div class="slider-container">
@@ -107,13 +106,12 @@
         </div>
 
     </div>
-    <MovieSlide></MovieSlide>
+    
 </template>
 <script setup>
 import {ref, computed, onMounted, reactive, onBeforeUnmount} from "vue";
 import router from "@/router";
 import axios from "axios";
-import MovieSlide from "@/components/MovieSlide.vue";
 const goReservationPage = () => {
     router.push({
         name: "reservation",
@@ -317,16 +315,20 @@ const goMovieInfos = (currentIndex) => {
 </script>
 
 <style scoped>
+
+
 .container {
     /*width: 70%;
       height: 100%;*/
     overflow: hidden;
     position: relative;
+    background-color: #FFFAF8;
 }
 
 .container > img {
     width: 70%;
     /* height: 100%; */
+    background-color: #FFFAF8;
 }
 
 .container iframe {
@@ -337,6 +339,8 @@ const goMovieInfos = (currentIndex) => {
 
 .searchTerm {
     width: 30%;
+    border-radius: 4px;
+    border: solid #FFE2C0;
 }
 
 .search {
@@ -345,6 +349,7 @@ const goMovieInfos = (currentIndex) => {
     margin-bottom: 50px;
     /* left: 66.5%;  /* 야매로 왼쪽기준으로 만듬 */
     text-align: right;
+    color: #FFE2C0;
 }
 
 /* 여기서부터 무비차트*/
@@ -390,15 +395,27 @@ const goMovieInfos = (currentIndex) => {
 .previous-button,
 .next-button {
     flex-shrink: 0;
-    margin: 0 10px; /* 좌우 여백 추가 */
+    margin: 0 10px; 
+    /* 좌우 여백 추가 */
 }
 
 .previous-button {
     margin-right: auto; /* 이전 버튼을 왼쪽으로 정렬 */
+    width: 40px;
+    height: 300px;
+    border-radius: 4px;
+    background-color:#FFE2C0;
+    border: solid #FFE2C0;
+
 }
 
 .next-button {
     margin-left: auto; /* 다음 버튼을 오른쪽으로 정렬 */
+    width: 40px;
+    height: 300px;
+    border-radius: 4px;
+    background-color:#FFE2C0;
+    border: solid #FFE2C0;
 }
 
 .horizontal-layout {
@@ -433,6 +450,9 @@ const goMovieInfos = (currentIndex) => {
     background-color: #ccc;
     border: none;
     cursor: pointer;
+    background-color:#FFE2C0;
+    border: solid #FFE2C0;
+
 }
 
 .last {
@@ -448,5 +468,8 @@ const goMovieInfos = (currentIndex) => {
     width: 5rem;
     height: 5rem;
     margin-left: auto;
+    background-color:#FFFAF8;
+    border: solid #FFFAF8;
+
 }
 </style>

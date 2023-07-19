@@ -8,7 +8,6 @@
                 allowfullscreen>
             </iframe>
         </div>
-
         <div>
             <div class="wrap">
                 <div class="search">
@@ -318,24 +317,18 @@ body{
     color: #ffffff;
 } */
 
-.searchButton {
-    width: 40px;
-    height: 35px;
-    border: 1px solid white;
-    background: #000000;
-    color: #fff;
-    border-radius: 0 5px 5px 0;
+.Button {
+    display: block;
+    border-radius: 50%;
+    width: 10rem;
+    height: 10rem;
+    background-color: #ccc;
+    border: none;
     cursor: pointer;
-    font-size: 20px;
+    background-color:#FFE2C0;
+    border: solid #FFE2C0;
 }
 
-.search-wrap{
-    width: 30%;
-    position: relative;
-    margin-top: 10%;
-    margin-left: 70%;
-    text-align: right;
-}
 
 
 /*************************영화 카테고리 탭 버튼 **********************/

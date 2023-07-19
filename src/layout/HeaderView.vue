@@ -32,7 +32,7 @@
     </div>
     <div class="container" id="navbar_parent" style="background-color : #FFFAF8;" >
         <div id="navbar" >
-            <div id="navItems" />
+            <!-- <div id="navItems" /> -->
             <div id="navItems">
                 <button class="divider" @click="goMovie" style="background-color: transparent; border: none;
                 padding-left: 20px; padding-right: 20px;">영화</button>
@@ -45,14 +45,14 @@
             </div>
             <div  id="btns">
                 <button v-if="isUserLoggedIn" @click="goMyPage" class="image-button1">
-                <img src="../img/Group273.png" alt="마이" class="image-button__image">
+                    <img src="../img/Group273.png" alt="마이" class="image-button__image">
                 </button>
                 <button v-else @click="goLoginPage2"  class="image-button1">
-                <img src="../img/Group273.png" alt="마이" class="image-button__image"></button>
+                    <img src="../img/Group273.png" alt="마이" class="image-button__image"></button>
                 <button v-if="isUserLoggedIn" @click="logout" class="image-button2"><img src="../img/Group271.png" alt="로그아웃" class="image-button__image"></button>
                 <button v-else @click="goLoginPage" class="image-button2"><img src="../img/Group270.png" alt="로그인" class="image-button__image"></button>
             </div>
-         </div>
+        </div>
         <br>
     </div>
 
@@ -143,23 +143,26 @@ my()
     border: 2px solid #FF8551; /* 외곽선 추가 */
     padding: 0; /* 내부 여백 설정 */
     border-left: 2px solid #FFFAF8;
-        border-right: 2px solid #FFFAF8;
+    border-right: 2px solid #FFFAF8;
 
 }
-#navbar_parent{
+.container #navbar_parent{
     width:100%;
+    margin: auto;
+    position: relative;
 }
 .container{
     display: flex;
     width:100vw;
 }
-#navItems{
-    width:33%;
+.container #navItems{
+    width:80%;
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    margin: auto;
 }
+.container .div
 #btns{
     width:33%;
     display: flex;
@@ -176,27 +179,29 @@ my()
 }
 
 .image-button1 {
-  background-color: transparent;
-  border: none;
-  padding: 0;
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-top: 5px;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
 }
 .image-button2 {
-  background-color: transparent;
-  border: none;
-  padding: 0;
-  margin-left: 5px;
-  margin-right: 5px;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .image-button__image {
-  display: block;
-  width: 25px;
-  height: 35px;
-  object-fit: contain;
+    display: block;
+    width: 25px;
+    height: 35px;
+    object-fit: contain;
 }
 
-
+body{
+    background-color: #FFFAF8;
+}
 </style>

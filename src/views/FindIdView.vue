@@ -4,9 +4,9 @@
 
       <div class="horizontal-line" style="height: 2px;  background-color: #FF8551;margin-bottom: 5%;"></div>
       <div class="findbtn">
-          <button class="findIDPW" type="button" >아이디찾기</button>
+          <button class="findIDPW" type="button" style="border: 1px solid #000000;" >아이디찾기</button>
               <div class="IdPwline"></div>
-          <button class="findIDPW" type="button" @click="findpw">비밀번호찾기</button>
+          <button class="findIDPW" type="button" style="border: 1px solid #000000;" @click="findpw">비밀번호찾기</button>
 
       </div>
       <div class="a">
@@ -20,7 +20,7 @@
     </div>
     </div>
     <div class="d-flex justify-content-end" >
-    <button id="next" type="button" @click="Findidresult"><label>다음</label></button>
+    <button id="next" type="button" style="border: 1px solid #000000;" @click="Findidresult"><label>다음</label></button>
   </div>
   </div>
 </template>
@@ -93,6 +93,7 @@ body.member_name = filteredInput;
   background: #FFFAF8;
   box-sizing: border-box;
   border-radius: 10px;
+  margin-top: 8%;
 }
 .findbtn{
   display: flex;

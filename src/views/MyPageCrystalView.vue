@@ -51,7 +51,7 @@
                   <hr style="border-color: #FF8551;  opacity: 1;">
                   <div style="width:100% height:250px; border:1px; float:center; font-size: 18px;">비밀번호</div>
                   <br><br>
-                  <button type="button"  style=" background-color: #FFE2C0;  border-radius: 10px; font-size:20px;" @click="confirmDeleteMember" >탈퇴하기</button>
+                  <button type="button"  style=" background-color: #FF9D9D;  border-radius: 10px; font-size:20px; border:1px solid black;" @click="confirmDeleteMember" >탈퇴하기</button>
               </div>
           </div>
   
@@ -81,7 +81,7 @@
                   <hr style="border-color: #FF8551;  opacity: 1;">
                   <div style="width:100% height:250px; border:1px; text-align:left; font-size: 18px;">
                     
-                    <button type="button"  style=" background-color: #FFE2C0;  border-radius: 10px; font-size: 20px;" @click="showChangePasswordForm">비밀번호 변경</button></div>
+                    <button type="button"  style=" background-color: #FFE2C0;  border-radius: 10px; font-size: 20px; border:1px solid black;" @click="showChangePasswordForm">비밀번호 변경</button></div>
                   <form @submit="changePassword">
                       <br>
                   <div v-if="changePasswordFormVisible" style="width:100% height:250px; border:1px; text-align:left; font-size: 18px;">현재 비밀번호
@@ -94,9 +94,10 @@
                       <input type='password' style="float:right" size="25" v-model="confirmPassword" id="confirmPassword" required></div>
                   <br><br>
   
-                  <button v-if="changePasswordFormVisible" type="submit" style="font-size:20px; padding:6px 45px 6px 45px; background-color: #FFE2C0; border-radius: 10px;">수정</button>
+                  <button v-if="changePasswordFormVisible" type="submit" style="font-size:20px; padding:6px 45px 6px 45px; background-color: #FFE2C0; border-radius: 10px;  border:1px solid black;">수정</button>
                   <div class="hello"></div>
-                  <button v-if="changePasswordFormVisible" type="button" style="font-size:20px; background-color: #FAF0E4; padding:6px 45px 6px 45px; border-radius: 10px;">취소</button>
+                  <button v-if="changePasswordFormVisible" type="button" style="font-size:20px; background-color: #FAF0E4; padding:6px 45px 6px 45px; border-radius: 10px;  border:1px solid black;"
+                  @click="cancelChangePassword">취소</button>
                   </form>
               </div>
           </div>
@@ -130,6 +131,7 @@
   function cancelChangePassword() {
     changePasswordFormVisible.value = false;
   }
+
   
   // 비밀번호 변경
   
