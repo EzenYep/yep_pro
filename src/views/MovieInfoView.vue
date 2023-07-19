@@ -8,9 +8,9 @@
 
             </div>
             <div class="flex-container">
-                <h4 class="flex-item">제목:</h4> <label class="flex-label"><h1>{{movie_data.movie_title}}</h1></label>
+                <label class="title"><h2>{{movie_data.movie_title}}</h2></label>
             </div>
-            <br>
+            <div class="horizontal-line" ></div>
             <div class="flex-container">
                 <h6 class="flex-item">감독:</h6> <label class="flex-label">{{movie_data.director}}</label>
             </div>
@@ -76,17 +76,28 @@ movie_info_db();
 
 <style scoped>
 .container {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* 위로 정렬 */
+  margin-bottom: 5%;
 }
+
+
 .movie_poster {
-    flex: 1;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .movie_info {
-    flex: 1;
-    margin-bottom: 3%;
+    flex: 2;
+    margin-left: 5%;
+    position: relative; /* 추가 */
+    top: -5rem; /* 위로 이동할 픽셀 값 */
+}
+
+img {
+    max-width: 90%;
+    max-height: 90%;
 }
 
 .flex-container {
@@ -94,13 +105,24 @@ movie_info_db();
     align-items: center;
 }
 
+.title {
+
+}
+
+.horizontal-line {
+  height: 1px;
+  background-color: black;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
 .flex-item {
-    flex: 1;
+    /* flex: 1; */
     margin-right: 10px;
 }
 
 .flex-label {
-    flex: 2;
+    flex: 4;
     margin-left: 10px;
 }
 .main_poster{

@@ -5,7 +5,8 @@
         <h4>영화 관리</h4>
       <div class="horizontal-line" ></div>
       <h5 style="margin-left:1rem;" @click="movie_input">&gt; 영화 등록</h5>
-      <h4 style="margin-top:70%;">커뮤니티 관리</h4>
+      <h5 style="margin-left:1rem; margin-top:3rem;" @click="correction">&gt; 영화 수정</h5>
+      <h4 style="margin-top:30%;">커뮤니티 관리</h4>
       <div class="horizontal-line"></div>
       <h5 style="margin-left:1rem;" @click="gomanager_report">&gt; 신고 관리</h5>
     </div>
@@ -40,6 +41,12 @@ const movie_input =()=>{
         name: 'movie_input',
     });
 }
+const correction =()=>{
+    router.push({
+        name: 'correction',
+    });
+}
+
 
 </script>
 <style scoped>
@@ -50,7 +57,7 @@ const movie_input =()=>{
 .menu {
   display: flex;
   justify-content: center;
-  margin-top: 15%;
+  margin-top: 5%;
 }
 
 .container-left,
