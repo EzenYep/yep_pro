@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="container">
         <!-- 지역,상영관,영화,시간 선택 -->
-        <div>
+        <div class="top-container">
             <table class="movie-option">
                 <tr>
                     <td class="caption-col"> <!-- 지역 -->
@@ -70,11 +70,10 @@
 
         <!-- 좌석 선택 -->
         <div>
-            <div>
-                <table class="select-seat">
-                    <!-- Table rows for seat selection -->
-                </table>
-                <div>
+            <div class="bottom-container">
+                <!-- <table class="select-seat">
+                    Table rows for seat selection -->
+                <div class="select-check">
                     <input
                         type="checkbox"
                         id="one-seat"
@@ -101,13 +100,20 @@
                         @click="handleClick('fourSeat')"
                     >
                     <label for="four-seat" class="label-large">4인석</label>
+                    <p :style="{ visibility: isSeatNotSelected ? 'visible' : 'hidden' }">좌석을 선택해주세요.</p>
+                    <p :style="{ visibility: isSeatNotSelected ? 'hidden' : 'visible' }"></p>
+
                 </div>
-                <p v-if="isSeatNotSelected">좌석을 선택해주세요.</p>
+
+                <div class="button-container">
+                    <button class="reserve-button" @click="makeReservation">예약하기</button>
+                </div>
 
             </div>
         </div>
         <div> <!-- 좌석표 -->
-            <div>
+            <div class="seat-body">
+                <div class="screen" v-show="screenVisible">SCREEN</div>
                 <table class="select-seat">
                     <!-- Table rows for seat selection -->
                     <template v-for="(seatLine, index) in numbergroup" :key="index">
@@ -122,6 +128,7 @@
                                   'btn-light',
                                   { 'reserved-seat': isSeatReserved(seat) },
                                   { 'selected-seat': isSelected(seat) },
+                                  'seat' // 새로운 클래스 이름 'seat'을 추가합니다.
                                 ]"
                                         @click="selectSeat(seat)"
                                     >
@@ -133,9 +140,7 @@
                     </template>
                 </table>
             </div>
-            <div class="button-container">
-                <button @click="makeReservation">예약하기</button>
-            </div>
+
         </div>
     </div>
 </template>
@@ -242,6 +247,12 @@ const selectTime = (time) => {
     // 선택한 시간에 대한 처리 로직 작성
     selectedTime.value = time;
 };
+
+const screenVisible = ref(false);
+
+watch(selectedTime, () => {
+    screenVisible.value = !!selectedTime.value;
+});
 
 // seat 함수 수정
 const seat = async () => {

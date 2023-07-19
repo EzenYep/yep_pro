@@ -2,21 +2,21 @@
     <div class="container">
         <!-- 이미지 그룹 -->
         <iframe
-                :src="`https://www.youtube-nocookie.com/embed/${urls.videoUrl}?autoplay=1`"
-                title="YouTube video player"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
+            :src="`https://www.youtube-nocookie.com/embed/${urls.videoUrl}?autoplay=1`"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
         ></iframe>
-        
+
         <div>
             <div class="wrap">
                 <div class="search">
                     <input
-                            type="text"
-                            class="searchTerm"
-                            placeholder="검색어를 입력하세요."
-                            v-model="searchQuery"
-                            @keyup.enter="searchmovie"
+                        type="text"
+                        class="searchTerm"
+                        placeholder="검색어를 입력하세요."
+                        v-model="searchQuery"
+                        @keyup.enter="searchmovie"
                     />
                     <button type="submit" class="searchButton" style="background-color:#FFE2C0; border-radius: 4px; border: solid #FFE2C0;" @click="searchmovie">검색</button>
                 </div>
@@ -29,8 +29,8 @@
         <div class="movie-chart">
             <div class="slider-container">
                 <button
-                        class="previous-button"
-                        @click="previousMovieSlide"
+                    class="previous-button"
+                    @click="previousMovieSlide"
                 >
                     &lt;
                 </button>
@@ -82,6 +82,7 @@
         <!-- 가로 레이아웃 -->
         <div class="horizontal-container">
 
+
         <div class="horizontal-layout">
             <div class="image">
                 <!--<img src="../assets/photo1.jpg" alt="Photo 1">-->
@@ -95,6 +96,7 @@
             <div class="image">
                 <!--<img src="../assets/photo1.jpg" alt="Photo 1">-->
                 <img :src="movies.selectedPoster">
+
             </div>
         </div>
     </div>
@@ -109,7 +111,7 @@
         </div>
 
     </div>
-    
+
 </template>
 <script setup>
 import {ref, computed, onMounted, reactive, onBeforeUnmount} from "vue";
@@ -292,16 +294,16 @@ const searchQuery = ref('');
 
 
 const searchmovie = async () => {
-  try {
-    if (!searchQuery.value) {
-      return;
+    try {
+        if (!searchQuery.value) {
+            return;
+        }
+        router.push({ name: "SearchMovieView",
+            query: { searchQuery:searchQuery.value },
+        })
+    } catch (error) {
+        console.error('Error searching movies:', error);
     }
-    router.push({ name: "SearchMovieView",
-  query: { searchQuery:searchQuery.value },
-}) 
-  } catch (error) {
-    console.error('Error searching movies:', error);
-  }
 };
 
 
@@ -409,7 +411,7 @@ const goMovieInfos2 = (currentIndex) => {
 .previous-button,
 .next-button {
     flex-shrink: 0;
-    margin: 0 10px; 
+    margin: 0 10px;
     /* 좌우 여백 추가 */
 }
 
@@ -440,8 +442,10 @@ const goMovieInfos2 = (currentIndex) => {
     position: relative;
 }
 .horizontal-container {
+
   width: 100%;
   overflow: hidden;
+
 }
 
 /* 밑에 광고 이미지 양옆으로 붙여야함*/
