@@ -67,7 +67,7 @@
                     <div class="slide" v-for="(non_poster, index) in currentNonMovies" :key="index">
                         <!-- 이미지 및 영화 정보 표시 -->
                         <div class="movie-info">
-                            <img :src="non_poster" alt="Movie Poster" class="poster-image">
+                            <img :src="non_poster" alt="Movie Poster" class="poster-image" @click="goMovieInfos2(index)">
                             <h4>{{ movies.non_movieTitles[currentNonMovieOffset.value + index] }}</h4>
                             <!-- 추가적인 영화 정보 표시 -->
                         </div>
@@ -80,15 +80,14 @@
             </div>
         </div>
         <!-- 가로 레이아웃 -->
-        <div class="horizontal-layout">
+                <div class="horizontal-layout">
             <div class="image">
-                <!--<img src="../assets/photo1.jpg" alt="Photo 1">-->
-                <img src="../img/event.jpg">
+                <img src="../img/event.jpg"  alt="Photo 1" style="width: 30rem; height: 35rem;">
             </div>
             <div class="buttons">
-                <button class="button" @click="goReservationPage">빠른 예매</button>
-                <button class="button" @click="goMyPage">예매 내역</button>
-                <button class="button" @click="goEventPage">할인 안내</button>
+                <button class="button" style="background-color: #FFE2C0; border-color: #FFE2C0;" @click="goReservationPage">빠른 예매</button>
+                <button class="button" style="background-color: #ffd09b; border-color: #ffd09b;" @click="goMyPage">예매 내역</button>
+                <button class="button" style="background-color: #ffc482; border-color: #ffc482;" @click="goEventPage">할인 안내</button>
             </div>
             <div class="image">
                 <!--<img src="../assets/photo1.jpg" alt="Photo 1">-->
@@ -102,10 +101,11 @@
                 Yep | 이용약관 | 개인정보처리방침 | 이현진 | 김영강 | 윤종혁 | 문정혜 |
                 방우리 | 황 건
             </h6>
-            <button class="topbutton" @click="scrollToTop">TOP</button>
+            <button class="topbutton" style="  opacity:0.5;  border:1px solid black;" @click="scrollToTop">TOP</button>
         </div>
 
     </div>
+    <!-- <MovieSlide></MovieSlide> -->
     
 </template>
 <script setup>
@@ -235,6 +235,7 @@ const movies = reactive({
     posters: [],
     movieTitles: [],
     movieIds: [],
+    non_movieIds:[],
     non_posters: [],
     non_movieTitles: [],
     selectedPoster: []
@@ -276,6 +277,8 @@ const non_movie_poster_url = async () => {
 
         movies.non_posters = non_posters.map((non_poster) => non_poster.non_poster_url);
         movies.non_movieTitles = non_posters.map((non_poster) => non_poster.non_movie_title);
+        movies.non_movieIds = non_posters.map((non_poster) => non_poster.non_movie_id);
+        console.log(non_posters)
         console.log(movies.non_posters);
         console.log(movies.non_movieTitles);
     } catch (error) {
@@ -305,6 +308,16 @@ const searchmovie = async () => {
 const goMovieInfos = (currentIndex) => {
     const index = currentMovieOffset.value + currentIndex;
     const selectedMovieId = movies.movieIds[index];
+    router.push({
+        name: "movie_info",
+        params: {
+            id: selectedMovieId,
+        },
+    });
+};
+const goMovieInfos2 = (currentIndex) => {
+    const index = currentNonMovieOffset.value + currentIndex;
+    const selectedMovieId = movies.non_movieIds[index];
     router.push({
         name: "movie_info",
         params: {
@@ -450,8 +463,8 @@ const goMovieInfos = (currentIndex) => {
     background-color: #ccc;
     border: none;
     cursor: pointer;
-    background-color:#FFE2C0;
-    border: solid #FFE2C0;
+    /* background-color:#FFE2C0;
+    border: solid #FFE2C0; */
 
 }
 

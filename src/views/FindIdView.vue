@@ -1,4 +1,6 @@
 <template>
+<body style="min-height: 800px;background-color: #FFFAF8;">
+
   <div class="findUser-box">
       <h2>아이디 찾기</h2>
 
@@ -23,6 +25,7 @@
     <button id="next" type="button" style="border: 1px solid #000000;" @click="Findidresult"><label>다음</label></button>
   </div>
   </div>
+</body>
 </template>
 
 

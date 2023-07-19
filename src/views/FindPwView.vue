@@ -1,4 +1,6 @@
 <template>
+<body style="min-height: 800px;background-color: #FFFAF8;">
+
   <div class="findUser-box">
     <h2>비밀번호 찾기</h2>
     <div class="horizontal-line" style="height: 2px;  background-color: #FF8551;margin-bottom: 5%;"></div>
@@ -35,6 +37,7 @@
       </div>
     </div>
   </div>
+</body>
 </template>
 
 

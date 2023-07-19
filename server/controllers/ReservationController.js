@@ -16,7 +16,7 @@ const axios = require("axios");
 const theaterID = async (req, res) => {
     try {
 
-        const thea = await Theater.findOne({where: {theater_id: req.body.theaterId}, raw: true});
+        const thea = await Theater.findAll({where: {theater_location: req.body.theaterLocation}, raw: true});
 
         res.send(thea);
     } catch (error) {
@@ -188,7 +188,6 @@ const makeReservation = async (req, res) => {
 const paylog = async (req,res) =>{
     try{
         console.log(req.body.movie_id)
-
         const moviePay = await Movie.findOne({where:{movie_title:req.body.movie_id},raw:true})
         console.log(moviePay)
         if(moviePay){
@@ -196,10 +195,10 @@ const paylog = async (req,res) =>{
             const member_id = await Member.findOne({where:{member_email:req.body.member_email}})
             if(member_id){
                 const payLog = await Payment.findAll({where:{member_id:member_id.member_id}})
-                if(payLog){
-                    res.send({code:200,amount:mpay})
+                if(!payLog){
+                    res.send({code:200,amount:mpay*0.8})
                 }else {
-                    res.send({code:400})
+                    res.send({code:300,amount:mpay})
                 }
             }
         }

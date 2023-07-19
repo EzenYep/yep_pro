@@ -1,4 +1,5 @@
 <template>
+
   <div class="row" style="background-color: #FFFAF8; height: 250px;">
     <div class="row6" align="center" >
       <br>

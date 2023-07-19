@@ -1,5 +1,6 @@
 <template>
-  
+  <body style="min-height: 900px;background-color: #FFFAF8;">
+
   <div class="findUser-box">
       <h2>아이디 찾기 결과</h2>
 
@@ -17,7 +18,7 @@
     <button id="next" type="button" style="border: 1px solid #000000;" @click="login"><label>로그인 창으로</label></button>
   </div>
   </div>
-
+  </body>
 </template>
 
 <script setup>
