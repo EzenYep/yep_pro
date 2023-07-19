@@ -73,10 +73,10 @@ const oneUser = async (req, res) => {
                 code: 400
             })
         }
-
-
     } catch (e) {
-        return console.log(e)
+        res.send({
+            code: 400
+        })
     }
 };
 

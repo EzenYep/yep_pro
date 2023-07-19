@@ -4,7 +4,7 @@
             <div class="fullWidth">
                 <nav class="navbar navbar-expand-lg" id="navbar2">
                     <button class="navbar-brand" @click="goHome"  style="background-color: transparent; border: none;">
-                        <img src="../img/logo.png" alt="로고" class="image-button__image"  style="width: 100px; height: auto;"></button>
+                        <img src="../img/logo.jpg" alt="로고" class="image-button__image"  style="width: 100px; height: auto;"></button>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
