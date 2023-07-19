@@ -7,7 +7,7 @@
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
         ></iframe>
-         검색
+        
         <div>
             <div class="wrap">
                 <div class="search">
@@ -487,9 +487,11 @@ const goMovieInfos2 = (currentIndex) => {
     width: 5rem;
     height: 5rem;
     margin-left: auto;
+
     background-color:#FFE2C0;
     border: solid #FFFAF8;
     border-radius: 50px;
+
 
 }
 </style>

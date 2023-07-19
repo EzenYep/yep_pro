@@ -99,6 +99,7 @@ const getReservationStatus = async (req, res) => {
           JOIN Payment p ON sp.payment_id = p.payment_id
           JOIN Member mb ON p.member_id = mb.member_id
       WHERE mb.member_email = :email
+      ORDER BY p.payment_id DESC
     `;
     const reservations = await db.sequelize.query(query, {
       replacements: { email },
