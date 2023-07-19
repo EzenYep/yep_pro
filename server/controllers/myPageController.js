@@ -83,24 +83,24 @@ const getReservationStatus = async (req, res) => {
   try {
     const { email } = req.body;
     const query = `
-      SELECT
-        m.movie_title,
-        t.theater_name,
-        s.screening_start_time,
-        st.seat_number,
-        p.pay_state,
-        p.payment_id
-      FROM
-        Movie m
-          JOIN Screening s ON m.movie_id = s.movie_id
-          JOIN Theater t ON s.theater_id = t.theater_id
-          JOIN Seat st ON t.theater_id = st.theater_id
-          JOIN Seat_payment sp ON st.seat_id = sp.seat_id
-          JOIN Payment p ON sp.payment_id = p.payment_id
-          JOIN Member mb ON p.member_id = mb.member_id
-      WHERE mb.member_email = :email
-      ORDER BY p.payment_id DESC
-    `;
+    SELECT
+      m.movie_title,
+      t.theater_name,
+      s.screening_start_time,
+      st.seat_number,
+      p.pay_state,
+      p.payment_id
+    FROM
+      Movie m
+        JOIN Screening s ON m.movie_id = s.movie_id
+        JOIN Theater t ON s.theater_id = t.theater_id
+        JOIN Seat st ON t.theater_id = st.theater_id
+        JOIN Seat_payment sp ON st.seat_id = sp.seat_id
+        JOIN Payment p ON sp.payment_id = p.payment_id
+        JOIN Member mb ON p.member_id = mb.member_id
+    WHERE mb.member_email = :email
+    ORDER BY p.payment_id DESC
+  `;
     const reservations = await db.sequelize.query(query, {
       replacements: { email },
       type: QueryTypes.SELECT,
