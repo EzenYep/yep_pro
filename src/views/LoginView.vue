@@ -58,28 +58,32 @@
             email: body.email,
             password: body.password,
         };
-    
-        const res =  await axios.post("http://localhost:9212/api/user/signInUser", body)
-    
-        console.log(res)
-        const code = res.data.code;
-        if(code === 200){
-    /*        const accessToken =  res.data.accessToken;
-            const email = res.data.email;*/
-            store.commit('SET_TOKEN', { accessToken: res.data.accessToken, email: res.data.email , state:res.data.state})
-            console.log(res.data.email)
-            if(res.data.state === 0){
-                await router.push({
-                    name: "home"
-                })
-            }else if(res.data.state===1) {
-                await router.push({
-                    name: "manager_main"
-                })
+        try {
+            const res =  await axios.post("http://localhost:9212/api/user/signInUser", body)
+
+            console.log(res)
+            const code = res.data.code;
+            if(code === 200){
+                /*        const accessToken =  res.data.accessToken;
+                        const email = res.data.email;*/
+                store.commit('SET_TOKEN', { accessToken: res.data.accessToken, email: res.data.email , state:res.data.state})
+                console.log(res.data.email)
+                if(res.data.state === 0){
+                    await router.push({
+                        name: "home"
+                    })
+                }else if(res.data.state===1) {
+                    await router.push({
+                        name: "manager_main"
+                    })
+                }
+            } else if(code === 400) {
+                alert("로그인에 실패하셨습니다.")
+                location.reload();
             }
-        } else {
-            alert("로그인에 실패하셨습니다.")
-            location.reload();
+        }catch (e){
+            alert("로그인이 실패했습니다")
+            return;
         }
     }
     </script>

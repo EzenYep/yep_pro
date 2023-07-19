@@ -151,17 +151,29 @@ recentMoviePoster();
     margin-top: 10px;
 }
 
-.previous-button,
-.next-button {
+/* 슬라이드 버튼 부분 수정함~!~! */
+.previous-button,.next-button {
     flex-shrink: 0;
-    margin: 0 10px; /* 좌우 여백 추가 */
+    margin: 0 10px; 
+    /* 좌우 여백 추가 */
 }
 
 .previous-button {
     margin-right: auto; /* 이전 버튼을 왼쪽으로 정렬 */
+    width: 40px;
+    height: 300px;
+    border-radius: 4px;
+    background-color:#FFE2C0;
+    border: solid #FFE2C0;
+
 }
 
 .next-button {
     margin-left: auto; /* 다음 버튼을 오른쪽으로 정렬 */
+    width: 40px;
+    height: 300px;
+    border-radius: 4px;
+    background-color:#FFE2C0;
+    border: solid #FFE2C0;
 }
 </style>
