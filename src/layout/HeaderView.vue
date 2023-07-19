@@ -1,59 +1,59 @@
 <template >
-    <div class="container" style="background-color : #FFFAF8;">
-        <div class="fullWidth">
+    <div>
+        <div class="container" style="background-color: #FFFAF8;">
             <div class="fullWidth">
-                <nav class="navbar navbar-expand-lg" id="navbar2">
-                    <button class="navbar-brand" @click="goHome"  style="background-color: transparent; border: none;">
-                        <img src="../img/logo.jpg" alt="로고" class="image-button__image"  style="width: 100px; height: auto;"></button>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+                <div class="fullWidth">
+                    <nav class="navbar navbar-expand-lg" id="navbar2" style="height: 100px;">
+                        <button class="navbar-brand" @click="goHome" style="background-color: transparent; border: none;">
+                            <img src="../img/logo.jpg" alt="로고" class="image-button__image" style="width: 250px; height: auto;">
+                        </button>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <button class="nav-link active" v-if="isUserLoggedIn" @click="logout" aria-current="page" style="font-size: 0.8rem; background-color: transparent; border: none; font-weight: bolder;">로그아웃</button>
+                                    <button class="nav-link active" v-else aria-current="page" @click="goLoginPage" style="font-size: 0.8rem; font-weight: bolder;">로그인</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link active" v-if="!isUserLoggedIn" aria-current="page" @click="gosign_upPage" style="font-size: 0.8rem; background-color: transparent; border: none; font-weight: bolder;">회원가입</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link active" aria-current="page" @click="goComplainPage" style="font-size: 0.8rem; background-color: transparent; border: none; font-weight: bolder;">고객센터</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="container" id="navbar_parent" style="background-color: #FFFAF8;">
+            <div id="navbar" style="height: auto;">
+                <div id="navItems">
+                    <button class="divider" @click="goMovie" style="background-color: transparent; border: none; padding-left: 20px; padding-right: 20px;">영화</button>
+                    <span class="divider">ㅣ</span>
+                    <button class="divider" @click="goReservation" style="background-color: transparent; border: none; padding-left: 20px; padding-right: 20px;">예매</button>
+                    <span class="divider">ㅣ</span>
+                    <button class="divider" @click="goEvent" style="background-color: transparent; border: none; padding-left: 20px; padding-right: 20px;">이벤트</button>
+                </div>
+                <div id="btns">
+                    <button v-if="isUserLoggedIn" @click="goMyPage" class="image-button1">
+                        <img src="../img/Group273.png" alt="마이" class="image-button__image">
                     </button>
-                    <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-
-                                <button class="nav-link active"  v-if="isUserLoggedIn" @click="logout"  aria-current="page" style="font-size: 0.8rem;
-                                background-color: transparent; border: none;font-weight: bolder;">로그아웃</button>
-                                <button class="nav-link active" v-else aria-current="page" @click="goLoginPage" style="font-size: 0.8rem;font-weight: bolder;">로그인</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link active"  v-if="!isUserLoggedIn" aria-current="page"  @click="gosign_upPage" style="font-size: 0.8rem;
-                                background-color: transparent; border: none;font-weight: bolder;">회원가입</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link active" aria-current="page"  @click="goComplainPage" style="font-size: 0.8rem;
-                                background-color: transparent; border: none;font-weight: bolder;">고객센터</button>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+                    <button v-else @click="goLoginPage2" class="image-button1">
+                        <img src="../img/Group273.png" alt="마이" class="image-button__image">
+                    </button>
+                    <button v-if="isUserLoggedIn" @click="logout" class="image-button2">
+                        <img src="../img/Group271.png" alt="로그아웃" class="image-button__image">
+                    </button>
+                    <button v-else @click="goLoginPage" class="image-button2">
+                        <img src="../img/Group270.png" alt="로그인" class="image-button__image">
+                    </button>
+                </div>
             </div>
+            <br>
         </div>
-    </div>
-    <div class="container" id="navbar_parent" style="background-color : #FFFAF8;" >
-        <div id="navbar" >
-            <!-- <div id="navItems" /> -->
-            <div id="navItems">
-                <button class="divider" @click="goMovie" style="background-color: transparent; border: none;
-                padding-left: 20px; padding-right: 20px;">영화</button>
-                <span class="divider">ㅣ</span>
-                <button class="divider" @click="goReservation" style="background-color: transparent; border: none;
-                padding-left: 20px; padding-right: 20px;">예매</button>
-                <span class="divider">ㅣ</span>
-                <button class="divider" @click="goEvent" style="background-color: transparent; border: none;
-                padding-left: 20px; padding-right: 20px;">이벤트</button>
-            </div>
-            <div  id="btns">
-                <button v-if="isUserLoggedIn" @click="goMyPage" class="image-button1">
-                    <img src="../img/Group273.png" alt="마이" class="image-button__image">
-                </button>
-                <button v-else @click="goLoginPage2"  class="image-button1">
-                    <img src="../img/Group273.png" alt="마이" class="image-button__image"></button>
-                <button v-if="isUserLoggedIn" @click="logout" class="image-button2"><img src="../img/Group271.png" alt="로그아웃" class="image-button__image"></button>
-                <button v-else @click="goLoginPage" class="image-button2"><img src="../img/Group270.png" alt="로그인" class="image-button__image"></button>
-            </div>
-        </div>
-        <br>
     </div>
 
 </template>
@@ -204,4 +204,6 @@ my()
 body{
     background-color: #FFFAF8;
 }
+
+
 </style>

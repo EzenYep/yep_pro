@@ -106,14 +106,12 @@
         </div>
 
     </div>
-    <MovieSlide></MovieSlide>
     
 </template>
 <script setup>
 import {ref, computed, onMounted, reactive, onBeforeUnmount} from "vue";
 import router from "@/router";
 import axios from "axios";
-import MovieSlide from "@/components/MovieSlide.vue";
 const goReservationPage = () => {
     router.push({
         name: "reservation",

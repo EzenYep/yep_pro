@@ -152,10 +152,11 @@ const movie_url = async (req, res) => {
         const randomIndex = Math.floor(Math.random() * count);
         const movie_video = await File.findOne({ raw: true, offset: randomIndex });
         let trailer_url = movie_video.trailer_url;
-
         // trailer_url이 null인 경우 대체 URL로 설정합니다.
         if (!trailer_url) {
             trailer_url = 'https://www.youtube.com/watch?v=MvPaDziB-ac'; // 대체 URL을 여기에 입력합니다.
+        }else if(trailer_url === null){
+            trailer_url = 'https://www.youtube.com/watch?v=MvPaDziB-ac';
         }
 
         res.send({ trailer_url });
