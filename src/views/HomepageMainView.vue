@@ -67,7 +67,7 @@
                     <div class="slide" v-for="(non_poster, index) in currentNonMovies" :key="index">
                         <!-- 이미지 및 영화 정보 표시 -->
                         <div class="movie-info">
-                            <img :src="non_poster" alt="Movie Poster" class="poster-image">
+                            <img :src="non_poster" alt="Movie Poster" class="poster-image" @click="goMovieInfos2(index)">
                             <h4>{{ movies.non_movieTitles[currentNonMovieOffset.value + index] }}</h4>
                             <!-- 추가적인 영화 정보 표시 -->
                         </div>
@@ -80,6 +80,8 @@
             </div>
         </div>
         <!-- 가로 레이아웃 -->
+        <div class="horizontal-container">
+
         <div class="horizontal-layout">
             <div class="image">
                 <!--<img src="../assets/photo1.jpg" alt="Photo 1">-->
@@ -95,6 +97,7 @@
                 <img :src="movies.selectedPoster">
             </div>
         </div>
+    </div>
 
         <!-- 하단 영역 -->
         <div class="last">
@@ -102,7 +105,7 @@
                 Yep | 이용약관 | 개인정보처리방침 | 이현진 | 김영강 | 윤종혁 | 문정혜 |
                 방우리 | 황 건
             </h6>
-            <button class="topbutton" @click="scrollToTop">TOP</button>
+            <button class="topbutton" @click="scrollToTop">▲TOP</button>
         </div>
 
     </div>
@@ -312,6 +315,17 @@ const goMovieInfos = (currentIndex) => {
         },
     });
 };
+
+const goMovieInfos2 = (currentIndex) => {
+    const index = currentMovieOffset.value + currentIndex;
+    const selectedMovieId = movies.movieIds[index];
+    router.push({
+        name: "movie_info2",
+        params: {
+            id: selectedMovieId,
+        },
+    });
+};
 </script>
 
 <style scoped>
@@ -423,6 +437,11 @@ const goMovieInfos = (currentIndex) => {
     align-items: center;
     margin-top: 10%;
     margin-bottom: 30%;
+    position: relative;
+}
+.horizontal-container {
+  width: 100%;
+  overflow: hidden;
 }
 
 /* 밑에 광고 이미지 양옆으로 붙여야함*/
@@ -468,8 +487,11 @@ const goMovieInfos = (currentIndex) => {
     width: 5rem;
     height: 5rem;
     margin-left: auto;
-    background-color:#FFFAF8;
+
+    background-color:#FFE2C0;
     border: solid #FFFAF8;
+    border-radius: 50px;
+
 
 }
 </style>
