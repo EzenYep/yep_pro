@@ -2,21 +2,21 @@
     <div class="container">
         <!-- 이미지 그룹 -->
         <iframe
-            :src="`https://www.youtube-nocookie.com/embed/${urls.videoUrl}?autoplay=1`"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
+                :src="`https://www.youtube-nocookie.com/embed/${urls.videoUrl}?autoplay=1`"
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
         ></iframe>
-
+         
         <div>
             <div class="wrap">
                 <div class="search">
                     <input
-                        type="text"
-                        class="searchTerm"
-                        placeholder="검색어를 입력하세요."
-                        v-model="searchQuery"
-                        @keyup.enter="searchmovie"
+                            type="text"
+                            class="searchTerm"
+                            placeholder="검색어를 입력하세요."
+                            v-model="searchQuery"
+                            @keyup.enter="searchmovie"
                     />
                     <button type="submit" class="searchButton" style="background-color:#FFE2C0; border-radius: 4px; border: solid #FFE2C0;" @click="searchmovie">검색</button>
                 </div>
@@ -29,8 +29,8 @@
         <div class="movie-chart">
             <div class="slider-container">
                 <button
-                    class="previous-button"
-                    @click="previousMovieSlide"
+                        class="previous-button"
+                        @click="previousMovieSlide"
                 >
                     &lt;
                 </button>
@@ -67,7 +67,7 @@
                     <div class="slide" v-for="(non_poster, index) in currentNonMovies" :key="index">
                         <!-- 이미지 및 영화 정보 표시 -->
                         <div class="movie-info">
-                            <img :src="non_poster" alt="Movie Poster" class="poster-image" @click="goMovieInfos2(index)">
+                            <img :src="non_poster" alt="Movie Poster" class="poster-image">
                             <h4>{{ movies.non_movieTitles[currentNonMovieOffset.value + index] }}</h4>
                             <!-- 추가적인 영화 정보 표시 -->
                         </div>
@@ -80,13 +80,10 @@
             </div>
         </div>
         <!-- 가로 레이아웃 -->
-        <div class="horizontal-container">
-
-
         <div class="horizontal-layout">
             <div class="image">
                 <!--<img src="../assets/photo1.jpg" alt="Photo 1">-->
-                <div style="width: 35rem; height: 35rem; background-color: aqua;"></div>
+                <img src="../img/event.jpg">
             </div>
             <div class="buttons">
                 <button class="button" @click="goReservationPage">빠른 예매</button>
@@ -96,10 +93,8 @@
             <div class="image">
                 <!--<img src="../assets/photo1.jpg" alt="Photo 1">-->
                 <img :src="movies.selectedPoster">
-
             </div>
         </div>
-    </div>
 
         <!-- 하단 영역 -->
         <div class="last">
@@ -107,16 +102,18 @@
                 Yep | 이용약관 | 개인정보처리방침 | 이현진 | 김영강 | 윤종혁 | 문정혜 |
                 방우리 | 황 건
             </h6>
-            <button class="topbutton" @click="scrollToTop">▲TOP</button>
+            <button class="topbutton" @click="scrollToTop">TOP</button>
         </div>
 
     </div>
-
+    <MovieSlide></MovieSlide>
+    
 </template>
 <script setup>
 import {ref, computed, onMounted, reactive, onBeforeUnmount} from "vue";
 import router from "@/router";
 import axios from "axios";
+import MovieSlide from "@/components/MovieSlide.vue";
 const goReservationPage = () => {
     router.push({
         name: "reservation",
@@ -294,16 +291,16 @@ const searchQuery = ref('');
 
 
 const searchmovie = async () => {
-    try {
-        if (!searchQuery.value) {
-            return;
-        }
-        router.push({ name: "SearchMovieView",
-            query: { searchQuery:searchQuery.value },
-        })
-    } catch (error) {
-        console.error('Error searching movies:', error);
+  try {
+    if (!searchQuery.value) {
+      return;
     }
+    router.push({ name: "SearchMovieView",
+  query: { searchQuery:searchQuery.value },
+}) 
+  } catch (error) {
+    console.error('Error searching movies:', error);
+  }
 };
 
 
@@ -312,17 +309,6 @@ const goMovieInfos = (currentIndex) => {
     const selectedMovieId = movies.movieIds[index];
     router.push({
         name: "movie_info",
-        params: {
-            id: selectedMovieId,
-        },
-    });
-};
-
-const goMovieInfos2 = (currentIndex) => {
-    const index = currentMovieOffset.value + currentIndex;
-    const selectedMovieId = movies.movieIds[index];
-    router.push({
-        name: "movie_info2",
         params: {
             id: selectedMovieId,
         },
@@ -411,7 +397,7 @@ const goMovieInfos2 = (currentIndex) => {
 .previous-button,
 .next-button {
     flex-shrink: 0;
-    margin: 0 10px;
+    margin: 0 10px; 
     /* 좌우 여백 추가 */
 }
 
@@ -439,13 +425,6 @@ const goMovieInfos2 = (currentIndex) => {
     align-items: center;
     margin-top: 10%;
     margin-bottom: 30%;
-    position: relative;
-}
-.horizontal-container {
-
-  width: 100%;
-  overflow: hidden;
-
 }
 
 /* 밑에 광고 이미지 양옆으로 붙여야함*/
@@ -491,11 +470,8 @@ const goMovieInfos2 = (currentIndex) => {
     width: 5rem;
     height: 5rem;
     margin-left: auto;
-
-    background-color:#FFE2C0;
+    background-color:#FFFAF8;
     border: solid #FFFAF8;
-    border-radius: 50px;
-
 
 }
 </style>
