@@ -3,9 +3,9 @@
     <h2>비밀번호 찾기</h2>
     <div class="horizontal-line" style="height: 2px;  background-color: #FF8551;margin-bottom: 5%;"></div>
     <div class="findbtn">
-      <button class="findIDPW" type="button" @click="findid">아이디찾기</button>
+      <button class="findIDPW" style="border: 1px solid #000000;" type="button" @click="findid">아이디찾기</button>
       <div class="IdPwline" ></div>
-      <button class="findIDPW" type="button">비밀번호찾기</button>
+      <button class="findIDPW" style="border: 1px solid #000000;" type="button">비밀번호찾기</button>
     </div>
     <div class="a">
       <div class="user-box">
@@ -16,14 +16,14 @@
       <div class="user-box">
         <input type="email" name="aa" required="" v-model="body.email">
         <label>이메일</label>
-        <button id="sendMessage" value="" @click="sendEmail">인증번호 전송</button>
+        <button id="sendMessage" style="border: 1px solid #000000;" value="" @click="sendEmail">인증번호 전송</button>
       </div>
   
       <div class="user-box">
         <input type="text" name="bb" required="" v-model="verificationCodeInput">
         <label>인증번호</label>
         <div id="emailError" class="error" style="white-space: pre-wrap;"></div>
-        <button id="sendMessage" @click="verifyCode">인증</button>
+        <button id="sendMessage" style="border: 1px solid #000000;" @click="verifyCode">인증</button>
       </div>
       
       <div  v-if="verificationResult1==='인증번호가 일치합니다.'" class="varif">{{ verificationResult1 }}</div>
@@ -162,6 +162,7 @@ const sendEmail = async () => {             //이메일 인증번호 전송
     background: #FFFAF8;
     box-sizing: border-box;
     border-radius: 10px;
+    margin-top: 8%;
   }
   
   .findbtn {

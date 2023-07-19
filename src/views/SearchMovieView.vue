@@ -28,18 +28,22 @@
 
 
     
-    <div class="horizontal-line" style="height: 2px;  background-color: #FF8551;margin-bottom: 5%;margin-top: 10%;"></div>
+    <div class="horizontal-line" style="height: 2px;  background-color: #FF8551;margin-bottom: 5%;margin-top: 3%;"></div>
 
     <span>상영종료</span>
 
-    <div class="movielist" >
+    <div class="movielist">
       <div class="item" v-for="movie in searchResults2" :key="movie.movie_id" id="offmovie">
-        <!-- <div class="movieposter" @click="showMovieDetail(movie.movie_id)"> -->
-          <!-- 포스터 {{ movie.poster_url }} -->
-          <img :src="movie.poster_url" alt="포스터" @click="showMovieDetail(movie.movie_id)"/>
-        <h4>{{ movie.movie_title  }}</h4>
+          <a @click="showMovieDetail(movie.movie_id)">
+          <figure>
+          <img class="poster" :src="movie.poster_url" alt="포스터"/>
+            <figcaption>상세 보기</figcaption>
+        </figure>
+      </a>  
+      <h4>{{ movie.movie_title  }}</h4> <!--영화 제목-->
       </div>
     </div>
+
     <div class="bbb"></div>
   </div>
 </template>
@@ -127,9 +131,7 @@ const showMovieDetail = async (movieId) => {
 </script>
 
 <style scoped>
-body{
-  background-color: #000000;
-}
+
 .movielist{
   display: block;
   position: relative;
@@ -137,6 +139,7 @@ body{
 .container span{
   font-size: larger;
   font-weight: bold;
+  
 }
 .container h3{
     margin: 0 0 30px;
@@ -154,8 +157,8 @@ body{
     text-align: right;
 }
 .searchresultnum{
-  margin-bottom: 10%;
-  /* margin-top: 5%; */
+  margin-bottom: 5%;
+  margin-top: -2%;
   font-weight: bold ;
 }
 .item {
@@ -164,7 +167,7 @@ body{
   color: aliceblue;
   padding: 30px;
   margin: 10px;
-  margin-top: 5%;
+  margin-top: 3%;
   width: 200px;
   height: 250px;
   position: relative;
@@ -208,7 +211,9 @@ position: absolute;
   width: 100%;
   height: 100%;
   position: relative;
-
+  display: flex; /* Add Flexbox container */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
 
 }
 
@@ -221,7 +226,9 @@ position: absolute;
   text-align: center;
   opacity: 0;
   border-radius: 10px;
-  
+  display: flex; /* Add Flexbox container */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
 }
 .item a:hover figcaption, .item a:focus figcaption{
   opacity: 1;

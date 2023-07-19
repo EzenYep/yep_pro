@@ -12,11 +12,11 @@
             <img class="event-img-detail" src="../assets/test.jpg">
         </div>
         <div class="back-btn">
-            <button class="back-btn-detail" style=" background-color: #FFE2C0;  border-radius: 10px;" @click="goBack">뒤로 가기</button>
+            <button class="back-btn-detail" style=" background-color: #FFE2C0;  border-radius: 10px;  border:1px solid black;" @click="goBack">뒤로 가기</button>
         </div>
         <div class="last">  
             <h6 class="teamname">Yep | 이용약관 | 개인정보처리방침 | 이현진 | 김영강 | 윤종혁 | 문정혜 | 방우리 | 황 건</h6>
-            <button class="topbutton" style="  opacity:0.5; " @click="scrollToTop">TOP</button>
+            <button class="topbutton" style="  opacity:0.5;  border:1px solid black;" @click="scrollToTop">TOP</button>
         </div>
     </div>
 </template>

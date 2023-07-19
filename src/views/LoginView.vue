@@ -24,6 +24,7 @@
                 <a href="#" class="createid" @click="createid">회원가입</a>
     
         </div>
+        <div class="abcd" style="height: 40%;width: 100%;background-color: #FF8551;"></div>
     </template>
     
     <script setup>
@@ -84,20 +85,20 @@
     </script>
     
     <style scoped>
-    
+   
     .aaa{
         margin-bottom: 10%;
     }
 
     .login-box {
         position: relative;
-        
+        height: 100%;
         margin: auto;
         width: 500px;
         padding: 40px;
         background: #FFFAF8;
-        box-sizing: border-box;
-        border-radius: 10px;
+        /* box-sizing: border-box; */
+        /* border-radius: 10px; */
     }
     
     .login-box h2 {
@@ -216,10 +217,10 @@
     } */
     
     
-    .login-box a span {
+    /* .login-box a span {
         position: absolute;
         display: block;
-    }
+    } */
     
     
     </style>

@@ -14,7 +14,7 @@
       </div>
 
     <div class="d-flex justify-content-center" >
-    <button id="next" type="button" @click="login"><label>로그인 창으로</label></button>
+    <button id="next" type="button" style="border: 1px solid #000000;" @click="login"><label>로그인 창으로</label></button>
   </div>
   </div>
 
@@ -51,6 +51,7 @@ const login=() => {
   box-sizing: border-box;
   /* box-shadow: 0 5px 5px rgba(0,0,0,.6); */
   border-radius: 10px;
+  margin-top: 8%;
 }
 
 .findUser-box h2 {

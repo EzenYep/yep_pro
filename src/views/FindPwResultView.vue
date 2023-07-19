@@ -21,7 +21,7 @@
     </div>
 
     <div class="d-flex justify-content-center">
-      <button id="next" type="button" @click="updatePassword"><label>변경</label></button>
+      <button id="next" type="button" style="border: 1px solid #000000;" @click="updatePassword"><label>변경</label></button>
     </div>
   </div>
 </template>
@@ -88,6 +88,7 @@ if (password1.value !== password2.value) {
   background: #FFFAF8;
   box-sizing: border-box;
   border-radius: 10px;
+  margin-top: 8%;
 }
 
 .findUser-box h2 {

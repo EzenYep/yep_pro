@@ -14,68 +14,63 @@
   <div class="accordion-item">
     <h2 class="accordion-header" id="panelsStayOpen-headingOne">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-        고객이 자주 찾는 질문
-      </button>
+       <strong>[예매/관람권] 예매 취소 및 환불 규정은 어떻게 되나요?</strong>      </button>
     </h2>
     <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse " aria-labelledby="panelsStayOpen-headingOne">
       <div class="accordion-body">
-        <strong>고객이 자주 찾는 질문</strong>  <code> </code>
+        a  <code> </code>
       </div>
     </div>
   </div>
 </div>
 <div class="accordion" id="accordionPanelsStayOpenExample">
   <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo">
-        고객이 자주 찾는 질문
-      </button>
+    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+       <strong>[예매/관람권] 예매 취소 및 환불 규정은 어떻게 되나요?</strong>      </button>
     </h2>
-    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse s" aria-labelledby="panelsStayOpen-headingTwo">
+    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse " aria-labelledby="panelsStayOpen-headingOne">
       <div class="accordion-body">
-        <strong>고객이 자주 찾는 질문</strong>   <code></code>
+        a  <code> </code>
       </div>
     </div>
   </div>
 </div>
 <div class="accordion" id="accordionPanelsStayOpenExample">
   <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingThree">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true" aria-controls="panelsStayOpen-collapseThree">
-        고객이 자주 찾는 질문
-      </button>
+    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+       <strong>[예매/관람권] 예매 취소 및 환불 규정은 어떻게 되나요?</strong>      </button>
     </h2>
-    <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
+    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse " aria-labelledby="panelsStayOpen-headingOne">
       <div class="accordion-body">
-        <strong>고객이 자주 찾는 질문</strong>  <code></code>
+        a  <code> </code>
       </div>
     </div>
   </div>
 </div>
 <div class="accordion" id="accordionPanelsStayOpenExample">
   <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingFour">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="true" aria-controls="panelsStayOpen-collapseFour">
-       고객이 자주 찾는 질문
-      </button>
+    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+       <strong>[예매/관람권] 예매 취소 및 환불 규정은 어떻게 되나요?</strong>      </button>
     </h2>
-    <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingFour">
+    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse " aria-labelledby="panelsStayOpen-headingOne">
       <div class="accordion-body">
-        <strong>고객이 자주 찾는 질문</strong>  <code></code>
+        a  <code> </code>
       </div>
     </div>
   </div>
 </div>
 <div class="accordion" id="accordionPanelsStayOpenExample">
   <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingFive">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFive" aria-expanded="true" aria-controls="panelsStayOpen-collapseFive">
-       고객이 자주 찾는 질문
-      </button>
+    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+       <strong>[예매/관람권] 예매 취소 및 환불 규정은 어떻게 되나요?</strong>      </button>
     </h2>
-    <div id="panelsStayOpen-collapseFive" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingFive">
+    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse " aria-labelledby="panelsStayOpen-headingOne">
       <div class="accordion-body">
-        <strong>고객이 자주 찾는 질문</strong>  <code></code>
+        a  <code> </code>
       </div>
     </div>
   </div>
