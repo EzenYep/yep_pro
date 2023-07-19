@@ -18,7 +18,7 @@
                             v-model="searchQuery"
                             @keyup.enter="searchmovie"
                     />
-                    <button type="submit" class="searchButton"  @click="searchmovie">검색</button>
+                    <button type="submit" class="searchButton" style="background-color:#FFE2C0; border-radius: 4px; border: solid #FFE2C0;" @click="searchmovie">검색</button>
                 </div>
             </div>
         </div>
@@ -56,6 +56,7 @@
         <div>
             <h3>상영예정작</h3>
         </div>
+        <br>
         <!-- 상영 예정작-->
         <div class="movie-chart">
             <div class="slider-container">
@@ -66,7 +67,7 @@
                     <div class="slide" v-for="(non_poster, index) in currentNonMovies" :key="index">
                         <!-- 이미지 및 영화 정보 표시 -->
                         <div class="movie-info">
-                            <img :src="non_poster" alt="Movie Poster" class="poster-image">
+                            <img :src="non_poster" alt="Movie Poster" class="poster-image" @click="goMovieInfos2(index)">
                             <h4>{{ movies.non_movieTitles[currentNonMovieOffset.value + index] }}</h4>
                             <!-- 추가적인 영화 정보 표시 -->
                         </div>
@@ -79,6 +80,8 @@
             </div>
         </div>
         <!-- 가로 레이아웃 -->
+        <div class="horizontal-container">
+
         <div class="horizontal-layout">
             <div class="image">
                 <!--<img src="../assets/photo1.jpg" alt="Photo 1">-->
@@ -94,6 +97,7 @@
                 <img :src="movies.selectedPoster">
             </div>
         </div>
+    </div>
 
         <!-- 하단 영역 -->
         <div class="last">
@@ -101,17 +105,16 @@
                 Yep | 이용약관 | 개인정보처리방침 | 이현진 | 김영강 | 윤종혁 | 문정혜 |
                 방우리 | 황 건
             </h6>
-            <button class="topbutton" @click="scrollToTop">TOP</button>
+            <button class="topbutton" @click="scrollToTop">▲TOP</button>
         </div>
 
     </div>
-    <MovieSlide></MovieSlide>
+    
 </template>
 <script setup>
 import {ref, computed, onMounted, reactive, onBeforeUnmount} from "vue";
 import router from "@/router";
 import axios from "axios";
-import MovieSlide from "@/components/MovieSlide.vue";
 const goReservationPage = () => {
     router.push({
         name: "reservation",
@@ -312,19 +315,34 @@ const goMovieInfos = (currentIndex) => {
         },
     });
 };
+
+const goMovieInfos2 = (currentIndex) => {
+    const index = currentMovieOffset.value + currentIndex;
+    const selectedMovieId = movies.movieIds[index];
+    router.push({
+        name: "movie_info2",
+        params: {
+            id: selectedMovieId,
+        },
+    });
+};
 </script>
 
 <style scoped>
+
+
 .container {
     /*width: 70%;
       height: 100%;*/
     overflow: hidden;
     position: relative;
+    background-color: #FFFAF8;
 }
 
 .container > img {
     width: 70%;
     /* height: 100%; */
+    background-color: #FFFAF8;
 }
 
 .container iframe {
@@ -335,6 +353,8 @@ const goMovieInfos = (currentIndex) => {
 
 .searchTerm {
     width: 30%;
+    border-radius: 4px;
+    border: solid #FFE2C0;
 }
 
 .search {
@@ -343,6 +363,7 @@ const goMovieInfos = (currentIndex) => {
     margin-bottom: 50px;
     /* left: 66.5%;  /* 야매로 왼쪽기준으로 만듬 */
     text-align: right;
+    color: #FFE2C0;
 }
 
 /* 여기서부터 무비차트*/
@@ -388,15 +409,27 @@ const goMovieInfos = (currentIndex) => {
 .previous-button,
 .next-button {
     flex-shrink: 0;
-    margin: 0 10px; /* 좌우 여백 추가 */
+    margin: 0 10px; 
+    /* 좌우 여백 추가 */
 }
 
 .previous-button {
     margin-right: auto; /* 이전 버튼을 왼쪽으로 정렬 */
+    width: 40px;
+    height: 300px;
+    border-radius: 4px;
+    background-color:#FFE2C0;
+    border: solid #FFE2C0;
+
 }
 
 .next-button {
     margin-left: auto; /* 다음 버튼을 오른쪽으로 정렬 */
+    width: 40px;
+    height: 300px;
+    border-radius: 4px;
+    background-color:#FFE2C0;
+    border: solid #FFE2C0;
 }
 
 .horizontal-layout {
@@ -404,6 +437,11 @@ const goMovieInfos = (currentIndex) => {
     align-items: center;
     margin-top: 10%;
     margin-bottom: 30%;
+    position: relative;
+}
+.horizontal-container {
+  width: 100%;
+  overflow: hidden;
 }
 
 /* 밑에 광고 이미지 양옆으로 붙여야함*/
@@ -431,6 +469,9 @@ const goMovieInfos = (currentIndex) => {
     background-color: #ccc;
     border: none;
     cursor: pointer;
+    background-color:#FFE2C0;
+    border: solid #FFE2C0;
+
 }
 
 .last {
@@ -446,5 +487,9 @@ const goMovieInfos = (currentIndex) => {
     width: 5rem;
     height: 5rem;
     margin-left: auto;
+    background-color:#FFE2C0;
+    border: solid #FFFAF8;
+    border-radius: 50px;
+
 }
 </style>
