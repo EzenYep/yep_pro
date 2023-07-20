@@ -306,7 +306,7 @@ const searchmovie = async () => {
 
 
 const goMovieInfos = (currentIndex) => {
-    const index = currentMovieOffset.value + currentIndex;
+    const index = (currentMovieOffset.value + currentIndex) % movies.movieIds.length;
     const selectedMovieId = movies.movieIds[index];
     router.push({
         name: "movie_info",
@@ -316,7 +316,7 @@ const goMovieInfos = (currentIndex) => {
     });
 };
 const goMovieInfos2 = (currentIndex) => {
-    const index = currentNonMovieOffset.value + currentIndex;
+    const index = (currentNonMovieOffset.value + currentIndex) % movies.non_movieIds.length;
     const selectedMovieId = movies.non_movieIds[index];
     router.push({
         name: "movie_info",
@@ -325,6 +325,7 @@ const goMovieInfos2 = (currentIndex) => {
         },
     });
 };
+
 </script>
 
 <style scoped>
