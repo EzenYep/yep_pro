@@ -151,7 +151,7 @@ const showMovieDetail = async (movieId) => {
     padding: 0;
     color: #000000;
     text-align: center;
-    margin-bottom: -5;
+    margin-bottom: 5%;
     letter-spacing: 10px;
 }
 .search {

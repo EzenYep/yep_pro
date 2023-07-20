@@ -6,7 +6,7 @@
             </button>
             <div class="slider" ref="sliderContainer">
                 <div v-for="(movie, index) in currentMovies" :key="index" class="slide">
-                    <img :src="movie.poster" alt="Movie Poster" />
+                    <img :src="movie.poster" alt="Movie Poster"/>
                 </div>
             </div>
             <button class="next-button" @click="nextSlide">
@@ -19,6 +19,7 @@
 import { ref, computed, onMounted } from 'vue';
 import store from '@/store/store';
 import axios from "axios";
+import router from "@/router";
 
 
 
@@ -104,6 +105,7 @@ const recentMoviePoster = async () => {
 };
 
 recentMoviePoster();
+
 
 </script>
 <style scoped>
