@@ -1,5 +1,5 @@
 <template>
-    <div class="text-bg-secondary p-1">
+    <div style="background-color:#FAF0E4;">
         <div class="comment-input">
             <div class="input-row">
                 <div class="author-rating">

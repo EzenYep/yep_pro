@@ -320,7 +320,7 @@
 }
 
 .reserved-seat {
-  color: red; /* Apply your custom styling for reserved seats */
+  background-color: red; /* Apply your custom styling for reserved seats */
   pointer-events: none; /* Disable mouse events on reserved seats */
   cursor: not-allowed; /* Change the cursor for reserved seats */
 }

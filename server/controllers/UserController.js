@@ -183,7 +183,7 @@ const sendEmail = async (req,res) => {
     to:  req.body.email,
     subject: '가입 인증 메일',
     html: `
-      인증코드: <strong>${verificationCode}</strong><br/>
+      인증코드: <h2><strong>${verificationCode}</strong></h2><br/>
       <form action="#" method="POST">
       </form>  
     `,

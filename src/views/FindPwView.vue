@@ -242,7 +242,7 @@ const sendEmail = async () => {             //이메일 인증번호 전송
   .user-box input:valid ~ label {
     top: -20px;
     left: 0;
-    color: #FF8551;
+    color: #000000;
     font-size: 12px;
   }
   

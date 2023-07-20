@@ -89,6 +89,7 @@ movie_info_db();
 }
 
 .movie_info {
+    margin-top: 5%;
     flex: 2;
     margin-left: 5%;
     position: relative; /* 추가 */

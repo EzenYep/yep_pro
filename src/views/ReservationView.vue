@@ -4,7 +4,7 @@
         <div class="top-container">
             <table class="movie-option">
                 <tr>
-                    <td class="caption-col"> <!-- 지역 -->
+                    <td class="caption-col" style="border-right: 2px solid #FF8551;border-left: 2px solid #FF8551;"> <!-- 지역 -->
                         <h4 class="caption">지역 선택</h4>
                         <div class="list">
                             <button type="button" class="btn btn-light;" @click="theater_seat('서울')">서울</button>
@@ -49,7 +49,7 @@
 
                         </div>
                     </td>
-                    <td class="caption-col"> <!-- 시간 -->
+                    <td class="caption-col" style="border-right: 2px solid #FF8551;"> <!-- 시간 -->
                         <h4 class="caption">시간 선택</h4>
                         <div class="list">
                             <button

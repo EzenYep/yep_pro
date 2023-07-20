@@ -70,7 +70,10 @@
                             <td>{{ reservation.theater_name }}</td>
                             <td>{{ reservation.screening_start_time }}</td>
                             <td>{{ reservation.seat_number }}</td>
-                            <td>{{ reservation.pay_state }}</td>
+                                    <td>
+                                        <span v-if="reservation.pay_state === 0">예매취소</span>
+                                        <span v-else-if="reservation.pay_state === 1">예매</span>
+                                    </td>
                         </tr>
                         </tbody>
 
